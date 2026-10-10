@@ -2,7 +2,8 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Sparkles, ArrowRight, ShieldCheck, Gem, Ruler, Award } from 'lucide-react';
+import ShimmerImage from '../../../components/ui/ShimmerImage';
+import { Sparkles, ArrowRight, Gem, Ruler, Award } from 'lucide-react';
 
 export default function MaterialsPage() {
   return (
@@ -24,10 +25,11 @@ export default function MaterialsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 items-center">
         <div className="group rounded-3xl overflow-hidden bg-zinc-50 border border-zinc-200 p-3 shadow-md hover:shadow-xl transition-all duration-300">
           <div className="rounded-2xl overflow-hidden aspect-[4/3]">
-            <img
+            <ShimmerImage
               src="/images/features/2.webp"
               alt="Nature's Finest Natural Crystals"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              containerClassName="w-full h-full"
             />
           </div>
         </div>
@@ -79,10 +81,11 @@ export default function MaterialsPage() {
         </div>
         <div className="group rounded-3xl overflow-hidden bg-zinc-50 border border-zinc-200 p-3 shadow-md hover:shadow-xl transition-all duration-300 order-1 md:order-2">
           <div className="rounded-2xl overflow-hidden aspect-[4/3]">
-            <img
-              src="/images/bespoke/mineral-tray.jpg"
-              alt="Raw minerals and brass caliper on fluted travertine tray"
+            <ShimmerImage
+              src="/images/hero/himalayan-salt-crystals.jpeg"
+              alt="Raw Himalayan crystalline minerals on inspection tray"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              containerClassName="w-full h-full"
             />
           </div>
         </div>

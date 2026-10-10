@@ -26,7 +26,7 @@ export default function SizeGuidePage() {
           Finding Your Perfect Wrist Fit
         </h1>
         <p className="text-xs md:text-sm text-zinc-500 leading-relaxed font-light">
-          Every Astris bracelet is individually strung to your millimeter measurements. Review our standard size ranges and measurement recommendations below.
+          Every Artixain bracelet is individually strung to your millimeter measurements. Review our standard size ranges and measurement recommendations below.
         </p>
       </div>
 

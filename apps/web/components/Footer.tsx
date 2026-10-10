@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Sparkles, ShieldCheck, Truck, RefreshCw, Heart, Gem } from 'lucide-react';
+import { ShieldCheck, Truck, RefreshCw, Heart, Gem } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -13,17 +13,17 @@ export default function Footer() {
           {/* Brand Info (Span 2 on Desktop) */}
           <div className="col-span-2 space-y-3">
             <Link href="/" className="inline-block">
-              <h2 className="font-sans font-bold text-[#1D1D1F] uppercase tracking-[0.4em] text-lg leading-tight">
-                ASTRIS
-              </h2>
+              <span className="font-sans font-bold text-[#1D1D1F] uppercase tracking-[0.35em] text-lg leading-tight">
+                ARTIXAIN
+              </span>
             </Link>
-            <p className="text-xs text-zinc-500 max-w-sm leading-relaxed">
-              Design a one-of-a-kind crystal bracelet online with natural gemstones, meaningful celestial symbolism, and gift-ready customization.
+            <p className="text-xs text-zinc-500 max-w-sm leading-relaxed font-light">
+              Design a bespoke natural gemstone bracelet online with certified authentic minerals, millimeter anthropometric wrist calibration, and master atelier fulfillment.
             </p>
             <div className="pt-2 flex items-center gap-2 text-xs text-zinc-400">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100 text-zinc-700 font-semibold text-[11px]">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                100% Natural Gemstones
+                <ShieldCheck className="w-3.5 h-3.5 text-zinc-800" />
+                100% Grade-A Certified Minerals
               </span>
             </div>
           </div>
@@ -33,7 +33,7 @@ export default function Footer() {
             <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-900">
               SHOP
             </h4>
-            <ul className="space-y-2 text-xs">
+            <ul className="space-y-2 text-xs font-light">
               <li>
                 <Link href="/gallery" className="hover:text-black transition-colors">
                   Design Gallery
@@ -41,12 +41,12 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/shop" className="hover:text-black transition-colors">
-                  New Arrivals
+                  Curated Sets
                 </Link>
               </li>
               <li>
-                <Link href="/gallery" className="hover:text-black transition-colors">
-                  Best Sellers
+                <Link href="/designer" className="hover:text-black transition-colors">
+                  3D Customizer Studio
                 </Link>
               </li>
               <li>
@@ -60,27 +60,27 @@ export default function Footer() {
           {/* ABOUT Column */}
           <div className="space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-900">
-              ABOUT
+              ATELIER
             </h4>
-            <ul className="space-y-2 text-xs">
+            <ul className="space-y-2 text-xs font-light">
               <li>
                 <Link href="/articles" className="hover:text-black transition-colors">
-                  Our Story
+                  Our Philosophy
                 </Link>
               </li>
               <li>
-                <Link href="/guide/how-to-design" className="hover:text-black transition-colors">
-                  Design Philosophy
+                <Link href="/features/materials" className="hover:text-black transition-colors">
+                  Natural Mineral Provenance
+                </Link>
+              </li>
+              <li>
+                <Link href="/features/craftsmanship" className="hover:text-black transition-colors">
+                  Artisan Stringing
                 </Link>
               </li>
               <li>
                 <Link href="/encyclopedia" className="hover:text-black transition-colors">
-                  Materials
-                </Link>
-              </li>
-              <li>
-                <Link href="/guide/size-guide" className="hover:text-black transition-colors">
-                  Jewelry Care
+                  Gemstone Library
                 </Link>
               </li>
             </ul>
@@ -89,31 +89,26 @@ export default function Footer() {
           {/* CUSTOMER CARE Column */}
           <div className="space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-900">
-              CUSTOMER CARE
+              CLIENT SERVICES
             </h4>
-            <ul className="space-y-2 text-xs">
+            <ul className="space-y-2 text-xs font-light">
               <li>
-                <Link href="/guide/how-to-design" className="hover:text-black transition-colors">
-                  Contact Us
+                <Link href="/profile" className="hover:text-black transition-colors">
+                  Patron Profile
                 </Link>
               </li>
               <li>
                 <Link href="/guide/size-guide" className="hover:text-black transition-colors">
-                  Shipping & Returns
+                  Size & Fit Guide
                 </Link>
               </li>
               <li>
-                <Link href="/guide/size-guide" className="hover:text-black transition-colors">
-                  Size Guide
+                <Link href="/reviews" className="hover:text-black transition-colors">
+                  Client Reviews
                 </Link>
               </li>
               <li>
-                <Link href="/faq" className="hover:text-black transition-colors">
-                  FAQ
-                </Link>
-              </li>
-              <li>
-                <Link href="/admin" className="hover:text-black transition-colors font-semibold text-zinc-700">
+                <Link href="/admin" className="hover:text-black transition-colors font-medium text-zinc-800">
                   Atelier Workbench
                 </Link>
               </li>
@@ -122,17 +117,17 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar: Copyright & Legal */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 text-xs text-zinc-400">
-          <p>© 2024 ASTRIS. All rights reserved.</p>
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 text-xs text-zinc-400 font-light">
+          <p>&copy; 2026 Artixain Atelier. All rights reserved.</p>
           <div className="flex items-center gap-6 text-xs">
-            <Link href="/privacy" className="hover:text-zinc-600 transition-colors">
+            <Link href="/articles" className="hover:text-zinc-600 transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/terms" className="hover:text-zinc-600 transition-colors">
+            <Link href="/articles" className="hover:text-zinc-600 transition-colors">
               Terms of Service
             </Link>
-            <Link href="/cookies" className="hover:text-zinc-600 transition-colors">
-              Cookies
+            <Link href="/guide/size-guide" className="hover:text-zinc-600 transition-colors">
+              Authenticity Guarantee
             </Link>
           </div>
         </div>

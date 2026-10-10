@@ -2,7 +2,8 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Sparkles, ArrowRight, ShieldCheck, CheckCircle2, Ruler, Award } from 'lucide-react';
+import ShimmerImage from '../../../components/ui/ShimmerImage';
+import { Sparkles, ArrowRight, CheckCircle2, Award } from 'lucide-react';
 
 export default function CraftsmanshipPage() {
   return (
@@ -16,7 +17,7 @@ export default function CraftsmanshipPage() {
           Master Artisan Stringing & QC
         </h1>
         <p className="text-xs md:text-sm text-zinc-500 leading-relaxed font-light">
-          Unlike mass-produced factory jewelry, every Astris bracelet is individually assembled by bench jewelers according to your exact bead-by-bead sequence blueprint.
+          Unlike mass-produced factory jewelry, every Artixain bracelet is individually assembled by bench jewelers according to your exact bead-by-bead sequence blueprint.
         </p>
       </div>
 
@@ -45,10 +46,11 @@ export default function CraftsmanshipPage() {
         </div>
         <div className="group rounded-3xl overflow-hidden bg-zinc-50 border border-zinc-200 p-3 shadow-md hover:shadow-xl transition-all duration-300 order-1 md:order-2">
           <div className="rounded-2xl overflow-hidden aspect-[4/3]">
-            <img
+            <ShimmerImage
               src="/images/features/3.webp"
               alt="Handcrafted Excellence"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              containerClassName="w-full h-full"
             />
           </div>
         </div>
@@ -58,10 +60,11 @@ export default function CraftsmanshipPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 items-center">
         <div className="group rounded-3xl overflow-hidden bg-zinc-50 border border-zinc-200 p-3 shadow-md hover:shadow-xl transition-all duration-300">
           <div className="rounded-2xl overflow-hidden aspect-[4/3]">
-            <img
-              src="/images/bespoke/artisan-craft.jpg"
-              alt="Master jeweler artisan hands stringing beads on oak bench"
+            <ShimmerImage
+              src="/images/hero/triple-strand-pearl-bracelet.jpeg"
+              alt="Artixain bespoke hand-threaded jewelry on bench"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              containerClassName="w-full h-full"
             />
           </div>
         </div>

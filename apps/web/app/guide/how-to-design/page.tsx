@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import ShimmerImage from '../../../components/ui/ShimmerImage';
 import { Sparkles, ArrowRight, Ruler, CheckCircle2, ShieldCheck } from 'lucide-react';
 
 const STEPS = [
@@ -59,11 +60,12 @@ export default function HowToDesignPage() {
           >
             {/* Visual Guide Card */}
             <div className="w-full md:w-1/2 rounded-3xl overflow-hidden bg-zinc-50 border border-zinc-200/80 p-4 shadow-md">
-              <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-white">
-                <img
+              <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-white p-4">
+                <ShimmerImage
                   src={s.image}
                   alt={s.title}
-                  className="w-full h-full object-contain p-4"
+                  className="w-full h-full object-contain"
+                  containerClassName="w-full h-full"
                 />
               </div>
             </div>

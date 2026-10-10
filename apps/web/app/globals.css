@@ -132,7 +132,16 @@
 }
 
 .animate-sweep {
-  animation: sweep 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation: sweep 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-shimmer {
+  animation: shimmer 1.8s ease-in-out infinite;
 }
 
 @keyframes float-gentle {

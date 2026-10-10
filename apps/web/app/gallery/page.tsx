@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import ShimmerImage from '../../components/ui/ShimmerImage';
 import { Sparkles, ArrowRight, Heart, Filter, Search, Tag, Eye } from 'lucide-react';
 
 const GALLERY_ITEMS = [
@@ -170,15 +171,16 @@ export default function GalleryPage() {
             className="group relative rounded-3xl bg-white border border-zinc-200/80 p-3.5 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between"
           >
             <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-zinc-50 mb-3">
-              <img
+              <ShimmerImage
                 src={item.image}
                 alt={item.title}
                 className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                containerClassName="h-full w-full"
               />
-              <div className="absolute top-2.5 left-2.5 inline-flex items-center rounded-full bg-rose-500 px-2 py-0.5 text-[10px] font-bold text-white shadow-sm">
+              <div className="absolute top-2.5 left-2.5 inline-flex items-center rounded-full bg-rose-500 px-2 py-0.5 text-[10px] font-bold text-white shadow-sm z-20">
                 {item.discount}
               </div>
-              <div className="absolute top-2.5 right-2.5 inline-flex items-center gap-1 rounded-full bg-white/85 backdrop-blur px-2.5 py-0.5 text-[10px] font-bold text-zinc-700 shadow-sm">
+              <div className="absolute top-2.5 right-2.5 inline-flex items-center gap-1 rounded-full bg-white/85 backdrop-blur px-2.5 py-0.5 text-[10px] font-bold text-zinc-700 shadow-sm z-20">
                 <Heart className="w-2.5 h-2.5 text-rose-500 fill-rose-500" />
                 <span>{item.likes}</span>
               </div>

@@ -74,7 +74,7 @@ export default function ReviewsPage() {
           Client Reviews & Experiences
         </h1>
         <p className="text-xs md:text-sm text-zinc-500 leading-relaxed font-light">
-          Over 10,000 satisfied customers have created custom mineral bracelets with Astris. Read their genuine impressions and unboxing stories below.
+          Over 10,000 satisfied customers have created custom mineral bracelets with Artixain. Read their genuine impressions and unboxing stories below.
         </p>
       </div>
 
