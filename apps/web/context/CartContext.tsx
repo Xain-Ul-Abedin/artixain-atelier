@@ -8,6 +8,7 @@ export interface CartItem {
   name: string;
   type: 'custom' | 'premade';
   token?: string;
+  designToken?: string;
   wristSizeCm: number;
   cordType: 'silicone_stretch' | 'braided_silk' | 'gold_wire';
   beadCount: number;

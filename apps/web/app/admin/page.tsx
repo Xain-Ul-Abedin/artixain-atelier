@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { ShieldCheck, Package, Clock, CheckCircle2, Truck, Eye, Search, Filter, Lock, Unlock, AlertTriangle, Key } from 'lucide-react';
+import { ShieldCheck, Package, Clock, CheckCircle2, Truck, Eye, Search, Filter, Lock, Unlock, AlertTriangle, Key, BellRing, X, Volume2, VolumeX, Sparkles } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 
 interface OrderSummary {
@@ -67,26 +67,160 @@ export default function AdminOverviewPage() {
   const [enteredPin, setEnteredPin] = useState('');
   const [pinError, setPinError] = useState(false);
   const [supabaseUser, setSupabaseUser] = useState<string | null>(null);
+  const [soundEnabled, setSoundEnabled] = useState(true);
+  const [realtimeAlert, setRealtimeAlert] = useState<{
+    id: string;
+    customer: string;
+    total: number;
+    timestamp: number;
+  } | null>(null);
 
-  // Initialize Supabase Auth state check & load stored orders
+  const soundEnabledRef = useRef(soundEnabled);
   useEffect(() => {
+    soundEnabledRef.current = soundEnabled;
+  }, [soundEnabled]);
+
+  // Atelier Web Audio Synthesizer Harmonic Chime (880Hz -> 1320Hz)
+  const playChime = () => {
+    if (!soundEnabledRef.current) return;
+    try {
+      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+      const now = ctx.currentTime;
+
+      // Tone 1: 880Hz (A5)
+      const osc1 = ctx.createOscillator();
+      const gain1 = ctx.createGain();
+      osc1.type = 'sine';
+      osc1.frequency.setValueAtTime(880, now);
+      gain1.gain.setValueAtTime(0.14, now);
+      gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+      osc1.connect(gain1);
+      gain1.connect(ctx.destination);
+      osc1.start(now);
+      osc1.stop(now + 0.45);
+
+      // Tone 2: 1320Hz (E6) harmonic interval
+      const osc2 = ctx.createOscillator();
+      const gain2 = ctx.createGain();
+      osc2.type = 'sine';
+      osc2.frequency.setValueAtTime(1320, now + 0.12);
+      gain2.gain.setValueAtTime(0.16, now + 0.12);
+      gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.65);
+      osc2.connect(gain2);
+      gain2.connect(ctx.destination);
+      osc2.start(now + 0.12);
+      osc2.stop(now + 0.65);
+    } catch {
+      // Audio playback blocked or unpermitted by browser gesture policy
+    }
+  };
+
+  // Helper to append newly ingested order cleanly
+  const handleIncomingOrder = (newOrderSummary: OrderSummary) => {
+    setOrders((prev) => {
+      if (prev.some((o) => o.id === newOrderSummary.id)) {
+        return prev;
+      }
+      return [newOrderSummary, ...prev];
+    });
+
+    setRealtimeAlert({
+      id: newOrderSummary.id,
+      customer: newOrderSummary.customerName,
+      total: newOrderSummary.totalPrice,
+      timestamp: Date.now(),
+    });
+
+    playChime();
+  };
+
+  // Auto-dismiss alert banner after 6 seconds
+  useEffect(() => {
+    if (!realtimeAlert) return;
+    const timer = setTimeout(() => {
+      setRealtimeAlert(null);
+    }, 6000);
+    return () => clearTimeout(timer);
+  }, [realtimeAlert]);
+
+  // Initialize Supabase Auth, API orders, LocalStorage, and Supabase Realtime WebSocket
+  useEffect(() => {
+    let channel: any = null;
+
     try {
       const supabase = createClient();
+
+      // Check current auth user
       supabase.auth.getUser().then(({ data }) => {
         if (data.user) {
           setSupabaseUser(data.user.email || 'SuperAdmin');
           setIsUnlocked(true);
         }
       });
+
+      // Subscribe to Supabase Realtime WebSocket changes on public.orders
+      channel = supabase
+        .channel('atelier-orders-realtime')
+        .on(
+          'postgres_changes',
+          { event: 'INSERT', schema: 'public', table: 'orders' },
+          (payload: any) => {
+            const row = payload.new;
+            if (row) {
+              const mapped: OrderSummary = {
+                id: row.order_number || row.id,
+                customerName: row.customer_info?.fullName || 'Online Customer',
+                email: row.customer_info?.email || 'customer@artixain.com',
+                itemCount: Array.isArray(row.items) ? row.items.reduce((a: number, b: any) => a + (b.quantity || 1), 0) : 1,
+                totalPrice: row.pricing?.finalTotal || 0,
+                status: (row.status as any) || 'Placed',
+                createdAt: row.created_at || new Date().toISOString(),
+                wristSizeCm: row.items?.[0]?.wristSizeCm || 16.5,
+              };
+              handleIncomingOrder(mapped);
+            }
+          }
+        )
+        .subscribe();
     } catch {
       // Offline fallback
     }
 
+    // Load server orders via decoupled API
+    fetch('/api/v1/orders')
+      .then((res) => res.json())
+      .then((resData) => {
+        if (resData.success && Array.isArray(resData.data)) {
+          const apiMapped: OrderSummary[] = resData.data.map((o: any) => ({
+            id: o.orderNumber || o.id,
+            customerName: o.customer?.fullName || 'Online Client',
+            email: o.customer?.email || 'client@artixain.com',
+            itemCount: Array.isArray(o.items) ? o.items.reduce((a: number, b: any) => a + (b.quantity || 1), 0) : 1,
+            totalPrice: o.pricing?.finalTotal || 48.00,
+            status: o.status || 'Placed',
+            createdAt: o.createdAt || new Date().toISOString(),
+            wristSizeCm: o.items?.[0]?.wristSizeCm || 16.5,
+          }));
+
+          setOrders((current) => {
+            const seen = new Set(current.map((c) => c.id));
+            const fresh = apiMapped.filter((item) => !seen.has(item.id));
+            return [...fresh, ...current];
+          });
+        }
+      })
+      .catch(() => {
+        // Fallback to local storage
+      });
+
+    // Merge offline local storage orders
     try {
       const local = localStorage.getItem('artixain_orders_v1');
       if (local) {
         const parsed = JSON.parse(local);
-        const mapped = parsed.map((o: any) => ({
+        const mapped: OrderSummary[] = parsed.map((o: any) => ({
           id: o.id || o.orderNumber,
           customerName: o.customer?.fullName || 'Anonymous Customer',
           email: o.customer?.email || 'customer@example.com',
@@ -96,11 +230,25 @@ export default function AdminOverviewPage() {
           createdAt: o.createdAt || new Date().toISOString(),
           wristSizeCm: o.items?.[0]?.wristSizeCm || 16.5
         }));
-        setOrders([...mapped, ...DEMO_ORDERS]);
+
+        setOrders((current) => {
+          const seen = new Set(current.map((c) => c.id));
+          const fresh = mapped.filter((item) => !seen.has(item.id));
+          return [...fresh, ...current];
+        });
       }
     } catch {
       // Fallback
     }
+
+    return () => {
+      if (channel) {
+        try {
+          const supabase = createClient();
+          supabase.removeChannel(channel);
+        } catch {}
+      }
+    };
   }, []);
 
   const handlePinUnlock = (e: React.FormEvent) => {
@@ -197,7 +345,7 @@ export default function AdminOverviewPage() {
           </p>
         </div>
 
-        {/* Search & Session Indicator */}
+        {/* Controls: Search, Sound Toggle, Session Lock */}
         <div className="flex items-center gap-2 w-full md:w-auto">
           <div className="relative flex-1 md:w-64">
             <Search className="w-3.5 h-3.5 absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
@@ -210,6 +358,23 @@ export default function AdminOverviewPage() {
             />
           </div>
           <button
+            onClick={() => setSoundEnabled(!soundEnabled)}
+            className="btn-pill-secondary py-2 px-3 text-xs inline-flex items-center gap-1.5"
+            title={soundEnabled ? 'Disable Synthesizer Chime' : 'Enable Synthesizer Chime'}
+          >
+            {soundEnabled ? (
+              <>
+                <Volume2 className="w-3.5 h-3.5 text-champagne-500" />
+                <span className="hidden sm:inline">Chime ON</span>
+              </>
+            ) : (
+              <>
+                <VolumeX className="w-3.5 h-3.5 text-zinc-400" />
+                <span className="hidden sm:inline">Chime OFF</span>
+              </>
+            )}
+          </button>
+          <button
             onClick={() => setIsUnlocked(false)}
             className="btn-pill-secondary py-2 px-3 text-xs inline-flex items-center gap-1.5"
             title="Lock Atelier Session"
@@ -219,6 +384,29 @@ export default function AdminOverviewPage() {
           </button>
         </div>
       </div>
+
+      {/* Real-time Order Alert Floating Pill Banner */}
+      {realtimeAlert && (
+        <div className="my-4 animate-fadeIn">
+          <div className="p-3.5 rounded-full bg-champagne-500/15 border border-champagne-400/40 text-obsidian-900 dark:text-champagne-100 flex items-center justify-between shadow-sm">
+            <div className="flex items-center gap-3">
+              <span className="w-7 h-7 rounded-full bg-champagne-500 text-white flex items-center justify-center shrink-0">
+                <BellRing className="w-3.5 h-3.5" />
+              </span>
+              <span className="text-xs">
+                <strong>[NEW ORDER ARRIVED]</strong> &bull; #{realtimeAlert.id} from {realtimeAlert.customer} &bull; Total: ${realtimeAlert.total.toFixed(2)}
+              </span>
+            </div>
+            <button
+              onClick={() => setRealtimeAlert(null)}
+              className="w-6 h-6 rounded-full hover:bg-black/10 dark:hover:bg-white/10 flex items-center justify-center text-zinc-400 hover:text-zinc-600 transition-colors"
+              title="Dismiss notification"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* KPI Stats Row (4 Bento Cards) */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 my-6">

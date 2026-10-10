@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '../../context/CartContext';
 import { ShieldCheck, Truck, CreditCard, Lock, Check, ArrowRight } from 'lucide-react';
+import { createClient } from '@/lib/supabase/client';
+import { EmailService } from '@/lib/services/emailService';
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -36,18 +38,76 @@ export default function CheckoutPage() {
     setIsSubmitting(true);
 
     const orderId = `ARTX-${Date.now().toString().slice(-6)}-${Math.random().toString(36).substr(2, 4).toUpperCase()}`;
+    const cordLengthCm = Number((items[0]?.wristSizeCm ? items[0].wristSizeCm + 4.5 : 21.0).toFixed(1));
 
-    // Store completed order in localStorage for demo review in admin atelier
+    // 1. Post to decoupled API microservice (/api/v1/orders)
+    try {
+      await fetch('/api/v1/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customer: formData,
+          items: items.map((it) => ({
+            ...it,
+            cordType: it.cordType || 'Silicone Stretch',
+          })),
+        }),
+      });
+    } catch {
+      // Offline API fallback
+    }
+
+    // 2. Insert directly into Supabase public.orders ledger for real-time workbench broadcast
+    try {
+      const supabase = createClient();
+      await supabase.from('orders').insert({
+        order_number: orderId,
+        customer_info: formData,
+        items,
+        pricing,
+        status: 'Placed',
+        cord_cut_length_cm: cordLengthCm,
+        created_at: new Date().toISOString(),
+      });
+    } catch {
+      // Supabase offline/RLS fallback
+    }
+
+    // 3. Dispatch luxury HTML email notifications (Customer receipt + Artisan work order)
+    try {
+      await EmailService.sendOrderNotifications({
+        orderId,
+        customerName: formData.fullName,
+        customerEmail: formData.email,
+        items: items.map((it) => ({
+          name: it.name,
+          wristSizeCm: it.wristSizeCm,
+          cordType: it.cordType || 'Silicone Stretch',
+          beadCount: it.beadCount,
+          unitPrice: it.unitPrice,
+          quantity: it.quantity,
+          token: it.token || it.designToken,
+        })),
+        finalTotal: pricing.finalTotal,
+        cordCutLengthCm: cordLengthCm,
+        shippingAddress: `${formData.address}, ${formData.city}, ${formData.state} ${formData.postalCode}, ${formData.country}`,
+      });
+    } catch {
+      // Email dispatch fallback
+    }
+
+    // 4. Store completed order in localStorage for offline resilience & client-side review
     try {
       const existingOrders = JSON.parse(localStorage.getItem('artixain_orders_v1') || '[]');
       const newOrder = {
         id: orderId,
+        orderNumber: orderId,
         customer: formData,
         items,
         pricing,
         status: 'Placed',
         createdAt: new Date().toISOString(),
-        cordLengthCm: Number((items[0]?.wristSizeCm ? items[0].wristSizeCm + 4.5 : 21.0).toFixed(1))
+        cordLengthCm,
       };
       localStorage.setItem('artixain_orders_v1', JSON.stringify([newOrder, ...existingOrders]));
     } catch {
@@ -57,7 +117,7 @@ export default function CheckoutPage() {
     setTimeout(() => {
       clearCart();
       router.push(`/checkout/success?orderId=${orderId}`);
-    }, 800);
+    }, 600);
   };
 
   if (items.length === 0) {
