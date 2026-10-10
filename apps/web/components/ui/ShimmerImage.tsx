@@ -5,6 +5,7 @@ import React, { useState, useEffect, useRef } from 'react';
 interface ShimmerImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   containerClassName?: string;
   fallbackSrc?: string;
+  priority?: boolean;
 }
 
 export default function ShimmerImage({
@@ -13,9 +14,10 @@ export default function ShimmerImage({
   className = '',
   containerClassName = '',
   fallbackSrc = '/images/hero/triple-strand-pearl-bracelet.jpeg',
+  priority = false,
   ...props
 }: ShimmerImageProps) {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(priority);
   const [hasError, setHasError] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
 
@@ -27,15 +29,15 @@ export default function ShimmerImage({
   }, [src]);
 
   return (
-    <div className={`relative overflow-hidden bg-zinc-100 ${containerClassName}`}>
+    <div className={`relative overflow-hidden bg-zinc-100 dark:bg-zinc-800 ${containerClassName}`}>
       {/* Shimmer Skeletal Loader Overlay */}
       {!isLoaded && !hasError && (
         <div
-          className="absolute inset-0 z-10 bg-gradient-to-br from-zinc-100 via-zinc-200/50 to-zinc-100 overflow-hidden"
+          className="absolute inset-0 z-10 bg-gradient-to-br from-zinc-100 via-zinc-200/50 to-zinc-100 dark:from-zinc-800 dark:via-zinc-700/50 dark:to-zinc-800 overflow-hidden"
           aria-hidden="true"
         >
           {/* Smooth Shimmer Light Sweep */}
-          <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/80 to-transparent animate-shimmer" />
+          <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/80 dark:via-white/20 to-transparent animate-shimmer" />
 
           {/* Luxury Geometric Skeletal Placeholder Shape */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-30">
@@ -57,7 +59,8 @@ export default function ShimmerImage({
         ref={imgRef}
         src={hasError ? fallbackSrc : src}
         alt={alt}
-        loading="lazy"
+        loading={priority ? 'eager' : 'lazy'}
+        decoding="async"
         onLoad={() => setIsLoaded(true)}
         onError={() => {
           setHasError(true);

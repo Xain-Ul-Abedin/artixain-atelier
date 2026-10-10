@@ -251,49 +251,18 @@ export default function HomePage() {
 
   return (
     <div className={`flex flex-col w-full bg-white dark:bg-[#0E0E10] text-[#1D1D1F] dark:text-zinc-100 overflow-x-hidden pt-32 sm:pt-36 md:pt-40 transition-colors duration-300 ${isRTL ? 'text-right' : 'text-left'}`}>
-      {/* 1. Hero Section: Full-Width Edge-to-Edge Luxury Hero (No Card, 0px Side Gap, Full-Bleed Carousel Background) */}
-      <section className="relative w-full overflow-hidden min-h-[640px] sm:min-h-[700px] lg:min-h-[760px] flex items-center pt-8 sm:pt-10 md:pt-12 pb-16 md:pb-24 border-b border-zinc-100 dark:border-white/10">
-        {/* Full-Bleed Edge-to-Edge Background Carousel (No side gap, 100% viewport width) */}
-        <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
-          {HERO_SLIDES.map((slide, idx) => {
-            const isActive = idx === activeHeroIndex;
-            return (
-              <div
-                key={slide.id}
-                className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
-                  isActive ? 'opacity-100 z-0' : 'opacity-0 z-0'
-                }`}
-              >
-                <ShimmerImage
-                  src={slide.image}
-                  alt={t(slide.titleKey)}
-                  className="w-full h-full object-cover object-center scale-[1.02] transition-transform duration-1000"
-                  containerClassName="w-full h-full"
-                />
-              </div>
-            );
-          })}
-
-          {/* Luxury Ambient Gradient Backdrop: Crystal-clear legibility in light & dark modes across LTR & RTL */}
-          <div
-            className={`absolute inset-0 transition-colors duration-500 ${
-              isRTL
-                ? 'bg-gradient-to-l from-white/95 via-white/85 to-white/40 dark:from-[#0E0E10]/95 dark:via-[#0E0E10]/85 dark:to-[#0E0E10]/40'
-                : 'bg-gradient-to-r from-white/95 via-white/85 to-white/40 dark:from-[#0E0E10]/95 dark:via-[#0E0E10]/85 dark:to-[#0E0E10]/40'
-            }`}
-          />
-        </div>
-
-        {/* Hero Editorial Content Container (Generous vertical spacing, 100% responsive) */}
-        <div className="w-full max-w-[1720px] mx-auto px-6 sm:px-10 md:px-14 lg:px-16 xl:px-20 relative z-10">
-          <div className="max-w-2xl lg:max-w-3xl">
-            {/* Eyebrow Badges Row */}
+      {/* 1. Hero Section: Full-Width Edge-to-Edge Luxury Hero (No Card, 0px Side Gap, Increased Vertical Height & Dedicated Vibrant Visual Showcase) */}
+      <section className="relative w-full overflow-hidden min-h-[820px] sm:min-h-[880px] lg:min-h-[920px] xl:min-h-[960px] flex items-center border-b border-zinc-100 dark:border-white/10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 items-center w-full min-h-[820px] sm:min-h-[880px] lg:min-h-[920px] xl:min-h-[960px]">
+          {/* Editorial Copy Column (lg: 6 cols / xl: 5 cols) with Generous Spacing */}
+          <div className="lg:col-span-6 xl:col-span-5 px-6 sm:px-12 md:px-16 lg:px-16 xl:px-20 py-12 sm:py-16 lg:py-24 flex flex-col justify-center order-2 lg:order-1 relative z-10">
+            {/* Luxury Eyebrow Badges Row */}
             <div className="flex flex-wrap items-center gap-2.5 mb-6">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border border-zinc-200/90 dark:border-white/15 text-xs font-semibold text-zinc-900 dark:text-zinc-100 shadow-2xs">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800/90 border border-zinc-200/90 dark:border-white/10 text-xs font-semibold text-zinc-900 dark:text-zinc-100 shadow-2xs">
                 <Sparkles className="w-3.5 h-3.5 text-zinc-950 dark:text-amber-400" />
                 <span>{t('hero.badge')}</span>
               </div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-950/5 dark:bg-white/10 backdrop-blur-md border border-zinc-300/60 dark:border-white/10 text-[11px] font-medium text-zinc-700 dark:text-zinc-300">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100/80 dark:bg-zinc-800/60 border border-zinc-200/60 dark:border-white/10 text-[11px] font-medium text-zinc-700 dark:text-zinc-300">
                 <span className="font-semibold">{t(currentHeroSlide.tagKey)}</span>
                 <span>&bull;</span>
                 <span dangerouslySetInnerHTML={{ __html: t(currentHeroSlide.specKey) }} />
@@ -301,13 +270,13 @@ export default function HomePage() {
             </div>
 
             {/* Editorial Luxury Heading */}
-            <h1 className="font-serif text-[clamp(2.5rem,5.5vw,4.75rem)] leading-[1.12] tracking-tight text-zinc-950 dark:text-white mb-6">
+            <h1 className="font-serif text-[clamp(2.6rem,5.5vw,4.75rem)] leading-[1.12] tracking-tight text-zinc-950 dark:text-white mb-6">
               <span className="block font-medium">{t('hero.titleLine1')}</span>
-              <span className="block italic text-zinc-500 dark:text-zinc-400 font-light">{t('hero.titleLine2')}</span>
+              <span className="block italic text-zinc-400 dark:text-zinc-500 font-light">{t('hero.titleLine2')}</span>
             </h1>
 
             {/* Subtitle */}
-            <p className="text-zinc-700 dark:text-zinc-300 text-sm sm:text-base md:text-lg font-light leading-relaxed mb-10 max-w-xl">
+            <p className="text-zinc-600 dark:text-zinc-300 text-sm sm:text-base md:text-lg font-light leading-relaxed mb-10 max-w-xl">
               {t('hero.subtitle')}
             </p>
 
@@ -323,7 +292,7 @@ export default function HomePage() {
 
               <Link
                 href="/gallery"
-                className="inline-flex items-center justify-center gap-2.5 rounded-full border border-zinc-300/80 dark:border-white/20 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-900 dark:text-zinc-100 px-7 py-4 text-xs font-semibold uppercase tracking-wider transition-all w-full sm:w-auto shadow-sm active:scale-[0.98]"
+                className="inline-flex items-center justify-center gap-2.5 rounded-full border border-zinc-200/90 dark:border-white/15 bg-white dark:bg-zinc-800/80 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-zinc-100 px-7 py-4 text-xs font-semibold uppercase tracking-wider transition-all w-full sm:w-auto shadow-sm active:scale-[0.98]"
               >
                 <Gem className="w-3.5 h-3.5 text-zinc-800 dark:text-amber-400" />
                 <span>{t('hero.ctaSecondary')}</span>
@@ -332,66 +301,97 @@ export default function HomePage() {
 
             {/* Trust Pills */}
             <div className="flex flex-wrap items-center gap-2.5 text-xs text-zinc-600 dark:text-zinc-400 font-medium">
-              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border border-zinc-200/70 dark:border-white/10 text-zinc-800 dark:text-zinc-200 shadow-2xs">
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200/70 dark:border-white/10 text-zinc-800 dark:text-zinc-200 shadow-2xs">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                 <span>{t('hero.pill1')}</span>
               </span>
-              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border border-zinc-200/70 dark:border-white/10 text-zinc-800 dark:text-zinc-200 shadow-2xs">
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200/70 dark:border-white/10 text-zinc-800 dark:text-zinc-200 shadow-2xs">
                 <Ruler className="w-3.5 h-3.5 text-zinc-600 dark:text-zinc-400" />
                 <span>{t('hero.pill2')}</span>
               </span>
-              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border border-zinc-200/70 dark:border-white/10 text-zinc-800 dark:text-zinc-200 shadow-2xs">
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200/70 dark:border-white/10 text-zinc-800 dark:text-zinc-200 shadow-2xs">
                 <Clock className="w-3.5 h-3.5 text-zinc-600 dark:text-zinc-400" />
                 <span>{t('hero.pill3')}</span>
               </span>
             </div>
           </div>
-        </div>
 
-        {/* Minimalist '...' Dot Navigation (Left-Right Scrollable, Material You Pill Capsule) */}
-        <div
-          className={`absolute bottom-6 sm:bottom-8 z-20 flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border border-zinc-200/90 dark:border-white/15 shadow-md ${
-            isRTL ? 'left-6 sm:left-10 md:left-14 lg:left-16 xl:left-20' : 'right-6 sm:right-10 md:right-14 lg:right-16 xl:right-20'
-          }`}
-        >
-          {/* Previous Slide Button */}
-          <button
-            type="button"
-            onClick={() => setActiveHeroIndex((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length)}
-            className="p-1 rounded-full text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer"
-            aria-label="Previous slide"
-          >
-            <ChevronLeft className={`w-4 h-4 ${isRTL ? 'rotate-180' : ''}`} />
-          </button>
-
-          {/* Dot Indicators */}
-          <div className="flex items-center gap-2 px-1">
+          {/* Visual Showcase Column (lg: 6 cols / xl: 7 cols) - 100% Crisp, Vibrant & Edge-to-Edge Visible */}
+          <div className="lg:col-span-6 xl:col-span-7 relative h-[480px] sm:h-[560px] md:h-[640px] lg:h-full min-h-[480px] lg:min-h-[920px] xl:min-h-[960px] w-full overflow-hidden bg-zinc-100 dark:bg-zinc-900 order-1 lg:order-2">
             {HERO_SLIDES.map((slide, idx) => {
               const isActive = idx === activeHeroIndex;
               return (
-                <button
+                <div
                   key={slide.id}
-                  onClick={() => setActiveHeroIndex(idx)}
-                  className={`transition-all duration-300 rounded-full cursor-pointer ${
-                    isActive
-                      ? 'w-7 h-2 bg-zinc-950 dark:bg-white shadow-xs'
-                      : 'w-2 h-2 bg-zinc-400/80 dark:bg-white/40 hover:bg-zinc-600 dark:hover:bg-white/70'
+                  className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+                    isActive ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
                   }`}
-                  aria-label={`Switch to slide ${idx + 1}`}
-                />
+                >
+                  <ShimmerImage
+                    src={slide.image}
+                    alt={t(slide.titleKey)}
+                    priority={idx === 0 || isActive}
+                    className="w-full h-full object-cover object-center scale-[1.01] hover:scale-105 transition-transform duration-700"
+                    containerClassName="w-full h-full"
+                  />
+                  {/* Subtle Inner Gradient Fade blending into text column background on desktop */}
+                  {isRTL ? (
+                    <div className="hidden lg:block absolute inset-y-0 right-0 w-36 sm:w-48 bg-gradient-to-l from-white dark:from-[#0E0E10] to-transparent pointer-events-none z-10" />
+                  ) : (
+                    <div className="hidden lg:block absolute inset-y-0 left-0 w-36 sm:w-48 bg-gradient-to-r from-white dark:from-[#0E0E10] to-transparent pointer-events-none z-10" />
+                  )}
+                  {/* Subtle Bottom Fade on Mobile */}
+                  <div className="lg:hidden absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white dark:from-[#0E0E10] to-transparent pointer-events-none z-10" />
+                </div>
               );
             })}
-          </div>
 
-          {/* Next Slide Button */}
-          <button
-            type="button"
-            onClick={() => setActiveHeroIndex((prev) => (prev + 1) % HERO_SLIDES.length)}
-            className="p-1 rounded-full text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer"
-            aria-label="Next slide"
-          >
-            <ChevronRight className={`w-4 h-4 ${isRTL ? 'rotate-180' : ''}`} />
-          </button>
+            {/* Minimalist '...' Dot Navigation (Left-Right Scrollable, Material You Pill Capsule) */}
+            <div
+              className={`absolute bottom-6 sm:bottom-8 z-20 flex items-center gap-2.5 px-3.5 py-2 rounded-full bg-black/65 dark:bg-black/80 backdrop-blur-md border border-white/20 text-white shadow-lg ${
+                isRTL ? 'left-6 sm:left-10' : 'right-6 sm:right-10'
+              }`}
+            >
+              {/* Previous Slide Button */}
+              <button
+                type="button"
+                onClick={() => setActiveHeroIndex((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length)}
+                className="p-1 rounded-full text-white/80 hover:text-white hover:bg-white/15 transition-all cursor-pointer active:scale-90"
+                aria-label="Previous slide"
+              >
+                <ChevronLeft className={`w-4 h-4 ${isRTL ? 'rotate-180' : ''}`} />
+              </button>
+
+              {/* Dot Indicators */}
+              <div className="flex items-center gap-2 px-1">
+                {HERO_SLIDES.map((slide, idx) => {
+                  const isActive = idx === activeHeroIndex;
+                  return (
+                    <button
+                      key={slide.id}
+                      onClick={() => setActiveHeroIndex(idx)}
+                      className={`transition-all duration-300 rounded-full cursor-pointer ${
+                        isActive
+                          ? 'w-7 h-2.5 bg-white shadow-sm'
+                          : 'w-2.5 h-2.5 bg-white/40 hover:bg-white/80'
+                      }`}
+                      aria-label={`Switch to slide ${idx + 1}`}
+                    />
+                  );
+                })}
+              </div>
+
+              {/* Next Slide Button */}
+              <button
+                type="button"
+                onClick={() => setActiveHeroIndex((prev) => (prev + 1) % HERO_SLIDES.length)}
+                className="p-1 rounded-full text-white/80 hover:text-white hover:bg-white/15 transition-all cursor-pointer active:scale-90"
+                aria-label="Next slide"
+              >
+                <ChevronRight className={`w-4 h-4 ${isRTL ? 'rotate-180' : ''}`} />
+              </button>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -1000,31 +1000,43 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Real Map API Canvas: Interactive OpenStreetMap Tile Embed */}
+            {/* Real Map API Canvas: Interactive Google Maps Embed with Paris Place Vendôme */}
             <div className="lg:col-span-7">
-              <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full rounded-3xl overflow-hidden border border-zinc-200 dark:border-white/10 bg-zinc-100 dark:bg-zinc-900 shadow-xl group">
+              <div className="relative aspect-[16/10] sm:aspect-[16/9] min-h-[380px] sm:min-h-[440px] w-full rounded-3xl overflow-hidden border border-zinc-200/90 dark:border-white/10 bg-zinc-100 dark:bg-zinc-900 shadow-xl group">
                 <iframe
-                  title="Artixain Paris Flagship Salon Map"
+                  title="Artixain Paris Flagship Salon Real Map"
                   width="100%"
                   height="100%"
                   frameBorder="0"
                   scrolling="no"
                   marginHeight={0}
                   marginWidth={0}
-                  src="https://www.openstreetmap.org/export/embed.html?bbox=2.3250%2C48.8650%2C2.3350%2C48.8700&layer=mapnik&marker=48.8675%2C2.3294"
-                  className="w-full h-full rounded-3xl border-0 dark:invert-[0.9] dark:hue-rotate-180 dark:contrast-[1.2] transition-all"
+                  src="https://maps.google.com/maps?q=24+Place+Vendome,+75001+Paris,+France&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                  className="w-full h-full rounded-3xl border-0 transition-all"
+                  loading="lazy"
                 />
 
                 {/* Pinpoint Label Tag */}
-                <div className="absolute top-4 left-4 pointer-events-none">
+                <div className="absolute top-4 left-4 z-10 pointer-events-none">
                   <div className="px-3.5 py-1.5 rounded-full bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border border-zinc-200 dark:border-white/20 text-zinc-900 dark:text-white text-[11px] font-bold shadow-lg flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
                     <span>Artixain Atelier &bull; 24 Place Vendôme</span>
                   </div>
                 </div>
 
-                <div className="absolute bottom-3 right-3 px-3 py-1 rounded-full bg-black/75 backdrop-blur text-white text-[10px] font-mono pointer-events-none">
-                  Live OpenStreetMap API &bull; 48.8675° N, 2.3294° E
+                <div className="absolute bottom-3 right-3 z-10 flex items-center gap-2">
+                  <a
+                    href="https://maps.google.com/?q=24+Place+Vendome+Paris"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3.5 py-1.5 rounded-full bg-black/80 hover:bg-black backdrop-blur-md text-white text-[11px] font-semibold flex items-center gap-1.5 shadow-md transition-colors"
+                  >
+                    <span>Get Directions</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </a>
+                  <span className="hidden sm:inline-flex px-3 py-1.5 rounded-full bg-white/90 dark:bg-zinc-900/90 backdrop-blur text-zinc-700 dark:text-zinc-300 text-[10px] font-mono border border-zinc-200 dark:border-white/10">
+                    48.8675° N, 2.3294° E
+                  </span>
                 </div>
               </div>
             </div>

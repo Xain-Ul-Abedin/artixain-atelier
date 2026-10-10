@@ -144,7 +144,7 @@ export default function LocationPage() {
         {/* Right Column: Real OpenStreetMap API Live Map Display (7 cols) */}
         <div className="lg:col-span-7">
           <div className="relative aspect-[16/11] sm:aspect-[16/10] w-full rounded-3xl overflow-hidden border border-zinc-200/90 dark:border-white/10 bg-zinc-100 dark:bg-zinc-900 shadow-xl group">
-            {/* Real Live OpenStreetMap API Embed */}
+            {/* Real Live Google Maps API Embed */}
             <iframe
               title="Artixain Paris Salon Real Map API"
               width="100%"
@@ -153,8 +153,9 @@ export default function LocationPage() {
               scrolling="no"
               marginHeight={0}
               marginWidth={0}
-              src="https://www.openstreetmap.org/export/embed.html?bbox=2.3250%2C48.8650%2C2.3350%2C48.8700&layer=mapnik&marker=48.8675%2C2.3294"
-              className="w-full h-full rounded-3xl border-0 dark:invert-[0.9] dark:hue-rotate-180 dark:contrast-[1.2] transition-all"
+              src="https://maps.google.com/maps?q=24+Place+Vendome,+75001+Paris,+France&t=&z=16&ie=UTF8&iwloc=&output=embed"
+              className="w-full h-full rounded-3xl border-0 transition-all"
+              loading="lazy"
             />
 
             {/* Top Left Salon Landmark Capsule */}
