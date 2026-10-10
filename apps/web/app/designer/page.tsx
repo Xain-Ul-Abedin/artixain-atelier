@@ -35,7 +35,7 @@ function DesignerInner() {
         </div>
 
         {/* Right Column: Bead Palette & Inventory Drawer (5 Cols) */}
-        <div className="lg:col-span-5 flex flex-col h-[560px]">
+        <div className="lg:col-span-5 flex flex-col h-[520px] sm:h-[560px] lg:h-[640px]">
           <BeadPalette />
         </div>
       </div>

@@ -31,10 +31,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       setThemeState(saved);
       applyTheme(saved);
     } else {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const initial = prefersDark ? 'dark' : 'light';
-      setThemeState(initial);
-      applyTheme(initial);
+      // Mandate: Light theme is unconditionally the default on first load
+      setThemeState('light');
+      applyTheme('light');
     }
   }, []);
 

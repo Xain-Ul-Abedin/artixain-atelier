@@ -47,7 +47,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="fixed top-2 left-0 right-0 z-50 px-4 md:px-8 pointer-events-none transition-all duration-300">
+      <header className="fixed top-2 left-0 right-0 z-50 px-2.5 sm:px-4 md:px-8 pointer-events-none transition-all duration-300">
         <div className="w-full max-w-[1720px] mx-auto pointer-events-auto">
           {/* Top Announcement Capsule Banner with Subtle Pearlescent Rainbow Shimmer */}
           <div
@@ -80,7 +80,7 @@ export default function Navbar() {
           </div>
 
           {/* Floating Capsule Main Navigation */}
-          <nav className="px-4 md:px-8 py-2 md:py-2.5 flex items-center justify-between rounded-full bg-white/95 dark:bg-[#18181B]/95 backdrop-blur-md transition-all duration-300 shadow-lg border border-gray-100/90 dark:border-white/10">
+          <nav className="px-3 sm:px-4 md:px-8 py-2 md:py-2.5 flex items-center justify-between rounded-full bg-white/95 dark:bg-[#18181B]/95 backdrop-blur-md transition-all duration-300 shadow-lg border border-gray-100/90 dark:border-white/10">
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -92,13 +92,13 @@ export default function Navbar() {
 
             {/* Official Artixain Logo & Brand Title with Transparent Background */}
             <div className="flex items-center">
-              <Link href="/" className="flex items-center gap-2.5 group cursor-pointer" aria-label="Artixain Home">
+              <Link href="/" className="flex items-center gap-2 group cursor-pointer" aria-label="Artixain Home">
                 <img
                   src="/favicon.png"
                   alt="Artixain Transparent Logo"
-                  className="h-8 w-8 object-contain transition-transform group-hover:scale-105"
+                  className="h-7 w-7 sm:h-8 sm:w-8 object-contain transition-transform group-hover:scale-105"
                 />
-                <span className="font-sans font-bold text-[#1D1D1F] dark:text-white uppercase tracking-[0.35em] text-base leading-tight transition-transform group-hover:scale-105">
+                <span className="font-sans font-bold text-[#1D1D1F] dark:text-white uppercase tracking-[0.25em] sm:tracking-[0.35em] text-sm sm:text-base leading-tight transition-transform group-hover:scale-105">
                   ARTIXAIN
                 </span>
               </Link>
@@ -296,7 +296,7 @@ export default function Navbar() {
               ) : (
                 <Link
                   href="/login"
-                  className="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-full bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 transition-all text-xs font-semibold active:scale-95 shadow-2xs"
+                  className="hidden sm:inline-flex items-center gap-1.5 h-9 px-3.5 rounded-full bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 transition-all text-xs font-semibold active:scale-95 shadow-2xs"
                   aria-label="Login to Artixain"
                 >
                   <User className="w-3.5 h-3.5 text-zinc-700 dark:text-zinc-300" />

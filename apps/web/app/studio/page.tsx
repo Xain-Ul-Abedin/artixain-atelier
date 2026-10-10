@@ -15,14 +15,14 @@ function StudioInner() {
   const [isSizingModalOpen, setIsSizingModalOpen] = useState(false);
 
   useEffect(() => {
-    const designToken = searchParams.get('design');
+    const designToken = searchParams.get('design') || searchParams.get('token');
     if (designToken) {
       loadFromToken(designToken);
     }
   }, [searchParams, loadFromToken]);
 
   return (
-    <div className="container mx-auto px-4 py-6 max-w-7xl">
+    <div className="container mx-auto px-3 sm:px-4 py-6 max-w-[1720px] pt-28 md:pt-32">
       {/* Studio Header Row */}
       <StudioHeader onOpenSizingModal={() => setIsSizingModalOpen(true)} />
 
@@ -35,7 +35,7 @@ function StudioInner() {
         </div>
 
         {/* Right Column: Bead Palette & Inventory Drawer (5 Cols) */}
-        <div className="lg:col-span-5 flex flex-col h-[520px]">
+        <div className="lg:col-span-5 flex flex-col h-[520px] sm:h-[560px] lg:h-[640px]">
           <BeadPalette />
         </div>
       </div>
@@ -52,7 +52,7 @@ function StudioInner() {
 export default function StudioPage() {
   return (
     <DesignerProvider>
-      <Suspense fallback={<div className="p-12 text-center text-zinc-500">Loading Atelier Studio...</div>}>
+      <Suspense fallback={<div className="p-12 text-center text-zinc-500 pt-32">Preparing Atelier Studio...</div>}>
         <StudioInner />
       </Suspense>
     </DesignerProvider>

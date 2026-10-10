@@ -250,15 +250,15 @@ export default function HomePage() {
   const currentHeroSlide = HERO_SLIDES[activeHeroIndex];
 
   return (
-    <div className={`flex flex-col w-full bg-white dark:bg-[#0E0E10] text-[#1D1D1F] dark:text-zinc-100 overflow-x-hidden pt-32 sm:pt-36 md:pt-40 transition-colors duration-300 ${isRTL ? 'text-right' : 'text-left'}`}>
+    <div className={`flex flex-col w-full bg-white dark:bg-[#0E0E10] text-[#1D1D1F] dark:text-zinc-100 overflow-x-hidden pt-28 sm:pt-36 md:pt-40 transition-colors duration-300 ${isRTL ? 'text-right' : 'text-left'}`}>
       {/* 1. Hero Section: Full-Width Edge-to-Edge Luxury Hero (No Card, 0px Side Gap, Increased Vertical Height & Dedicated Vibrant Visual Showcase) */}
-      <section className="relative w-full overflow-hidden min-h-[820px] sm:min-h-[880px] lg:min-h-[920px] xl:min-h-[960px] flex items-center border-b border-zinc-100 dark:border-white/10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 items-center w-full min-h-[820px] sm:min-h-[880px] lg:min-h-[920px] xl:min-h-[960px]">
+      <section className="relative w-full overflow-hidden min-h-0 lg:min-h-[920px] xl:min-h-[960px] flex items-center border-b border-zinc-100 dark:border-white/10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 items-center w-full min-h-0 lg:min-h-[920px] xl:min-h-[960px]">
           {/* Editorial Copy Column (lg: 6 cols / xl: 5 cols) with Generous Spacing */}
-          <div className="lg:col-span-6 xl:col-span-5 px-6 sm:px-12 md:px-16 lg:px-16 xl:px-20 py-12 sm:py-16 lg:py-24 flex flex-col justify-center order-2 lg:order-1 relative z-10">
+          <div className="lg:col-span-6 xl:col-span-5 px-5 sm:px-12 md:px-16 lg:px-16 xl:px-20 py-8 sm:py-16 lg:py-24 flex flex-col justify-center order-1 lg:order-1 relative z-10">
             {/* Luxury Eyebrow Badges Row */}
-            <div className="flex flex-wrap items-center gap-2.5 mb-6">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800/90 border border-zinc-200/90 dark:border-white/10 text-xs font-semibold text-zinc-900 dark:text-zinc-100 shadow-2xs">
+            <div className="flex flex-wrap items-center gap-2 mb-4 sm:mb-6">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800/90 border border-zinc-200/90 dark:border-white/10 text-xs font-semibold text-zinc-900 dark:text-zinc-100 shadow-2xs">
                 <Sparkles className="w-3.5 h-3.5 text-zinc-950 dark:text-amber-400" />
                 <span>{t('hero.badge')}</span>
               </div>
@@ -270,21 +270,21 @@ export default function HomePage() {
             </div>
 
             {/* Editorial Luxury Heading */}
-            <h1 className="font-serif text-[clamp(2.6rem,5.5vw,4.75rem)] leading-[1.12] tracking-tight text-zinc-950 dark:text-white mb-6">
+            <h1 className="font-serif text-[clamp(2.2rem,5.5vw,4.75rem)] leading-[1.12] tracking-tight text-zinc-950 dark:text-white mb-4 sm:mb-6">
               <span className="block font-medium">{t('hero.titleLine1')}</span>
               <span className="block italic text-zinc-400 dark:text-zinc-500 font-light">{t('hero.titleLine2')}</span>
             </h1>
 
             {/* Subtitle */}
-            <p className="text-zinc-600 dark:text-zinc-300 text-sm sm:text-base md:text-lg font-light leading-relaxed mb-10 max-w-xl">
+            <p className="text-zinc-600 dark:text-zinc-300 text-sm sm:text-base md:text-lg font-light leading-relaxed mb-6 sm:mb-10 max-w-xl">
               {t('hero.subtitle')}
             </p>
 
             {/* CTA Buttons (Material You 50% Radius Pill Law) */}
-            <div className="flex flex-col sm:flex-row items-center gap-3.5 w-full sm:w-auto mb-10">
+            <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto mb-6 sm:mb-10">
               <Link
                 href="/designer"
-                className="group inline-flex items-center justify-center gap-2.5 rounded-full px-8 py-4 bg-zinc-950 dark:bg-white text-white dark:text-zinc-950 font-semibold text-xs uppercase tracking-wider shadow-lg hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-all active:scale-[0.98] w-full sm:w-auto"
+                className="group inline-flex items-center justify-center gap-2.5 rounded-full px-8 py-3.5 sm:py-4 bg-zinc-950 dark:bg-white text-white dark:text-zinc-950 font-semibold text-xs uppercase tracking-wider shadow-lg hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-all active:scale-[0.98] w-full sm:w-auto"
               >
                 <span>{t('hero.ctaPrimary')}</span>
                 <ArrowRight className={`w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform ${isRTL ? 'rotate-180 group-hover:-translate-x-0.5' : ''}`} />
@@ -292,7 +292,7 @@ export default function HomePage() {
 
               <Link
                 href="/gallery"
-                className="inline-flex items-center justify-center gap-2.5 rounded-full border border-zinc-200/90 dark:border-white/15 bg-white dark:bg-zinc-800/80 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-zinc-100 px-7 py-4 text-xs font-semibold uppercase tracking-wider transition-all w-full sm:w-auto shadow-sm active:scale-[0.98]"
+                className="inline-flex items-center justify-center gap-2.5 rounded-full border border-zinc-200/90 dark:border-white/15 bg-white dark:bg-zinc-800/80 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-zinc-100 px-7 py-3.5 sm:py-4 text-xs font-semibold uppercase tracking-wider transition-all w-full sm:w-auto shadow-sm active:scale-[0.98]"
               >
                 <Gem className="w-3.5 h-3.5 text-zinc-800 dark:text-amber-400" />
                 <span>{t('hero.ctaSecondary')}</span>
@@ -300,16 +300,16 @@ export default function HomePage() {
             </div>
 
             {/* Trust Pills */}
-            <div className="flex flex-wrap items-center gap-2.5 text-xs text-zinc-600 dark:text-zinc-400 font-medium">
-              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200/70 dark:border-white/10 text-zinc-800 dark:text-zinc-200 shadow-2xs">
+            <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-600 dark:text-zinc-400 font-medium">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200/70 dark:border-white/10 text-zinc-800 dark:text-zinc-200 shadow-2xs">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                 <span>{t('hero.pill1')}</span>
               </span>
-              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200/70 dark:border-white/10 text-zinc-800 dark:text-zinc-200 shadow-2xs">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200/70 dark:border-white/10 text-zinc-800 dark:text-zinc-200 shadow-2xs">
                 <Ruler className="w-3.5 h-3.5 text-zinc-600 dark:text-zinc-400" />
                 <span>{t('hero.pill2')}</span>
               </span>
-              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200/70 dark:border-white/10 text-zinc-800 dark:text-zinc-200 shadow-2xs">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200/70 dark:border-white/10 text-zinc-800 dark:text-zinc-200 shadow-2xs">
                 <Clock className="w-3.5 h-3.5 text-zinc-600 dark:text-zinc-400" />
                 <span>{t('hero.pill3')}</span>
               </span>
@@ -317,7 +317,7 @@ export default function HomePage() {
           </div>
 
           {/* Visual Showcase Column (lg: 6 cols / xl: 7 cols) - 100% Crisp, Vibrant & Edge-to-Edge Visible */}
-          <div className="lg:col-span-6 xl:col-span-7 relative h-[480px] sm:h-[560px] md:h-[640px] lg:h-full min-h-[480px] lg:min-h-[920px] xl:min-h-[960px] w-full overflow-hidden bg-zinc-100 dark:bg-zinc-900 order-1 lg:order-2">
+          <div className="lg:col-span-6 xl:col-span-7 relative h-[320px] sm:h-[440px] md:h-[540px] lg:h-full min-h-[320px] sm:min-h-[440px] lg:min-h-[920px] xl:min-h-[960px] w-full overflow-hidden bg-zinc-100 dark:bg-zinc-900 order-2 lg:order-2">
             {HERO_SLIDES.map((slide, idx) => {
               const isActive = idx === activeHeroIndex;
               return (
@@ -528,13 +528,13 @@ export default function HomePage() {
           </div>
 
           {/* 12-Column Bento Grid: Increased Section Height & Flexible Breathing Room */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 min-h-[760px] lg:min-h-[820px]">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 min-h-0 md:min-h-[760px] lg:min-h-[820px]">
             {/* Left Column (4 cols): Tall Crystal Encyclopedia Card (Preserving /images/features/1.webp) */}
             <Link
               href="/encyclopedia"
-              className="md:col-span-4 bg-white dark:bg-zinc-900 rounded-[2rem] overflow-hidden relative group flex flex-col min-h-[520px] md:min-h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border border-zinc-200/80 dark:border-white/10"
+              className="md:col-span-4 bg-white dark:bg-zinc-900 rounded-[2rem] overflow-hidden relative group flex flex-col min-h-0 md:min-h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border border-zinc-200/80 dark:border-white/10"
             >
-              <div className="relative h-[260px] sm:h-[300px] md:h-[50%] w-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden shrink-0">
+              <div className="relative h-[240px] sm:h-[300px] md:h-[50%] w-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden shrink-0">
                 <ShimmerImage
                   src="/images/features/1.webp"
                   alt="Crystal Encyclopedia"
@@ -557,13 +557,13 @@ export default function HomePage() {
             </Link>
 
             {/* Right Column (8 cols): Two Horizontal Split Cards */}
-            <div className="md:col-span-8 flex flex-col gap-8 h-full">
+            <div className="md:col-span-8 flex flex-col gap-6 md:gap-8 h-full">
               {/* Top Horizontal Card: Nature's Finest */}
               <Link
                 href="/features/materials"
-                className="bg-white dark:bg-zinc-900 rounded-[2rem] overflow-hidden relative group flex flex-col md:flex-row min-h-[340px] lg:min-h-[380px] flex-1 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border border-zinc-200/80 dark:border-white/10"
+                className="bg-white dark:bg-zinc-900 rounded-[2rem] overflow-hidden relative group flex flex-col md:flex-row min-h-0 md:min-h-[340px] lg:min-h-[380px] flex-1 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border border-zinc-200/80 dark:border-white/10"
               >
-                <div className="h-[220px] md:h-full md:w-[50%] lg:w-[52%] relative overflow-hidden bg-zinc-100 dark:bg-zinc-800 shrink-0">
+                <div className="h-[200px] sm:h-[240px] md:h-full md:w-[50%] lg:w-[52%] relative overflow-hidden bg-zinc-100 dark:bg-zinc-800 shrink-0">
                   <ShimmerImage
                     src="/images/features/2.webp"
                     alt="Nature's Finest Minerals"
@@ -588,7 +588,7 @@ export default function HomePage() {
               {/* Bottom Horizontal Card: Handcrafted Master Assembly */}
               <Link
                 href="/features/craftsmanship"
-                className="bg-white dark:bg-zinc-900 rounded-[2rem] overflow-hidden relative group flex flex-col md:flex-row min-h-[340px] lg:min-h-[380px] flex-1 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border border-zinc-200/80 dark:border-white/10"
+                className="bg-white dark:bg-zinc-900 rounded-[2rem] overflow-hidden relative group flex flex-col md:flex-row min-h-0 md:min-h-[340px] lg:min-h-[380px] flex-1 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border border-zinc-200/80 dark:border-white/10"
               >
                 <div className="flex-1 p-6 sm:p-8 lg:p-10 flex flex-col justify-center text-center md:text-left order-2 md:order-1 bg-white dark:bg-zinc-900">
                   <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-2">
