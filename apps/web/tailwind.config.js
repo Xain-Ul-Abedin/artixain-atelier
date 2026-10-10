@@ -50,7 +50,8 @@ module.exports = {
       },
       fontFamily: {
         serif: ['Cormorant Garamond', 'Georgia', 'serif'],
-        sans: ['Lexend', 'Inter', 'system-ui', 'sans-serif']
+        sans: ['Lexend', 'Inter', 'system-ui', 'sans-serif'],
+        urdu: ['Noto Nastaliq Urdu', 'serif']
       },
       borderRadius: {
         'pill': '9999px',

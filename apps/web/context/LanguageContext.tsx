@@ -38,6 +38,18 @@ const TRANSLATIONS: Record<Language, Record<string, string>> = {
     'hero.pill1': 'Grade-A Natural Minerals',
     'hero.pill2': 'Millimeter Wrist Fit',
     'hero.pill3': 'Lifetime Cord Warranty',
+    'hero.slide1Tag': 'Master Atelier Craft',
+    'hero.slide1Spec': 'Natural Luster Pearls &bull; Silk Thread',
+    'hero.slide1Title': 'Triple-Strand Luminous Pearls',
+    'hero.slide1Subtitle': 'Hand-threaded on fine silk cord with celestial luster and ergonomic wrist contour',
+    'hero.slide2Tag': 'Natural Earth Minerals',
+    'hero.slide2Spec': 'Raw Mineral Specimen &bull; Grade-A',
+    'hero.slide2Title': 'Himalayan Salt Crystal Minerals',
+    'hero.slide2Subtitle': 'Raw crystalline geological formation with natural saturation and geometric facets',
+    'hero.slide3Tag': 'Signature Formulations',
+    'hero.slide3Spec': 'Multi-Mineral Harmony &bull; Silk Cord',
+    'hero.slide3Title': 'Handcrafted Mineral Strands',
+    'hero.slide3Subtitle': 'Curated natural gemstones tuned to precision wrist circumference and ergonomic balance',
 
     // Walkthrough & Trust
     'trust.badge': 'Trusted by Artixain Patrons',
@@ -157,6 +169,18 @@ const TRANSLATIONS: Record<Language, Record<string, string>> = {
     'hero.pill1': 'گریڈ اے قدرتی معدنیات',
     'hero.pill2': 'ملی میٹر پرفیکٹ فٹ',
     'hero.pill3': 'تار کی تاحیات وارنٹی',
+    'hero.slide1Tag': 'ماسٹر ایٹیلیئر کاریگری',
+    'hero.slide1Spec': 'قدرتی چمکدار موتی &bull; ریشمی دھاگہ',
+    'hero.slide1Title': 'تین تہوں پر مشتمل تابناک موتی',
+    'hero.slide1Subtitle': 'نفیس ریشمی تار پر پروئے ہوئے، آسمانی چمک اور کلائی کے بہترین زاویے کے ساتھ',
+    'hero.slide2Tag': 'قدرتی زمینی معدنیات',
+    'hero.slide2Spec': 'خام معدنی نمونہ &bull; گریڈ اے',
+    'hero.slide2Title': 'ہمالیائی نمک کے کرسٹل معدنیات',
+    'hero.slide2Subtitle': 'قدرتی رنگت اور ارضیاتی ساخت پر مشتمل خام قلمی کرسٹل',
+    'hero.slide3Tag': 'خصوصی دستکاری فارمولیشن',
+    'hero.slide3Spec': 'مخلوط معدنی ہم آہنگی &bull; ریشمی تار',
+    'hero.slide3Title': 'دستکاری سے بنے معدنی لڑیوں کا مجموعہ',
+    'hero.slide3Subtitle': 'کلائی کی قطعی پیمائش اور ارگونومک توازن کے مطابق منتخب قدرتی قیمتی پتھر',
 
     // Walkthrough & Trust
     'trust.badge': 'آرٹیکزین کے سرپرستوں کا اعتماد',
@@ -288,6 +312,14 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         document.documentElement.classList.add('lang-ur');
       } else {
         document.documentElement.classList.remove('lang-ur');
+      }
+      if (document.body) {
+        document.body.setAttribute('dir', isUrdu ? 'rtl' : 'ltr');
+        if (isUrdu) {
+          document.body.classList.add('lang-ur');
+        } else {
+          document.body.classList.remove('lang-ur');
+        }
       }
     }
   };

@@ -10,6 +10,7 @@ import {
   ShieldCheck,
   Play,
   Heart,
+  ChevronLeft,
   ChevronRight,
   ChevronDown,
   Star,
@@ -29,28 +30,36 @@ import {
 interface HeroSlide {
   id: string;
   image: string;
-  title: string;
-  subtitle: string;
-  tag: string;
-  spec: string;
+  tagKey: string;
+  specKey: string;
+  titleKey: string;
+  subtitleKey: string;
 }
 
 const HERO_SLIDES: HeroSlide[] = [
   {
     id: 'pearl-triple',
     image: '/images/hero/triple-strand-pearl-bracelet.jpeg',
-    title: 'Triple-Strand Luminous Pearls',
-    subtitle: 'Hand-threaded on fine silk cord with celestial luster and ergonomic wrist contour',
-    tag: 'Master Atelier Craft',
-    spec: 'Natural Luster Pearls &bull; Silk Thread'
+    tagKey: 'hero.slide1Tag',
+    specKey: 'hero.slide1Spec',
+    titleKey: 'hero.slide1Title',
+    subtitleKey: 'hero.slide1Subtitle'
   },
   {
     id: 'himalayan-salt',
     image: '/images/hero/himalayan-salt-crystals.jpeg',
-    title: 'Himalayan Salt Crystal Minerals',
-    subtitle: 'Raw crystalline geological formation with natural saturation and geometric facets',
-    tag: 'Natural Earth Minerals',
-    spec: 'Raw Mineral Specimen &bull; Grade-A'
+    tagKey: 'hero.slide2Tag',
+    specKey: 'hero.slide2Spec',
+    titleKey: 'hero.slide2Title',
+    subtitleKey: 'hero.slide2Subtitle'
+  },
+  {
+    id: 'mineral-collection',
+    image: '/images/hero/hero-bracelet-collection.jpg',
+    tagKey: 'hero.slide3Tag',
+    specKey: 'hero.slide3Spec',
+    titleKey: 'hero.slide3Title',
+    subtitleKey: 'hero.slide3Subtitle'
   }
 ];
 
@@ -193,14 +202,14 @@ const REVIEWS = [
   }
 ];
 
-// Single-use unique atelier review cards
+// Verified single-use authentic atelier gemstone & jewelry review assets
 const PATRON_STORIES = [
-  { img: '/images/atelier/gem_04.jpg', label: 'Custom Strand Unboxing', user: '@sarah_gem', minerals: 'Rose Quartz & Moonstone' },
-  { img: '/images/atelier/gem_08.jpg', label: 'Wrist Calibration Review', user: '@david_wrist', minerals: 'Obsidian & Tiger Eye' },
-  { img: '/images/atelier/gem_14.jpg', label: 'Celestial Crystal Balance', user: '@chloe_luxe', minerals: 'Amethyst & Clear Quartz' },
-  { img: '/images/atelier/gem_17.jpg', label: 'Studio Bench Assembly', user: '@artisan_leo', minerals: 'Lapis Lazuli & Silver' },
-  { img: '/images/atelier/gem_21.jpg', label: 'Natural Light Reflections', user: '@gem_elena', minerals: 'Citrine & Pyrite' },
-  { img: '/images/atelier/gem_24.jpg', label: 'Finished Patron Formulation', user: '@alex_strands', minerals: 'Aquamarine & Selenite' }
+  { img: '/images/atelier/marquee_gemstone_stack.jpg', label: 'Stacked Mineral Strands', user: '@sarah_gem', minerals: 'Amethyst & Rose Quartz' },
+  { img: '/images/atelier/marquee_pearl_model.jpg', label: 'Model Wrist Adornment', user: '@david_wrist', minerals: 'Akoya Pearls & Silk Cord' },
+  { img: '/images/atelier/marquee_crystal_beads.jpg', label: 'Faceted Crystal Strands', user: '@chloe_luxe', minerals: 'Labradorite & Sunstone' },
+  { img: '/images/atelier/marquee_jewelry_craft.jpg', label: 'Artisan Bench Knotting', user: '@artisan_leo', minerals: 'Tiger Eye & Obsidian' },
+  { img: '/images/hero/wrist-crystal-strand.jpg', label: 'Client Caliper Fitting', user: '@gem_elena', minerals: 'Rose Quartz & Clear Quartz' },
+  { img: '/images/hero/gold-tassel-bracelet.jpg', label: 'Gold Silk Handcrafted Strand', user: '@alex_strands', minerals: 'Citrine & Pyrite' }
 ];
 
 export default function HomePage() {
@@ -242,110 +251,147 @@ export default function HomePage() {
 
   return (
     <div className={`flex flex-col w-full bg-white dark:bg-[#0E0E10] text-[#1D1D1F] dark:text-zinc-100 overflow-x-hidden pt-32 sm:pt-36 md:pt-40 transition-colors duration-300 ${isRTL ? 'text-right' : 'text-left'}`}>
-      {/* 1. Hero Section: Clean Luxury Card (matching the Atelier Principles card visual structure) with Simple '...' Dot Navigation */}
-      <section className="relative w-full px-4 sm:px-6 md:px-10 lg:px-14 xl:px-16 pb-16 md:pb-20">
-        <div className="w-full max-w-[1720px] mx-auto">
-          {/* Main Hero Bento Card (styled with the exact card structure of Atelier Principles: rounded-[2.5rem], split visual with smooth gradient transition) */}
-          <div className="relative rounded-[2rem] sm:rounded-[2.5rem] bg-[#FAFAFA] dark:bg-zinc-900 border border-zinc-200/90 dark:border-white/10 overflow-hidden shadow-sm transition-all">
-            <div className="grid grid-cols-1 lg:grid-cols-12 items-center min-h-[520px] lg:min-h-[580px]">
-              {/* Text & Action Column (lg: 6 cols) */}
-              <div className="lg:col-span-6 p-6 sm:p-10 md:p-14 lg:p-16 flex flex-col justify-center order-2 lg:order-1">
-                {/* Luxury Eyebrow Pill */}
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200/80 dark:border-white/10 text-xs font-semibold text-zinc-800 dark:text-zinc-200 mb-6 shadow-2xs w-max">
-                  <Sparkles className="w-3.5 h-3.5 text-zinc-950 dark:text-amber-400" />
-                  <span>{t('hero.badge')}</span>
-                </div>
-
-                {/* Editorial Luxury Heading */}
-                <h1 className="font-serif text-[clamp(2.3rem,5vw,4.25rem)] leading-[1.12] tracking-tight text-zinc-950 dark:text-white mb-5">
-                  <span className="block font-medium">{t('hero.titleLine1')}</span>
-                  <span className="block italic text-zinc-400 dark:text-zinc-500 font-light">{t('hero.titleLine2')}</span>
-                </h1>
-
-                {/* Subtitle */}
-                <p className="text-zinc-600 dark:text-zinc-400 text-xs sm:text-sm md:text-base font-light leading-relaxed mb-8 max-w-lg">
-                  {t('hero.subtitle')}
-                </p>
-
-                {/* CTA Buttons (Material You 50% Radius Pill Law) */}
-                <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto mb-8">
-                  <Link
-                    href="/designer"
-                    className="group inline-flex items-center justify-center gap-2.5 rounded-full px-8 py-3.5 bg-zinc-950 dark:bg-white text-white dark:text-zinc-950 font-semibold text-xs uppercase tracking-wider shadow-md hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-all active:scale-[0.98] w-full sm:w-auto"
-                  >
-                    <span>{t('hero.ctaPrimary')}</span>
-                    <ArrowRight className={`w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform ${isRTL ? 'rotate-180 group-hover:-translate-x-0.5' : ''}`} />
-                  </Link>
-
-                  <Link
-                    href="/gallery"
-                    className="inline-flex items-center justify-center gap-2 rounded-full border border-zinc-200/90 dark:border-white/15 bg-white dark:bg-zinc-800/80 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 px-7 py-3.5 text-xs font-semibold uppercase tracking-wider transition-all w-full sm:w-auto shadow-2xs active:scale-[0.98]"
-                  >
-                    <Gem className="w-3.5 h-3.5 text-zinc-700 dark:text-amber-400" />
-                    <span>{t('hero.ctaSecondary')}</span>
-                  </Link>
-                </div>
-
-                {/* Trust Pills */}
-                <div className="flex flex-wrap items-center gap-2 text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800/80 text-zinc-700 dark:text-zinc-300">
-                    <ShieldCheck className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
-                    <span>{t('hero.pill1')}</span>
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800/80 text-zinc-700 dark:text-zinc-300">
-                    <Ruler className="w-3 h-3 text-zinc-500 dark:text-zinc-400" />
-                    <span>{t('hero.pill2')}</span>
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800/80 text-zinc-700 dark:text-zinc-300">
-                    <Clock className="w-3 h-3 text-zinc-500 dark:text-zinc-400" />
-                    <span>{t('hero.pill3')}</span>
-                  </span>
-                </div>
+      {/* 1. Hero Section: Full-Width Edge-to-Edge Luxury Hero (No Card, 0px Side Gap, Full-Bleed Carousel Background) */}
+      <section className="relative w-full overflow-hidden min-h-[640px] sm:min-h-[700px] lg:min-h-[760px] flex items-center pt-8 sm:pt-10 md:pt-12 pb-16 md:pb-24 border-b border-zinc-100 dark:border-white/10">
+        {/* Full-Bleed Edge-to-Edge Background Carousel (No side gap, 100% viewport width) */}
+        <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
+          {HERO_SLIDES.map((slide, idx) => {
+            const isActive = idx === activeHeroIndex;
+            return (
+              <div
+                key={slide.id}
+                className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
+                  isActive ? 'opacity-100 z-0' : 'opacity-0 z-0'
+                }`}
+              >
+                <ShimmerImage
+                  src={slide.image}
+                  alt={t(slide.titleKey)}
+                  className="w-full h-full object-cover object-center scale-[1.02] transition-transform duration-1000"
+                  containerClassName="w-full h-full"
+                />
               </div>
+            );
+          })}
 
-              {/* Visual Card Image Column (lg: 6 cols) with Atelier Principle Gradient Fade */}
-              <div className="lg:col-span-6 relative h-[360px] sm:h-[420px] lg:h-full w-full overflow-hidden bg-zinc-100 dark:bg-zinc-800 order-1 lg:order-2">
-                {HERO_SLIDES.map((slide, idx) => {
-                  const isActive = idx === activeHeroIndex;
-                  return (
-                    <div
-                      key={slide.id}
-                      className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-                        isActive ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
-                      }`}
-                    >
-                      <ShimmerImage
-                        src={slide.image}
-                        alt={slide.title}
-                        className="w-full h-full object-cover object-center scale-[1.01] hover:scale-105 transition-transform duration-700"
-                        containerClassName="w-full h-full"
-                      />
-                      {/* Left Gradient Fade on Desktop (like Atelier Principles horizontal card) */}
-                      <div className="hidden lg:block absolute inset-y-0 left-0 w-36 bg-gradient-to-r from-[#FAFAFA] dark:from-zinc-900 to-transparent pointer-events-none" />
-                      {/* Bottom Gradient Fade on Mobile */}
-                      <div className="lg:hidden absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#FAFAFA] dark:from-zinc-900 to-transparent pointer-events-none" />
-                    </div>
-                  );
-                })}
+          {/* Luxury Ambient Gradient Backdrop: Crystal-clear legibility in light & dark modes across LTR & RTL */}
+          <div
+            className={`absolute inset-0 transition-colors duration-500 ${
+              isRTL
+                ? 'bg-gradient-to-l from-white/95 via-white/85 to-white/40 dark:from-[#0E0E10]/95 dark:via-[#0E0E10]/85 dark:to-[#0E0E10]/40'
+                : 'bg-gradient-to-r from-white/95 via-white/85 to-white/40 dark:from-[#0E0E10]/95 dark:via-[#0E0E10]/85 dark:to-[#0E0E10]/40'
+            }`}
+          />
+        </div>
 
-                {/* Minimalist '...' Dot Indicator Navigation (Simple, Left-Right Scrollable) */}
-                <div className="absolute bottom-5 right-5 z-20 flex items-center gap-2 p-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/20">
-                  {HERO_SLIDES.map((slide, idx) => (
-                    <button
-                      key={slide.id}
-                      onClick={() => setActiveHeroIndex(idx)}
-                      className={`transition-all duration-300 rounded-full cursor-pointer ${
-                        idx === activeHeroIndex
-                          ? 'w-6 h-2 bg-white'
-                          : 'w-2 h-2 bg-white/40 hover:bg-white/70'
-                      }`}
-                      aria-label={`Switch to slide ${idx + 1}`}
-                    />
-                  ))}
-                </div>
+        {/* Hero Editorial Content Container (Generous vertical spacing, 100% responsive) */}
+        <div className="w-full max-w-[1720px] mx-auto px-6 sm:px-10 md:px-14 lg:px-16 xl:px-20 relative z-10">
+          <div className="max-w-2xl lg:max-w-3xl">
+            {/* Eyebrow Badges Row */}
+            <div className="flex flex-wrap items-center gap-2.5 mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border border-zinc-200/90 dark:border-white/15 text-xs font-semibold text-zinc-900 dark:text-zinc-100 shadow-2xs">
+                <Sparkles className="w-3.5 h-3.5 text-zinc-950 dark:text-amber-400" />
+                <span>{t('hero.badge')}</span>
+              </div>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-950/5 dark:bg-white/10 backdrop-blur-md border border-zinc-300/60 dark:border-white/10 text-[11px] font-medium text-zinc-700 dark:text-zinc-300">
+                <span className="font-semibold">{t(currentHeroSlide.tagKey)}</span>
+                <span>&bull;</span>
+                <span dangerouslySetInnerHTML={{ __html: t(currentHeroSlide.specKey) }} />
               </div>
             </div>
+
+            {/* Editorial Luxury Heading */}
+            <h1 className="font-serif text-[clamp(2.5rem,5.5vw,4.75rem)] leading-[1.12] tracking-tight text-zinc-950 dark:text-white mb-6">
+              <span className="block font-medium">{t('hero.titleLine1')}</span>
+              <span className="block italic text-zinc-500 dark:text-zinc-400 font-light">{t('hero.titleLine2')}</span>
+            </h1>
+
+            {/* Subtitle */}
+            <p className="text-zinc-700 dark:text-zinc-300 text-sm sm:text-base md:text-lg font-light leading-relaxed mb-10 max-w-xl">
+              {t('hero.subtitle')}
+            </p>
+
+            {/* CTA Buttons (Material You 50% Radius Pill Law) */}
+            <div className="flex flex-col sm:flex-row items-center gap-3.5 w-full sm:w-auto mb-10">
+              <Link
+                href="/designer"
+                className="group inline-flex items-center justify-center gap-2.5 rounded-full px-8 py-4 bg-zinc-950 dark:bg-white text-white dark:text-zinc-950 font-semibold text-xs uppercase tracking-wider shadow-lg hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-all active:scale-[0.98] w-full sm:w-auto"
+              >
+                <span>{t('hero.ctaPrimary')}</span>
+                <ArrowRight className={`w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform ${isRTL ? 'rotate-180 group-hover:-translate-x-0.5' : ''}`} />
+              </Link>
+
+              <Link
+                href="/gallery"
+                className="inline-flex items-center justify-center gap-2.5 rounded-full border border-zinc-300/80 dark:border-white/20 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-900 dark:text-zinc-100 px-7 py-4 text-xs font-semibold uppercase tracking-wider transition-all w-full sm:w-auto shadow-sm active:scale-[0.98]"
+              >
+                <Gem className="w-3.5 h-3.5 text-zinc-800 dark:text-amber-400" />
+                <span>{t('hero.ctaSecondary')}</span>
+              </Link>
+            </div>
+
+            {/* Trust Pills */}
+            <div className="flex flex-wrap items-center gap-2.5 text-xs text-zinc-600 dark:text-zinc-400 font-medium">
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border border-zinc-200/70 dark:border-white/10 text-zinc-800 dark:text-zinc-200 shadow-2xs">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                <span>{t('hero.pill1')}</span>
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border border-zinc-200/70 dark:border-white/10 text-zinc-800 dark:text-zinc-200 shadow-2xs">
+                <Ruler className="w-3.5 h-3.5 text-zinc-600 dark:text-zinc-400" />
+                <span>{t('hero.pill2')}</span>
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border border-zinc-200/70 dark:border-white/10 text-zinc-800 dark:text-zinc-200 shadow-2xs">
+                <Clock className="w-3.5 h-3.5 text-zinc-600 dark:text-zinc-400" />
+                <span>{t('hero.pill3')}</span>
+              </span>
+            </div>
           </div>
+        </div>
+
+        {/* Minimalist '...' Dot Navigation (Left-Right Scrollable, Material You Pill Capsule) */}
+        <div
+          className={`absolute bottom-6 sm:bottom-8 z-20 flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border border-zinc-200/90 dark:border-white/15 shadow-md ${
+            isRTL ? 'left-6 sm:left-10 md:left-14 lg:left-16 xl:left-20' : 'right-6 sm:right-10 md:right-14 lg:right-16 xl:right-20'
+          }`}
+        >
+          {/* Previous Slide Button */}
+          <button
+            type="button"
+            onClick={() => setActiveHeroIndex((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length)}
+            className="p-1 rounded-full text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer"
+            aria-label="Previous slide"
+          >
+            <ChevronLeft className={`w-4 h-4 ${isRTL ? 'rotate-180' : ''}`} />
+          </button>
+
+          {/* Dot Indicators */}
+          <div className="flex items-center gap-2 px-1">
+            {HERO_SLIDES.map((slide, idx) => {
+              const isActive = idx === activeHeroIndex;
+              return (
+                <button
+                  key={slide.id}
+                  onClick={() => setActiveHeroIndex(idx)}
+                  className={`transition-all duration-300 rounded-full cursor-pointer ${
+                    isActive
+                      ? 'w-7 h-2 bg-zinc-950 dark:bg-white shadow-xs'
+                      : 'w-2 h-2 bg-zinc-400/80 dark:bg-white/40 hover:bg-zinc-600 dark:hover:bg-white/70'
+                  }`}
+                  aria-label={`Switch to slide ${idx + 1}`}
+                />
+              );
+            })}
+          </div>
+
+          {/* Next Slide Button */}
+          <button
+            type="button"
+            onClick={() => setActiveHeroIndex((prev) => (prev + 1) % HERO_SLIDES.length)}
+            className="p-1 rounded-full text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer"
+            aria-label="Next slide"
+          >
+            <ChevronRight className={`w-4 h-4 ${isRTL ? 'rotate-180' : ''}`} />
+          </button>
         </div>
       </section>
 
@@ -407,7 +453,7 @@ export default function HomePage() {
                 onClick={() => setActiveVideoModal('Artixain Master Atelier Walkthrough')}
               >
                 <ShimmerImage
-                  src="/images/atelier/gem_10.jpg"
+                  src="/images/atelier/marquee_jewelry_craft.jpg"
                   alt="Artixain Master Atelier Workbench"
                   className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
                   containerClassName="h-full w-full"
@@ -466,8 +512,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. Atelier Principles Bento Grid (12-Column Horizontal Split Layout) */}
-      <section id="principles" className="scroll-mt-36 relative w-full px-4 sm:px-6 md:px-10 lg:px-14 xl:px-16 py-16 md:py-24 bg-[#FAFAFA] dark:bg-zinc-950 border-b border-zinc-100 dark:border-white/10">
+      {/* 3. Atelier Principles Bento Grid (12-Column Horizontal Split Layout - Increased Length to Eliminate Cutoff) */}
+      <section id="principles" className="scroll-mt-36 relative w-full px-4 sm:px-6 md:px-10 lg:px-14 xl:px-16 py-20 md:py-28 bg-[#FAFAFA] dark:bg-zinc-950 border-b border-zinc-100 dark:border-white/10">
         <div className="w-full max-w-[1720px] mx-auto">
           {/* Section Header */}
           <div className="text-center mb-12 md:mb-16">
@@ -481,27 +527,27 @@ export default function HomePage() {
             </h2>
           </div>
 
-          {/* 12-Column Bento Grid: Left Tall Card (4 cols) & Right Stacked Horizontal Cards (8 cols) */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 h-auto md:h-[650px]">
+          {/* 12-Column Bento Grid: Increased Section Height & Flexible Breathing Room */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 min-h-[760px] lg:min-h-[820px]">
             {/* Left Column (4 cols): Tall Crystal Encyclopedia Card (Preserving /images/features/1.webp) */}
             <Link
               href="/encyclopedia"
-              className="md:col-span-4 bg-white dark:bg-zinc-900 rounded-[2rem] overflow-hidden relative group flex flex-col h-[420px] md:h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border border-zinc-200/80 dark:border-white/10"
+              className="md:col-span-4 bg-white dark:bg-zinc-900 rounded-[2rem] overflow-hidden relative group flex flex-col min-h-[520px] md:min-h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border border-zinc-200/80 dark:border-white/10"
             >
-              <div className="relative h-[65%] w-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
+              <div className="relative h-[260px] sm:h-[300px] md:h-[50%] w-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden shrink-0">
                 <ShimmerImage
                   src="/images/features/1.webp"
                   alt="Crystal Encyclopedia"
                   className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
                   containerClassName="w-full h-full"
                 />
-                <div className="hidden md:block absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white dark:from-zinc-900 to-transparent pointer-events-none" />
+                <div className="hidden md:block absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-white dark:from-zinc-900 to-transparent pointer-events-none" />
               </div>
-              <div className="h-[35%] p-6 md:p-8 flex flex-col justify-center text-center md:text-left bg-white dark:bg-zinc-900">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-1">
+              <div className="flex-1 p-6 sm:p-8 lg:p-10 flex flex-col justify-center text-center md:text-left bg-white dark:bg-zinc-900">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-2">
                   {t('principles.card1Category')}
                 </span>
-                <h3 className="text-xl md:text-2xl font-serif font-medium text-zinc-900 dark:text-white mb-2">
+                <h3 className="text-xl md:text-2xl font-serif font-medium text-zinc-900 dark:text-white mb-3">
                   {t('principles.card1Title')}
                 </h3>
                 <p className="text-xs md:text-sm text-zinc-500 dark:text-zinc-400 font-light leading-relaxed">
@@ -511,26 +557,26 @@ export default function HomePage() {
             </Link>
 
             {/* Right Column (8 cols): Two Horizontal Split Cards */}
-            <div className="md:col-span-8 flex flex-col gap-6 h-full">
+            <div className="md:col-span-8 flex flex-col gap-8 h-full">
               {/* Top Horizontal Card: Nature's Finest */}
               <Link
                 href="/features/materials"
-                className="bg-white dark:bg-zinc-900 rounded-[2rem] overflow-hidden relative group flex flex-col md:flex-row flex-1 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border border-zinc-200/80 dark:border-white/10"
+                className="bg-white dark:bg-zinc-900 rounded-[2rem] overflow-hidden relative group flex flex-col md:flex-row min-h-[340px] lg:min-h-[380px] flex-1 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border border-zinc-200/80 dark:border-white/10"
               >
-                <div className="h-[55%] md:h-full md:w-[60%] relative overflow-hidden bg-zinc-100 dark:bg-zinc-800">
+                <div className="h-[220px] md:h-full md:w-[50%] lg:w-[52%] relative overflow-hidden bg-zinc-100 dark:bg-zinc-800 shrink-0">
                   <ShimmerImage
                     src="/images/features/2.webp"
                     alt="Nature's Finest Minerals"
                     className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
                     containerClassName="w-full h-full"
                   />
-                  <div className="hidden md:block absolute inset-y-0 right-0 w-36 bg-gradient-to-l from-white dark:from-zinc-900 to-transparent pointer-events-none" />
+                  <div className="hidden md:block absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white dark:from-zinc-900 to-transparent pointer-events-none" />
                 </div>
-                <div className="h-[45%] md:h-full md:w-[40%] p-6 md:p-8 flex flex-col justify-center text-center md:text-left bg-white dark:bg-zinc-900">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-1">
+                <div className="flex-1 p-6 sm:p-8 lg:p-10 flex flex-col justify-center text-center md:text-left bg-white dark:bg-zinc-900">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-2">
                     {t('principles.card2Category')}
                   </span>
-                  <h3 className="text-xl md:text-2xl font-serif font-medium text-zinc-900 dark:text-white mb-2">
+                  <h3 className="text-xl md:text-2xl font-serif font-medium text-zinc-900 dark:text-white mb-3">
                     {t('principles.card2Title')}
                   </h3>
                   <p className="text-xs md:text-sm text-zinc-500 dark:text-zinc-400 font-light leading-relaxed">
@@ -542,27 +588,27 @@ export default function HomePage() {
               {/* Bottom Horizontal Card: Handcrafted Master Assembly */}
               <Link
                 href="/features/craftsmanship"
-                className="bg-white dark:bg-zinc-900 rounded-[2rem] overflow-hidden relative group flex flex-col md:flex-row flex-1 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border border-zinc-200/80 dark:border-white/10"
+                className="bg-white dark:bg-zinc-900 rounded-[2rem] overflow-hidden relative group flex flex-col md:flex-row min-h-[340px] lg:min-h-[380px] flex-1 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border border-zinc-200/80 dark:border-white/10"
               >
-                <div className="h-[45%] md:h-full md:w-[40%] p-6 md:p-8 flex flex-col justify-center text-center md:text-left order-2 md:order-1 bg-white dark:bg-zinc-900">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-1">
+                <div className="flex-1 p-6 sm:p-8 lg:p-10 flex flex-col justify-center text-center md:text-left order-2 md:order-1 bg-white dark:bg-zinc-900">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-2">
                     {t('principles.card3Category')}
                   </span>
-                  <h3 className="text-xl md:text-2xl font-serif font-medium text-zinc-900 dark:text-white mb-2">
+                  <h3 className="text-xl md:text-2xl font-serif font-medium text-zinc-900 dark:text-white mb-3">
                     {t('principles.card3Title')}
                   </h3>
                   <p className="text-xs md:text-sm text-zinc-500 dark:text-zinc-400 font-light leading-relaxed">
                     {t('principles.card3Desc')}
                   </p>
                 </div>
-                <div className="h-[55%] md:h-full md:w-[60%] relative order-1 md:order-2 overflow-hidden bg-zinc-100 dark:bg-zinc-800">
+                <div className="h-[220px] md:h-full md:w-[50%] lg:w-[52%] relative order-1 md:order-2 overflow-hidden bg-zinc-100 dark:bg-zinc-800 shrink-0">
                   <ShimmerImage
                     src="/images/features/3.webp"
                     alt="Master Bench Assembly"
                     className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
                     containerClassName="w-full h-full"
                   />
-                  <div className="hidden md:block absolute inset-y-0 left-0 w-36 bg-gradient-to-r from-white dark:from-zinc-900 to-transparent pointer-events-none" />
+                  <div className="hidden md:block absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white dark:from-zinc-900 to-transparent pointer-events-none" />
                 </div>
               </Link>
             </div>

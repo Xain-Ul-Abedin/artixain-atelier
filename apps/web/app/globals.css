@@ -40,20 +40,6 @@
     font-family: 'Cormorant Garamond', Georgia, serif;
   }
 
-  /* Noto Nastaliq Urdu Typography Support */
-  html[dir="rtl"], html.lang-ur, .font-urdu {
-    font-family: 'Noto Nastaliq Urdu', 'Lexend', Georgia, serif;
-  }
-
-  html[dir="rtl"] h1,
-  html[dir="rtl"] h2,
-  html[dir="rtl"] h3,
-  html.lang-ur h1,
-  html.lang-ur h2,
-  html.lang-ur h3 {
-    font-family: 'Noto Nastaliq Urdu', 'Cormorant Garamond', Georgia, serif;
-    line-height: 1.5;
-  }
 }
 
 @layer components {
@@ -299,3 +285,75 @@ html[dir="rtl"] .animate-marquee {
 ::view-transition-new(root) {
   z-index: 9999;
 }
+
+/* ==========================================================================
+   UNIVERSAL NOTO NASTALIQ URDU TYPOGRAPHY GOVERNANCE (Absolute Priority)
+   Ensures 100% uniform rendering across all headings, body, buttons, badges,
+   and cards with zero cursive disconnection and zero diacritic clipping.
+   ========================================================================== */
+html[dir="rtl"],
+html[dir="rtl"] body,
+html.lang-ur,
+html.lang-ur body,
+[dir="rtl"],
+[dir="rtl"] body {
+  font-family: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', 'Urdu Typesetting', serif !important;
+}
+
+/* Universal selector ensuring all children inherit Nastaliq and normal letter spacing */
+html[dir="rtl"] *,
+html.lang-ur *,
+[dir="rtl"] * {
+  font-family: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', 'Urdu Typesetting', serif !important;
+  letter-spacing: 0 !important;
+  word-spacing: normal !important;
+  font-style: normal !important; /* Prevents artificial italic slant distortion in Nastaliq */
+}
+
+/* Specific class overrides to guarantee Tailwind utilities don't override Urdu font */
+html[dir="rtl"] .font-serif,
+html[dir="rtl"] .font-sans,
+html[dir="rtl"] .font-mono,
+html.lang-ur .font-serif,
+html.lang-ur .font-sans,
+html.lang-ur .font-mono,
+[dir="rtl"] .font-serif,
+[dir="rtl"] .font-sans,
+[dir="rtl"] .font-mono {
+  font-family: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', 'Urdu Typesetting', serif !important;
+  letter-spacing: 0 !important;
+  font-style: normal !important;
+}
+
+/* Calibrated line-heights and vertical breathing room for Nastaliq ascenders & descenders */
+html[dir="rtl"] h1, html.lang-ur h1, [dir="rtl"] h1,
+html[dir="rtl"] h2, html.lang-ur h2, [dir="rtl"] h2,
+html[dir="rtl"] h3, html.lang-ur h3, [dir="rtl"] h3,
+html[dir="rtl"] h4, html.lang-ur h4, [dir="rtl"] h4,
+html[dir="rtl"] h5, html.lang-ur h5, [dir="rtl"] h5,
+html[dir="rtl"] h6, html.lang-ur h6, [dir="rtl"] h6 {
+  line-height: 1.8 !important;
+  letter-spacing: 0 !important;
+  padding-top: 0.12em;
+  padding-bottom: 0.12em;
+}
+
+html[dir="rtl"] p, html.lang-ur p, [dir="rtl"] p,
+html[dir="rtl"] span, html.lang-ur span, [dir="rtl"] span,
+html[dir="rtl"] a, html.lang-ur a, [dir="rtl"] a,
+html[dir="rtl"] label, html.lang-ur label, [dir="rtl"] label,
+html[dir="rtl"] input, html.lang-ur input, [dir="rtl"] input,
+html[dir="rtl"] textarea, html.lang-ur textarea, [dir="rtl"] textarea {
+  line-height: 1.95 !important;
+  letter-spacing: 0 !important;
+}
+
+/* Buttons and pill badges in RTL */
+html[dir="rtl"] button, html.lang-ur button, [dir="rtl"] button,
+html[dir="rtl"] .btn-pill, html.lang-ur .btn-pill, [dir="rtl"] .btn-pill {
+  line-height: 1.8 !important;
+  letter-spacing: 0 !important;
+  padding-top: 0.35rem;
+  padding-bottom: 0.35rem;
+}
+
