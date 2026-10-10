@@ -2,6 +2,8 @@ export interface PremadeBracelet {
   id: string;
   slug: string;
   title: string;
+  name?: string;
+  designToken?: string;
   tagline: string;
   description: string;
   category: 'Celestial' | 'Serenity' | 'Protection' | 'Abundance' | 'Love' | 'Clarity';

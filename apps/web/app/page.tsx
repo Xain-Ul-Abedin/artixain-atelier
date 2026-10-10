@@ -297,7 +297,7 @@ export default function HomePage() {
                   {premade.category}
                 </span>
                 <h3 className="text-base font-serif font-bold text-obsidian-900 dark:text-white mt-2">
-                  {premade.name}
+                  {premade.title || premade.name}
                 </h3>
                 <p className="text-xs text-zinc-500 line-clamp-2 mt-1">
                   {premade.description}
@@ -312,7 +312,7 @@ export default function HomePage() {
                   </span>
                 </div>
                 <Link
-                  href={`/studio?design=${encodeURIComponent(premade.designToken)}`}
+                  href={`/studio?remix=${encodeURIComponent(premade.slug)}`}
                   className="btn-pill-primary py-2 px-4 text-xs"
                 >
                   <Sparkles className="w-3.5 h-3.5 text-champagne-400" />
