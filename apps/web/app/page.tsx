@@ -1,328 +1,562 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   Sparkles,
-  ShoppingBag,
   ArrowRight,
   ShieldCheck,
-  Gem,
-  Ruler,
-  Compass,
+  Play,
+  Heart,
+  ChevronRight,
+  Star,
   CheckCircle2,
-  Tag,
-  Flame
+  X,
+  Compass
 } from 'lucide-react';
-import { CURATED_PREMADES, MASTER_GEMSTONES } from '@artixain/shared';
+
+const CURATED_DESIGNS = [
+  {
+    id: 'dreamy-kitty',
+    title: 'Dreamy Kitty',
+    price: 35.63,
+    originalPrice: 50.90,
+    discount: '-30%',
+    likes: '4,466',
+    image: '/images/designs/dreamy-kitty.webp',
+    beads: ['RSQ-8', 'MOON-8', 'AMY-8', 'OPL-8'],
+    token: 'artx.v1.RSQ8_MOON8_AMY8_OPL8'
+  },
+  {
+    id: 'gilded-ash',
+    title: 'Gilded Ash',
+    price: 22.05,
+    originalPrice: 31.50,
+    discount: '-30%',
+    likes: '6,435',
+    image: '/images/designs/gilded-ash.webp',
+    beads: ['OBS-8', 'LAB-8', 'HEM-8', 'TIG-8'],
+    token: 'artx.v1.OBS8_LAB8_HEM8_TIG8'
+  },
+  {
+    id: 'golden-dawn',
+    title: 'Golden Dawn',
+    price: 22.61,
+    originalPrice: 32.30,
+    discount: '-30%',
+    likes: '9,139',
+    image: '/images/designs/golden-dawn.webp',
+    beads: ['CIT-8', 'SUN-8', 'TIG-8', 'PYR-8'],
+    token: 'artx.v1.CIT8_SUN8_TIG8_PYR8'
+  },
+  {
+    id: 'persona-code',
+    title: 'Persona Code',
+    price: 23.10,
+    originalPrice: 33.00,
+    discount: '-30%',
+    likes: '3,716',
+    image: '/images/designs/persona-code.webp',
+    beads: ['LAP-8', 'OBS-8', 'SOD-8', 'HEM-8'],
+    token: 'artx.v1.LAP8_OBS8_SOD8_HEM8'
+  },
+  {
+    id: 'imperial-amethyst',
+    title: 'Imperial Amethyst & Diamond',
+    price: 32.48,
+    originalPrice: 46.40,
+    discount: '-30%',
+    likes: '5,120',
+    image: '/images/designs/imperial-amethyst.webp',
+    beads: ['AMY-8', 'CLR-8', 'LEV-8', 'SLV-6'],
+    token: 'artx.v1.AMY8_CLR8_LEV8_SLV6'
+  },
+  {
+    id: 'morning-dew',
+    title: 'Morning Dew',
+    price: 25.90,
+    originalPrice: 37.00,
+    discount: '-30%',
+    likes: '4,890',
+    image: '/images/designs/morning-dew.webp',
+    beads: ['AQU-8', 'MOON-8', 'CLR-8', 'AMZ-8'],
+    token: 'artx.v1.AQU8_MOON8_CLR8_AMZ8'
+  },
+  {
+    id: 'the-ice',
+    title: 'The Ice',
+    price: 28.00,
+    originalPrice: 40.00,
+    discount: '-30%',
+    likes: '6,210',
+    image: '/images/designs/the-ice.webp',
+    beads: ['CLR-8', 'AQU-8', 'SEL-8', 'WHT-8'],
+    token: 'artx.v1.CLR8_AQU8_SEL8_WHT8'
+  },
+  {
+    id: 'ethereal-serenity',
+    title: 'Ethereal Serenity',
+    price: 31.50,
+    originalPrice: 45.00,
+    discount: '-30%',
+    likes: '7,440',
+    image: '/images/designs/ethereal-serenity.webp',
+    beads: ['ANG-8', 'RSQ-8', 'LIL-8', 'GLD-6'],
+    token: 'artx.v1.ANG8_RSQ8_LIL8_GLD6'
+  }
+];
+
+const REVIEWS = [
+  {
+    id: 1,
+    author: 'Clara M.',
+    rating: 5,
+    date: 'Verified Buyer',
+    bracelet: 'Custom Moonstone & Labradorite',
+    comment: 'The customizer was so intuitive. Seeing my exact wrist circumference calibrated before ordering gave me total confidence. The bracelet arrived in stunning gift packaging and fits like a second skin.'
+  },
+  {
+    id: 2,
+    author: 'David L.',
+    rating: 5,
+    date: 'Verified Buyer',
+    bracelet: 'Gilded Ash Formula',
+    comment: 'The natural inclusions on the obsidian and tiger eye are authentic. You can feel the weight of real Grade-A minerals compared to cheap plastic imitations. Outstanding craftsmanship.'
+  },
+  {
+    id: 3,
+    author: 'Elena R.',
+    rating: 5,
+    date: 'Verified Buyer',
+    bracelet: 'Dreamy Kitty Remix',
+    comment: 'I designed matching bracelets for my sister and myself. The volume discount kicked in automatically. The elasticity and tension are perfect. 10/10 recommendation.'
+  }
+];
 
 export default function HomePage() {
-  const featuredPremades = CURATED_PREMADES.slice(0, 4);
-  const featuredGems = MASTER_GEMSTONES.filter((g) =>
-    ['OBS', 'TIG', 'LAB', 'LAP', 'RSQ', 'MAL'].includes(g.code)
-  );
+  const [activeVideoModal, setActiveVideoModal] = useState<string | null>(null);
 
   return (
-    <div className="flex flex-col gap-16 md:gap-24 overflow-hidden">
-      {/* 1. Hero Section */}
-      <section className="relative pt-12 md:pt-20 pb-16 px-4 bg-radial-vignette border-b border-zinc-200/70 dark:border-white/10">
-        <div className="container mx-auto max-w-7xl">
-          <div className="flex flex-col items-center text-center max-w-3xl mx-auto space-y-6">
-            {/* Eyebrow Tag */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-champagne-500/10 dark:bg-champagne-500/20 border border-champagne-500/30 text-champagne-700 dark:text-champagne-300">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span className="text-[11px] uppercase font-bold tracking-[0.25em]">
-                Bespoke Mineral Alchemy • 2026 Atelier
-              </span>
-            </div>
+    <div className="flex flex-col w-full bg-white text-[#1D1D1F] overflow-x-hidden pt-16">
+      {/* 1. Hero Section (1:1 Exact Match with myastris.com) */}
+      <section className="relative w-full h-screen min-h-[620px] flex flex-col md:flex-row items-center overflow-hidden bg-[#FAFAFA]">
+        {/* Right 60% Full-Bleed Bracelet Visual with Left Gradient Fade */}
+        <div className="absolute inset-0 md:left-auto md:right-0 md:w-[60%] h-full z-0">
+          <div className="relative w-full h-full md:hidden">
+            <img
+              src="/images/hero/main-bracelet-mobile.webp"
+              alt="Beautiful gemstone bracelet"
+              className="object-cover w-full h-full"
+            />
+          </div>
+          <div className="relative w-full h-full hidden md:block">
+            <img
+              src="/images/hero/main-bracelet-desktop.webp"
+              alt="Beautiful gemstone bracelet"
+              className="object-cover w-full h-full"
+            />
+          </div>
+          {/* Subtle Left Fade into White Background */}
+          <div className="absolute inset-y-0 left-0 w-36 bg-gradient-to-r from-[#FAFAFA] to-transparent z-10 hidden md:block pointer-events-none" />
+        </div>
 
-            {/* Editorial Serif Display Headline */}
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-bold text-obsidian-900 dark:text-white leading-[1.08] tracking-tight">
-              Bespoke Gemstone Bracelets <br />
-              <span className="italic font-normal text-champagne-600 dark:text-champagne-400">
-                Calibrated to Your Wrist
-              </span>
+        {/* Left 40% Typography & Action Container */}
+        <div className="relative z-20 w-full md:w-[45%] h-full flex flex-col justify-end md:justify-center items-center md:items-start pointer-events-none pb-16 md:pb-0 md:pt-20 px-8 sm:px-12 md:pl-20 lg:pl-24">
+          <div className="w-full pointer-events-auto flex flex-col items-center md:items-start text-center md:text-left">
+            <h1 className="font-serif text-[clamp(2.1rem,6vw,2.75rem)] sm:text-[2.75rem] md:text-[3.25rem] lg:text-[4rem] md:leading-[1.1] tracking-tight text-[#1D1D1F] mb-4 md:mb-6 leading-[1.15]">
+              <span className="block font-medium">Designed by You</span>
+              <span className="block italic text-zinc-400 font-light">Defined by Stars</span>
             </h1>
 
-            {/* Subtitle */}
-            <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-300 max-w-2xl leading-relaxed font-sans">
-              Craft your signature strand using our 2D procedural mineral canvas. Select from 32 Grade-A natural crystals, calibrate your exact wrist circumference, and have master artisans hand-string your bracelet.
+            <p className="text-zinc-500 text-[15px] md:text-base font-light leading-relaxed mb-8 md:mb-10 max-w-sm md:max-w-md">
+              Craft your personal celestial energy.
             </p>
 
-            {/* Dual CTA Pills */}
-            <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+            {/* CTA Button Actions */}
+            <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
               <Link
-                href="/studio"
-                className="btn-pill-primary py-3.5 px-8 text-sm flex items-center gap-2 shadow-luxury hover:scale-105"
+                href="/designer"
+                className="group relative inline-flex items-center justify-center gap-2.5 rounded-full px-8 md:px-9 py-3.5 md:py-4 bg-[#18181B] text-white font-semibold text-sm shadow-[0_18px_38px_-16px_rgba(24,24,27,0.75)] hover:bg-zinc-800 hover:-translate-y-0.5 transition-all w-full sm:w-auto"
               >
-                <Sparkles className="w-4 h-4 text-champagne-400" />
-                <span>Enter Custom Studio</span>
+                <span>Start Designing</span>
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/15 ring-1 ring-white/30 group-hover:translate-x-0.5 transition-transform">
+                  <ArrowRight className="w-3 h-3 text-white" />
+                </span>
+                <span className="absolute right-3.5 top-3 flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+                </span>
               </Link>
+
               <Link
-                href="/shop"
-                className="btn-pill-secondary py-3.5 px-8 text-sm flex items-center gap-2"
+                href="/gallery"
+                className="inline-flex items-center justify-center rounded-full border border-zinc-200 bg-white/80 hover:bg-white text-zinc-800 px-8 py-3.5 text-xs font-semibold uppercase tracking-wider transition-all w-full sm:w-auto shadow-sm"
               >
-                <ShoppingBag className="w-4 h-4 text-zinc-500" />
-                <span>Explore Curated Sets</span>
+                View Gallery
               </Link>
-            </div>
-
-            {/* Floating Luxury Stats */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-8 w-full border-t border-zinc-200/60 dark:border-white/10 mt-6 text-left">
-              <div className="p-3 rounded-2xl bg-white/60 dark:bg-obsidian-900/60 backdrop-blur-md border border-zinc-200/60 dark:border-white/5">
-                <span className="text-xl font-serif font-bold text-obsidian-900 dark:text-white block">
-                  32
-                </span>
-                <span className="text-[11px] text-zinc-500">
-                  Grade-A Natural Minerals
-                </span>
-              </div>
-
-              <div className="p-3 rounded-2xl bg-white/60 dark:bg-obsidian-900/60 backdrop-blur-md border border-zinc-200/60 dark:border-white/5">
-                <span className="text-xl font-serif font-bold text-obsidian-900 dark:text-white block">
-                  0.1mm
-                </span>
-                <span className="text-[11px] text-zinc-500">
-                  Wrist Sizing Accuracy
-                </span>
-              </div>
-
-              <div className="p-3 rounded-2xl bg-white/60 dark:bg-obsidian-900/60 backdrop-blur-md border border-zinc-200/60 dark:border-white/5">
-                <span className="text-xl font-serif font-bold text-champagne-600 dark:text-champagne-400 block">
-                  $19 Flat
-                </span>
-                <span className="text-[11px] text-zinc-500">
-                  4th+ Bracelet Volume Tier
-                </span>
-              </div>
-
-              <div className="p-3 rounded-2xl bg-white/60 dark:bg-obsidian-900/60 backdrop-blur-md border border-zinc-200/60 dark:border-white/5">
-                <span className="text-xl font-serif font-bold text-obsidian-900 dark:text-white block">
-                  100%
-                </span>
-                <span className="text-[11px] text-zinc-500">
-                  Physical Atelier Hand-Strung
-                </span>
-              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 2. Interactive Gemstone Spotlight */}
-      <section className="container mx-auto px-4 max-w-7xl">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-champagne-600 dark:text-champagne-400">
-                Natural Mineral Specimen
+      {/* 2. Trust, Social Proof & Video Guide Section (1:1 Exact Match) */}
+      <section className="overflow-hidden bg-[#FAFAFA] px-4 py-12 md:py-20 border-t border-zinc-100">
+        <div className="mx-auto max-w-[1400px] md:max-w-[1300px]">
+          {/* Header Row with Customer Counters */}
+          <div className="mx-auto flex max-w-3xl flex-col items-center text-center md:max-w-none md:flex-row md:items-end md:justify-between md:gap-10 md:text-left">
+            <div className="flex flex-col items-center md:items-start">
+              <span className="inline-flex rounded-full border border-zinc-200 bg-white/90 px-3.5 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500 shadow-sm">
+                Trusted by ASTRIS customers
               </span>
-            </div>
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-obsidian-900 dark:text-white">
-              Authentic Crystals & Rare Gemstones
-            </h2>
-          </div>
-          <Link
-            href="/encyclopedia"
-            className="btn-pill-secondary py-2 px-4 text-xs shrink-0 self-start md:self-auto"
-          >
-            <span>View Full Encyclopedia (32 Minerals)</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-        </div>
-
-        {/* Gemstone Cards Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-          {featuredGems.map((gem) => (
-            <div
-              key={gem.id}
-              className="group p-4 rounded-3xl bg-white/80 dark:bg-zinc-800/60 backdrop-blur-md border border-zinc-200/80 dark:border-white/10 hover:border-champagne-400/80 shadow-sm hover:shadow-luxury transition-all duration-300 flex flex-col items-center text-center"
-            >
-              {/* Gem Sphere Swatch */}
-              <div
-                className="w-16 h-16 rounded-full border border-black/10 dark:border-white/20 shadow-md group-hover:scale-110 transition-transform duration-300 mb-3"
-                style={{
-                  background: `radial-gradient(circle at 35% 35%, rgba(255,255,255,0.8) 0%, ${gem.colorHex || gem.baseColorHex || '#C5A059'} 50%, ${gem.secondaryColorHex || gem.accentColorHex || '#18181B'} 100%)`
-                }}
-              />
-              <span className="text-sm font-bold text-obsidian-900 dark:text-white">
-                {gem.name}
-              </span>
-              <span className="text-[10px] text-zinc-500 mt-0.5">
-                {gem.chakra || gem.primaryChakra} Chakra
-              </span>
-              <span className="text-xs font-semibold text-champagne-600 dark:text-champagne-400 mt-2">
-                From ${gem.pricesByDiameter[8].toFixed(2)}/bead
-              </span>
-              <Link
-                href={`/studio?gem=${gem.code}`}
-                className="btn-pill py-1 px-3 mt-3 bg-zinc-100 dark:bg-zinc-700/80 hover:bg-champagne-500 hover:text-white text-[10px] font-medium transition-colors w-full"
-              >
-                Add in Studio
-              </Link>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 3. 3-Step Atelier Customizer Journey */}
-      <section className="bg-zinc-50 dark:bg-obsidian-900/40 py-16 border-y border-zinc-200/70 dark:border-white/10">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-champagne-600 dark:text-champagne-400">
-              The Bespoke Process
-            </span>
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-obsidian-900 dark:text-white mt-1">
-              How Your Bracelet is Created
-            </h2>
-            <p className="text-xs md:text-sm text-zinc-500 mt-2">
-              A seamless bridge between digital procedural design and physical artisan stringing.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Step 1 */}
-            <div className="p-6 rounded-3xl bg-white dark:bg-zinc-800/70 border border-zinc-200/80 dark:border-white/10 shadow-sm relative overflow-hidden">
-              <div className="icon-orb w-12 h-12 bg-champagne-500/10 text-champagne-600 dark:text-champagne-400 mb-4 font-serif font-bold text-lg">
-                01
-              </div>
-              <h3 className="text-base font-bold text-obsidian-900 dark:text-white mb-2">
-                Curate Mineral Strand
-              </h3>
-              <p className="text-xs text-zinc-500 leading-relaxed">
-                Arrange beads on the 2D radial canvas with real-time mineral shader reflections, bilateral symmetry tools, and 14K gold spacers.
+              <h2 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-serif font-medium leading-[1.12] tracking-tight text-zinc-950">
+                Helped customers complete{' '}
+                <span className="whitespace-nowrap font-semibold text-zinc-900 underline decoration-zinc-300 decoration-2 underline-offset-4">
+                  60,000+ designs
+                </span>
+              </h2>
+              <p className="mt-2.5 text-sm sm:text-base text-zinc-500">
+                10,000+ customers have completed a purchase
               </p>
             </div>
 
-            {/* Step 2 */}
-            <div className="p-6 rounded-3xl bg-white dark:bg-zinc-800/70 border border-zinc-200/80 dark:border-white/10 shadow-sm relative overflow-hidden">
-              <div className="icon-orb w-12 h-12 bg-champagne-500/10 text-champagne-600 dark:text-champagne-400 mb-4 font-serif font-bold text-lg">
-                02
+            {/* Stat Badges */}
+            <div className="mt-6 flex w-full max-w-[22rem] items-center justify-center gap-3 md:mt-0 md:max-w-none md:justify-end">
+              <div className="flex items-center gap-2 rounded-full border border-zinc-200/80 bg-white px-4 py-2 shadow-sm">
+                <span className="text-base font-black text-amber-600">60,000+</span>
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">Designs</span>
               </div>
-              <h3 className="text-base font-bold text-obsidian-900 dark:text-white mb-2">
-                Calibrate Wrist Sizing
+              <div className="flex items-center gap-2 rounded-full border border-zinc-200/80 bg-white px-4 py-2 shadow-sm">
+                <span className="text-base font-black text-amber-600">10,000+</span>
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">Purchases</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Featured Video Walkthrough Card */}
+          <article className="mx-auto mt-10 grid max-w-4xl overflow-hidden rounded-[1.75rem] border border-zinc-200 bg-white shadow-xl md:grid-cols-[minmax(0,1fr)_minmax(260px,340px)]">
+            <div className="flex flex-col justify-center p-6 md:p-10 text-center md:text-left">
+              <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-amber-600">
+                Design guide
+              </span>
+              <h3 className="mt-2 text-2xl md:text-3xl font-serif font-semibold text-zinc-950">
+                Step-by-step design
               </h3>
-              <p className="text-xs text-zinc-500 leading-relaxed">
-                Use anthropometric body ratio regression or the on-screen credit card caliper to ensure a tailored millimeter-accurate fit.
+              <p className="mt-2 text-xs md:text-sm text-zinc-500 leading-relaxed">
+                Watch the full walkthrough before opening the designer. Learn wrist measurement, gemstone energy balance, and custom bead stringing.
               </p>
-            </div>
-
-            {/* Step 3 */}
-            <div className="p-6 rounded-3xl bg-white dark:bg-zinc-800/70 border border-zinc-200/80 dark:border-white/10 shadow-sm relative overflow-hidden">
-              <div className="icon-orb w-12 h-12 bg-champagne-500/10 text-champagne-600 dark:text-champagne-400 mb-4 font-serif font-bold text-lg">
-                03
-              </div>
-              <h3 className="text-base font-bold text-obsidian-900 dark:text-white mb-2">
-                Atelier Hand-Stringing
-              </h3>
-              <p className="text-xs text-zinc-500 leading-relaxed">
-                Our master artisans follow the exact visual stringing sequence, cord knot allowance, and quality checks before shipping.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. Volume Discount Tier Banner */}
-      <section className="container mx-auto px-4 max-w-7xl">
-        <div className="p-8 md:p-12 rounded-3xl bg-obsidian-900 dark:bg-zinc-900 text-white shadow-2xl relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-8 border border-champagne-500/30">
-          <div className="max-w-xl space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-champagne-500/20 text-champagne-300 text-[10px] uppercase font-bold tracking-widest">
-              <Tag className="w-3.5 h-3.5" />
-              <span>Multi-Tier Volume Incentives</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-serif font-bold leading-tight">
-              Stack Your Strands & Unlock Exceptional Atelier Savings
-            </h2>
-            <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
-              Mix and match bespoke custom designs and signature premades. The more you curate, the greater your atelier tier rewards.
-            </p>
-          </div>
-
-          {/* Tier Cards Row */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 w-full lg:w-auto shrink-0">
-            <div className="p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/10 text-center">
-              <span className="text-xs text-zinc-400 block">2nd Bracelet</span>
-              <span className="text-xl font-serif font-bold text-champagne-400">
-                25% OFF
-              </span>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/10 text-center">
-              <span className="text-xs text-zinc-400 block">3rd Bracelet</span>
-              <span className="text-xl font-serif font-bold text-champagne-400">
-                35% OFF
-              </span>
-            </div>
-
-            <div className="col-span-2 sm:col-span-1 p-4 rounded-2xl bg-champagne-500/20 backdrop-blur-md border border-champagne-400 text-center">
-              <span className="text-xs text-champagne-300 block font-semibold">4th+ Bracelet</span>
-              <span className="text-xl font-serif font-bold text-white">
-                $19 FLAT
-              </span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 5. Featured Curated Sets */}
-      <section className="container mx-auto px-4 max-w-7xl pb-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
-          <div>
-            <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-champagne-600 dark:text-champagne-400">
-              Artisan Catalog
-            </span>
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-obsidian-900 dark:text-white">
-              Curated Premade Collections
-            </h2>
-          </div>
-          <Link
-            href="/shop"
-            className="btn-pill-secondary py-2 px-4 text-xs shrink-0"
-          >
-            <span>View All Curated Sets</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-        </div>
-
-        {/* 4 Premade Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {featuredPremades.map((premade) => (
-            <div
-              key={premade.id}
-              className="group p-5 rounded-3xl bg-white/80 dark:bg-zinc-800/60 backdrop-blur-md border border-zinc-200/80 dark:border-white/10 hover:border-champagne-400 shadow-sm hover:shadow-luxury transition-all duration-300 flex flex-col justify-between"
-            >
-              <div>
-                <span className="text-[10px] uppercase font-bold tracking-wider text-champagne-600 dark:text-champagne-400 bg-champagne-500/10 px-2.5 py-0.5 rounded-full">
-                  {premade.category}
-                </span>
-                <h3 className="text-base font-serif font-bold text-obsidian-900 dark:text-white mt-2">
-                  {premade.title || premade.name}
-                </h3>
-                <p className="text-xs text-zinc-500 line-clamp-2 mt-1">
-                  {premade.description}
-                </p>
-              </div>
-
-              <div className="mt-6 pt-4 border-t border-zinc-100 dark:border-zinc-700/60 flex items-center justify-between">
-                <div>
-                  <span className="text-xs text-zinc-400 block">Price</span>
-                  <span className="text-base font-bold text-obsidian-900 dark:text-white">
-                    ${premade.basePrice.toFixed(2)}
-                  </span>
-                </div>
+              <div className="mt-6">
                 <Link
-                  href={`/studio?remix=${encodeURIComponent(premade.slug)}`}
-                  className="btn-pill-primary py-2 px-4 text-xs"
+                  href="/guide/how-to-design"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-zinc-900 hover:text-amber-600 transition-colors"
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-champagne-400" />
-                  <span>Remix</span>
+                  <span>Read Complete Guide</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
             </div>
-          ))}
+
+            <div className="flex justify-center bg-zinc-100 p-4">
+              <div className="relative aspect-[9/16] w-full max-w-[280px] overflow-hidden rounded-2xl bg-zinc-900 shadow-md group cursor-pointer" onClick={() => setActiveVideoModal('guide')}>
+                <img
+                  src="/images/video/guide.png"
+                  alt="Step-by-step design walkthrough"
+                  className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <button
+                  type="button"
+                  aria-label="Play design guide"
+                  className="absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-zinc-900 shadow-xl backdrop-blur transition-all hover:scale-110 active:scale-95"
+                >
+                  <Play className="ml-0.5 w-5 h-5 fill-current" />
+                </button>
+              </div>
+            </div>
+          </article>
+
+          {/* Marquee Video Reviews Track */}
+          <div className="relative mt-12 overflow-hidden pb-4">
+            <div className="flex gap-4 animate-marquee hover:[animation-play-state:paused] w-max">
+              {[
+                { img: '/images/video/comment_1.png', label: 'Real customer feedback', user: '@sarah_gem' },
+                { img: '/images/video/comment_2.png', label: 'Designed and purchased', user: '@david_wrist' },
+                { img: '/images/video/comment_3.png', label: 'Unboxing ceremony', user: '@chloe_luxe' },
+                { img: '/images/video/comment_1.png', label: 'Real customer feedback', user: '@sarah_gem' },
+                { img: '/images/video/comment_2.png', label: 'Designed and purchased', user: '@david_wrist' },
+                { img: '/images/video/comment_3.png', label: 'Unboxing ceremony', user: '@chloe_luxe' }
+              ].map((vid, idx) => (
+                <div
+                  key={idx}
+                  onClick={() => setActiveVideoModal(vid.user)}
+                  className="group relative w-[180px] md:w-[220px] shrink-0 overflow-hidden rounded-[1.5rem] border border-zinc-200 bg-white p-2 shadow-md hover:-translate-y-1 transition-all cursor-pointer"
+                >
+                  <div className="relative aspect-[9/16] overflow-hidden rounded-xl bg-zinc-100">
+                    <img
+                      src={vid.img}
+                      alt={vid.label}
+                      className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
+                    <button
+                      type="button"
+                      aria-label="Play customer review"
+                      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-zinc-900 shadow-lg group-hover:scale-110 transition-transform"
+                    >
+                      <Play className="ml-0.5 w-4 h-4 fill-current" />
+                    </button>
+                    <div className="absolute bottom-3 left-3 text-white text-[11px] font-semibold">
+                      {vid.user}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
+
+      {/* 3. "Crafted by You, Refined by Us" Editorial Feature Grid (1:1 Exact Match) */}
+      <section className="px-4 py-16 md:py-24 bg-white">
+        <div className="mx-auto max-w-[1400px] md:max-w-[1300px]">
+          {/* Section Header */}
+          <div className="text-center mb-10 md:mb-16">
+            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-[#1D1D1F] leading-tight">
+              <span className="block font-medium tracking-tight">Crafted by You</span>
+              <span className="block italic text-zinc-400 font-light mt-1">Refined by Us</span>
+            </h2>
+          </div>
+
+          {/* 12-Column Bento Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 h-auto md:h-[650px]">
+            {/* Left Column (4 cols): Tall Crystal Encyclopedia Card */}
+            <Link
+              href="/encyclopedia"
+              className="md:col-span-4 bg-[#FAFAFA] rounded-[2rem] overflow-hidden relative group flex flex-col h-[400px] md:h-full transition-all duration-300 hover:bg-white hover:-translate-y-1 hover:shadow-xl border border-zinc-100"
+            >
+              <div className="relative h-[65%] w-full bg-[#FAFAFA] overflow-hidden">
+                <img
+                  src="/images/features/1.webp"
+                  alt="Crystal Encyclopedia"
+                  className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="hidden md:block absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#FAFAFA] to-transparent pointer-events-none" />
+              </div>
+              <div className="h-[35%] p-6 md:p-8 flex flex-col justify-center text-center md:text-left bg-[#FAFAFA] group-hover:bg-white transition-colors">
+                <h3 className="text-xl md:text-2xl font-serif font-medium text-zinc-900 mb-2">
+                  Crystal Encyclopedia
+                </h3>
+                <p className="text-xs md:text-sm text-zinc-500 font-light leading-relaxed">
+                  Explore natural gemstones, their unique properties, chakra connections, zodiac influences, and care rituals.
+                </p>
+              </div>
+            </Link>
+
+            {/* Right Column (8 cols): Two Horizontal Split Cards */}
+            <div className="md:col-span-8 flex flex-col gap-6 h-full">
+              {/* Top Horizontal Card: Nature's Finest */}
+              <Link
+                href="/features/materials"
+                className="bg-[#FAFAFA] rounded-[2rem] overflow-hidden relative group flex flex-col md:flex-row flex-1 transition-all duration-300 hover:bg-white hover:-translate-y-1 hover:shadow-xl border border-zinc-100"
+              >
+                <div className="h-[55%] md:h-full md:w-[60%] relative overflow-hidden">
+                  <img
+                    src="/images/features/2.webp"
+                    alt="Nature's Finest"
+                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="hidden md:block absolute inset-y-0 right-0 w-36 bg-gradient-to-l from-[#FAFAFA] to-transparent pointer-events-none" />
+                </div>
+                <div className="h-[45%] md:h-full md:w-[40%] p-6 md:p-8 flex flex-col justify-center text-center md:text-left bg-[#FAFAFA] group-hover:bg-white transition-colors">
+                  <h3 className="text-xl md:text-2xl font-serif font-medium text-zinc-900 mb-2">
+                    Nature's Finest
+                  </h3>
+                  <p className="text-xs md:text-sm text-zinc-500 font-light leading-relaxed">
+                    Ethically sourced gemstones, hand-picked to showcase their inherent natural beauty and energy.
+                  </p>
+                </div>
+              </Link>
+
+              {/* Bottom Horizontal Card: Handcrafted */}
+              <Link
+                href="/features/craftsmanship"
+                className="bg-[#FAFAFA] rounded-[2rem] overflow-hidden relative group flex flex-col md:flex-row flex-1 transition-all duration-300 hover:bg-white hover:-translate-y-1 hover:shadow-xl border border-zinc-100"
+              >
+                <div className="h-[45%] md:h-full md:w-[40%] p-6 md:p-8 flex flex-col justify-center text-center md:text-left order-2 md:order-1 bg-[#FAFAFA] group-hover:bg-white transition-colors">
+                  <h3 className="text-xl md:text-2xl font-serif font-medium text-zinc-900 mb-2">
+                    Handcrafted
+                  </h3>
+                  <p className="text-xs md:text-sm text-zinc-500 font-light leading-relaxed">
+                    Meticulously handcrafted with passion, creating timeless pieces that mass production cannot replicate.
+                  </p>
+                </div>
+                <div className="h-[55%] md:h-full md:w-[60%] relative order-1 md:order-2 overflow-hidden">
+                  <img
+                    src="/images/features/3.webp"
+                    alt="Handcrafted"
+                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="hidden md:block absolute inset-y-0 left-0 w-36 bg-gradient-to-r from-[#FAFAFA] to-transparent pointer-events-none" />
+                </div>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. "Spark Your Imagination" Curated Designs Gallery (1:1 Exact Match) */}
+      <section className="px-4 py-16 md:py-24 bg-[#FAFAFA]">
+        <div className="mx-auto max-w-[1400px] md:max-w-[1300px]">
+          <div className="relative overflow-hidden rounded-[2rem] border border-amber-100 bg-[radial-gradient(circle_at_12%_12%,rgba(251,191,36,0.14),transparent_26%),linear-gradient(135deg,#fff7ed,#ffffff_46%,#ffffff)] p-6 md:p-10 shadow-sm">
+            {/* Header */}
+            <div className="relative mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+              <div>
+                <div className="mb-2 inline-flex items-center gap-1.5 rounded-full bg-white/80 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-amber-700 shadow-sm">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>Design Inspiration</span>
+                </div>
+                <h2 className="font-serif text-3xl md:text-4xl font-medium tracking-tight text-zinc-950">
+                  <span className="block">Spark Your</span>
+                  <span className="block italic text-zinc-400 font-light">Imagination</span>
+                </h2>
+                <p className="mt-1 text-xs md:text-sm text-zinc-600">
+                  Curated designs to inspire your unique creation.
+                </p>
+              </div>
+
+              <Link
+                href="/gallery"
+                className="inline-flex items-center gap-2 rounded-full bg-zinc-900 px-5 py-2.5 text-xs font-semibold text-white shadow-md hover:bg-zinc-800 transition-all hover:-translate-y-0.5"
+              >
+                <span>View All Designs</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+
+            {/* 8 Curated Design Cards Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+              {CURATED_DESIGNS.map((item) => (
+                <div
+                  key={item.id}
+                  className="group relative rounded-2xl md:rounded-3xl bg-white border border-zinc-100 p-3 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between"
+                >
+                  <div className="relative aspect-square w-full overflow-hidden rounded-xl md:rounded-2xl bg-zinc-50 mb-3">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute top-2 left-2 inline-flex items-center rounded-full bg-rose-500 px-2 py-0.5 text-[10px] font-bold text-white shadow-sm">
+                      {item.discount}
+                    </div>
+                    <div className="absolute top-2 right-2 inline-flex items-center gap-1 rounded-full bg-white/80 backdrop-blur px-2 py-0.5 text-[10px] font-bold text-zinc-700 shadow-sm">
+                      <Heart className="w-2.5 h-2.5 text-rose-500 fill-rose-500" />
+                      <span>{item.likes}</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="font-serif font-bold text-sm text-zinc-900 truncate mb-1">
+                      {item.title}
+                    </h3>
+                    <div className="flex items-baseline gap-2 mb-3">
+                      <span className="font-bold text-sm text-amber-700">
+                        ${item.price.toFixed(2)}
+                      </span>
+                      <span className="text-[11px] text-zinc-400 line-through">
+                        ${item.originalPrice.toFixed(2)}
+                      </span>
+                    </div>
+                  </div>
+
+                  <Link
+                    href={`/designer?remix=${item.id}&token=${item.token}`}
+                    className="w-full py-2 rounded-full bg-zinc-100 group-hover:bg-zinc-900 group-hover:text-white text-zinc-800 text-[11px] font-bold text-center transition-colors flex items-center justify-center gap-1.5"
+                  >
+                    <span>Remix in Studio</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. Customer Testimonials & Reviews (1:1 Exact Match) */}
+      <section className="px-4 py-16 md:py-24 bg-white">
+        <div className="mx-auto max-w-[1400px] md:max-w-[1300px]">
+          <div className="text-center mb-12">
+            <span className="inline-flex rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-zinc-600 mb-2">
+              Customer Experiences
+            </span>
+            <h2 className="font-serif text-3xl md:text-4xl font-medium text-zinc-950">
+              Loved by Crystal Enthusiasts Worldwide
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            {REVIEWS.map((rev) => (
+              <div
+                key={rev.id}
+                className="p-6 md:p-8 rounded-3xl bg-[#FAFAFA] border border-zinc-100 shadow-sm flex flex-col justify-between space-y-4"
+              >
+                <div>
+                  <div className="flex items-center gap-1 text-amber-500 mb-3">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                    ))}
+                  </div>
+                  <p className="text-xs md:text-sm text-zinc-600 leading-relaxed font-light italic">
+                    "{rev.comment}"
+                  </p>
+                </div>
+
+                <div className="pt-4 border-t border-zinc-200/60 flex items-center justify-between text-xs">
+                  <div>
+                    <span className="font-bold text-zinc-900 block">{rev.author}</span>
+                    <span className="text-[11px] text-zinc-400">{rev.bracelet}</span>
+                  </div>
+                  <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
+                    <CheckCircle2 className="w-3 h-3" />
+                    Verified
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex justify-center">
+            <Link
+              href="/reviews"
+              className="inline-flex items-center justify-center rounded-full bg-zinc-900 px-6 py-3 text-xs font-semibold text-white shadow-md hover:bg-zinc-800 transition-all hover:-translate-y-0.5"
+            >
+              View All Reviews
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Video Modal Player */}
+      {activeVideoModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
+          <div className="relative max-w-sm w-full bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl p-4 text-center">
+            <button
+              onClick={() => setActiveVideoModal(null)}
+              className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black"
+            >
+              <X className="w-4 h-4" />
+            </button>
+            <div className="aspect-[9/16] w-full rounded-2xl overflow-hidden bg-black flex items-center justify-center text-white">
+              <p className="text-xs text-zinc-400 p-6">
+                Playing walkthrough presentation for {activeVideoModal}.
+              </p>
+            </div>
+            <p className="text-xs text-zinc-400 mt-3">
+              Astris Studio Walkthrough &copy; 2024
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
