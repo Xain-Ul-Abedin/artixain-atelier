@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'constants/theme.dart';
 import 'screens/main_navigation_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  try {
+    await Supabase.initialize(
+      url: 'https://edkzukrfzubfuzsejmvr.supabase.co',
+      anonKey: 'sb_publishable_19rdRC1Bqjxl2xZDaiLZ-w_h9JCt4LD',
+    );
+  } catch (_) {
+    // Offline resilience fallback
+  }
   runApp(
     const ProviderScope(
       child: ArtixainMobileApp(),
