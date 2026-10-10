@@ -45,6 +45,10 @@ export default function Navbar() {
 
   const totalItemCount = items.reduce((acc, it) => acc + it.quantity, 0);
 
+  if (pathname?.startsWith('/designer') || pathname?.startsWith('/studio')) {
+    return null;
+  }
+
   return (
     <>
       <header className="fixed top-2 left-0 right-0 z-50 px-2.5 sm:px-4 md:px-8 pointer-events-none transition-all duration-300">

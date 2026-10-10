@@ -3,16 +3,25 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { DesignerProvider, useDesigner } from '../../context/DesignerContext';
-import BraceletCanvas from '../../components/designer/BraceletCanvas';
-import BeadPalette from '../../components/designer/BeadPalette';
+import StudioTopBar from '../../components/designer/StudioTopBar';
+import StudioBeadSidebar from '../../components/designer/StudioBeadSidebar';
+import StudioCanvasViewport from '../../components/designer/StudioCanvasViewport';
+import StudioParametersSidebar from '../../components/designer/StudioParametersSidebar';
+import StudioMobileDrawer from '../../components/designer/StudioMobileDrawer';
+import GuideModal from '../../components/designer/GuideModal';
+import InspirationModal from '../../components/designer/InspirationModal';
+import SavePreviewModal from '../../components/designer/SavePreviewModal';
 import SizingModal from '../../components/designer/SizingModal';
-import SymmetryTools from '../../components/designer/SymmetryTools';
-import StudioHeader from '../../components/designer/StudioHeader';
 
-function DesignerInner() {
+function DesignerWorkbench() {
   const searchParams = useSearchParams();
-  const { loadFromToken } = useDesigner();
+  const { loadFromToken, beads, calculatedCircumferenceCm } = useDesigner();
+
+  const [isGuideOpen, setIsGuideOpen] = useState(false);
+  const [isInspirationOpen, setIsInspirationOpen] = useState(false);
   const [isSizingModalOpen, setIsSizingModalOpen] = useState(false);
+  const [isSavePreviewOpen, setIsSavePreviewOpen] = useState(false);
+  const [isMobileBeadDrawerOpen, setIsMobileBeadDrawerOpen] = useState(false);
 
   useEffect(() => {
     const token = searchParams.get('token') || searchParams.get('design');
@@ -21,30 +30,60 @@ function DesignerInner() {
     }
   }, [searchParams, loadFromToken]);
 
+  const handleOpenSavePreview = () => {
+    if (beads.length === 0) {
+      alert('Please add beads to your strand before saving.');
+      return;
+    }
+    if (calculatedCircumferenceCm < 13.0) {
+      alert('Strand must be at least 13cm before saving. Please add more beads.');
+      return;
+    }
+    setIsSavePreviewOpen(true);
+  };
+
   return (
-    <div className="container mx-auto px-4 py-6 max-w-[1720px] pt-28 md:pt-32">
-      {/* Studio Header Row */}
-      <StudioHeader onOpenSizingModal={() => setIsSizingModalOpen(true)} />
-
-      {/* Main Studio Grid (Floating Tri-Capsule Layout) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6 items-start">
-        {/* Left / Center Column: 2D Canvas & Symmetry Tools (7 Cols) */}
-        <div className="lg:col-span-7 flex flex-col gap-4">
-          <BraceletCanvas />
-          <SymmetryTools />
-        </div>
-
-        {/* Right Column: Bead Palette & Inventory Drawer (5 Cols) */}
-        <div className="lg:col-span-5 flex flex-col h-[520px] sm:h-[560px] lg:h-[640px]">
-          <BeadPalette />
-        </div>
-      </div>
-
-      {/* Sizing & Calibration Modal */}
-      <SizingModal
-        isOpen={isSizingModalOpen}
-        onClose={() => setIsSizingModalOpen(false)}
+    <div className="h-screen w-screen overflow-hidden flex flex-col bg-[#FAFAFA] dark:bg-[#0E0E10] text-zinc-900 dark:text-zinc-100 font-sans select-none">
+      {/* 1. Top Edge-to-Edge Studio Bar */}
+      <StudioTopBar
+        onOpenGuide={() => setIsGuideOpen(true)}
+        onOpenInspiration={() => setIsInspirationOpen(true)}
+        onOpenSizingModal={() => setIsSizingModalOpen(true)}
+        onOpenSavePreview={handleOpenSavePreview}
       />
+
+      {/* 2. Main 3-Column Studio Body */}
+      <main className="flex-1 flex overflow-hidden relative min-h-0">
+        {/* Left Column: Bead Library (Hidden on < xl, opens via mobile drawer) */}
+        <div className="hidden xl:flex h-full">
+          <StudioBeadSidebar />
+        </div>
+
+        {/* Center Column: Circular Bracelet Canvas Viewport */}
+        <StudioCanvasViewport
+          onOpenMobileBeadDrawer={() => setIsMobileBeadDrawerOpen(true)}
+          onOpenSavePreview={handleOpenSavePreview}
+        />
+
+        {/* Right Column: Live Design Parameters (Desktop xl:flex) */}
+        <StudioParametersSidebar
+          onOpenSizingModal={() => setIsSizingModalOpen(true)}
+          onOpenInspiration={() => setIsInspirationOpen(true)}
+          onOpenSavePreview={handleOpenSavePreview}
+        />
+      </main>
+
+      {/* Mobile Bead Library Drawer (< xl) */}
+      <StudioMobileDrawer
+        isOpen={isMobileBeadDrawerOpen}
+        onClose={() => setIsMobileBeadDrawerOpen(false)}
+      />
+
+      {/* Modals */}
+      <GuideModal isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} />
+      <InspirationModal isOpen={isInspirationOpen} onClose={() => setIsInspirationOpen(false)} />
+      <SavePreviewModal isOpen={isSavePreviewOpen} onClose={() => setIsSavePreviewOpen(false)} />
+      <SizingModal isOpen={isSizingModalOpen} onClose={() => setIsSizingModalOpen(false)} />
     </div>
   );
 }
@@ -52,8 +91,14 @@ function DesignerInner() {
 export default function DesignerPage() {
   return (
     <DesignerProvider>
-      <Suspense fallback={<div className="p-12 text-center text-zinc-500 pt-32">Preparing Atelier Studio...</div>}>
-        <DesignerInner />
+      <Suspense
+        fallback={
+          <div className="h-screen w-screen flex items-center justify-center text-zinc-500 font-sans">
+            Loading Atelier Studio...
+          </div>
+        }
+      >
+        <DesignerWorkbench />
       </Suspense>
     </DesignerProvider>
   );

@@ -2,11 +2,17 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { ShieldCheck, Gem } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
 export default function Footer() {
+  const pathname = usePathname();
   const { isRTL, language } = useLanguage();
+
+  if (pathname?.startsWith('/designer') || pathname?.startsWith('/studio')) {
+    return null;
+  }
 
   return (
     <footer className="w-full bg-white dark:bg-[#0E0E10] border-t border-gray-100 dark:border-white/10 pt-16 pb-12 text-zinc-600 dark:text-zinc-400 transition-colors duration-300">
