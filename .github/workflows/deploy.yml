@@ -1,0 +1,40 @@
+name: Artixain Continuous Delivery (CD)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy-vercel:
+    name: Deploy Web Storefront & Atelier to Vercel
+    needs: []
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Vercel Production
+        uses: amondnet/vercel-action@v25
+        if: env.VERCEL_TOKEN != ''
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+          working-directory: ./apps/web
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+  deploy-render:
+    name: Trigger Render Microservice Deployment Hook
+    needs: []
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Render Deploy Hook
+        if: env.RENDER_DEPLOY_HOOK_URL != ''
+        run: |
+          echo "[INFO] Triggering Render Production Microservices Deployment..."
+          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
+        env:
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}

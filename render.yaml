@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: artixain-api-microservices
+    env: docker
+    plan: free
+    region: oregon
+    dockerfilePath: Dockerfile
+    healthCheckPath: /api/v1/gems
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: MONGODB_URI
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        sync: false

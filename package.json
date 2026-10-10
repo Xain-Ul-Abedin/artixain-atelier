@@ -1,0 +1,17 @@
+{
+  "name": "@artixain/monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm --workspace=@artixain/web run dev",
+    "build": "npm --workspace=@artixain/shared run build && npm --workspace=@artixain/web run build",
+    "lint": "npm --workspace=@artixain/web run lint"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0"
+  }
+}
