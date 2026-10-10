@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../context/LanguageContext';
 import {
   Truck,
   ShieldCheck,
@@ -17,17 +18,10 @@ import {
   ArrowRight,
   User,
   LogOut,
-  Package,
-  Settings,
-  ExternalLink,
   Award,
-  Gem,
-  Heart,
   Sun,
   Moon,
-  MapPin,
-  HelpCircle,
-  Mail
+  ExternalLink
 } from 'lucide-react';
 
 export default function Navbar() {
@@ -35,6 +29,7 @@ export default function Navbar() {
   const { items, openDrawer } = useCart();
   const { profile, signOut } = useAuth();
   const { theme, toggleTheme } = useTheme();
+  const { language, toggleLanguage, t, isRTL } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [showShippingModal, setShowShippingModal] = useState(false);
@@ -72,12 +67,13 @@ export default function Navbar() {
                 <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white/80 dark:bg-zinc-800/80 text-zinc-800 dark:text-zinc-200 ring-1 ring-zinc-300/80 dark:ring-white/20 shadow-2xs">
                   <Truck className="w-3 h-3" />
                 </span>
-                <span className="truncate whitespace-nowrap font-bold text-xs tracking-wide">
-                  Free Tracked Shipping on Every Order
-                </span>
+                <span
+                  className="truncate whitespace-nowrap font-bold text-xs tracking-wide"
+                  dangerouslySetInnerHTML={{ __html: t('nav.shippingBanner') }}
+                />
                 <span className="hidden sm:inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-white/70 dark:bg-zinc-800/70 text-zinc-700 dark:text-zinc-300 border border-zinc-200/60 dark:border-white/10">
                   <ShieldCheck className="w-3 h-3 text-zinc-600 dark:text-zinc-400" />
-                  No code needed
+                  <span>No code needed</span>
                 </span>
               </span>
             </button>
@@ -94,13 +90,13 @@ export default function Navbar() {
               {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
 
-            {/* Official Artixain Logo & Brand Title */}
+            {/* Official Artixain Logo & Brand Title with Transparent Background */}
             <div className="flex items-center">
               <Link href="/" className="flex items-center gap-2.5 group cursor-pointer" aria-label="Artixain Home">
                 <img
-                  src="/logo.jpeg"
-                  alt="Artixain Logo"
-                  className="h-8 w-8 rounded-full object-cover shadow-xs ring-1 ring-zinc-200 dark:ring-white/20 group-hover:scale-105 transition-transform"
+                  src="/favicon.png"
+                  alt="Artixain Transparent Logo"
+                  className="h-8 w-8 object-contain transition-transform group-hover:scale-105"
                 />
                 <span className="font-sans font-bold text-[#1D1D1F] dark:text-white uppercase tracking-[0.35em] text-base leading-tight transition-transform group-hover:scale-105">
                   ARTIXAIN
@@ -115,13 +111,13 @@ export default function Navbar() {
                 href="/designer"
                 className="hover:text-black dark:hover:text-white transition-colors py-2 px-2 text-xs font-semibold"
               >
-                Customizer Studio
+                {t('nav.studio')}
               </Link>
 
               {/* Inspiration Dropdown */}
               <div className="relative group">
                 <button className="flex items-center gap-1 hover:text-black dark:hover:text-white transition-colors py-2 px-2 text-xs font-semibold cursor-pointer">
-                  <span>Collections</span>
+                  <span>{t('nav.collections')}</span>
                   <ChevronDown className="w-3 h-3 text-zinc-400 group-hover:text-black dark:group-hover:text-white transition-transform group-hover:rotate-180" />
                 </button>
                 <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 transition-all duration-200 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible pointer-events-none group-hover:pointer-events-auto">
@@ -130,13 +126,13 @@ export default function Navbar() {
                       href="/shop"
                       className="block px-3.5 py-2 text-xs font-medium text-zinc-600 dark:text-zinc-300 hover:text-black dark:hover:text-white hover:bg-gray-50 dark:hover:bg-zinc-800 rounded-xl transition-colors"
                     >
-                      Curated Sets
+                      {t('nav.collections')}
                     </Link>
                     <Link
                       href="/gallery"
                       className="block px-3.5 py-2 text-xs font-medium text-zinc-600 dark:text-zinc-300 hover:text-black dark:hover:text-white hover:bg-gray-50 dark:hover:bg-zinc-800 rounded-xl transition-colors"
                     >
-                      Design Gallery
+                      {t('nav.gallery')}
                     </Link>
                   </div>
                 </div>
@@ -145,7 +141,7 @@ export default function Navbar() {
               {/* Encyclopedia Dropdown */}
               <div className="relative group">
                 <button className="flex items-center gap-1 hover:text-black dark:hover:text-white transition-colors py-2 px-2 text-xs font-semibold cursor-pointer">
-                  <span>Encyclopedia</span>
+                  <span>{t('nav.encyclopedia')}</span>
                   <ChevronDown className="w-3 h-3 text-zinc-400 group-hover:text-black dark:group-hover:text-white transition-transform group-hover:rotate-180" />
                 </button>
                 <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 transition-all duration-200 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible pointer-events-none group-hover:pointer-events-auto">
@@ -172,42 +168,20 @@ export default function Navbar() {
                 </div>
               </div>
 
-              {/* Guide Dropdown */}
-              <div className="relative group">
-                <button className="flex items-center gap-1 hover:text-black dark:hover:text-white transition-colors py-2 px-2 text-xs font-semibold cursor-pointer">
-                  <span>Atelier Guide</span>
-                  <ChevronDown className="w-3 h-3 text-zinc-400 group-hover:text-black dark:group-hover:text-white transition-transform group-hover:rotate-180" />
-                </button>
-                <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 transition-all duration-200 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible pointer-events-none group-hover:pointer-events-auto">
-                  <div className="bg-white dark:bg-[#1F1F23] rounded-2xl shadow-xl border border-gray-100 dark:border-white/10 py-2 px-1.5 min-w-[190px]">
-                    <Link
-                      href="/guide/how-to-design"
-                      className="block px-3.5 py-2 text-xs font-medium text-zinc-600 dark:text-zinc-300 hover:text-black dark:hover:text-white hover:bg-gray-50 dark:hover:bg-zinc-800 rounded-xl transition-colors"
-                    >
-                      How to Design
-                    </Link>
-                    <Link
-                      href="/guide/size-guide"
-                      className="block px-3.5 py-2 text-xs font-medium text-zinc-600 dark:text-zinc-300 hover:text-black dark:hover:text-white hover:bg-gray-50 dark:hover:bg-zinc-800 rounded-xl transition-colors"
-                    >
-                      Size Calibration Guide
-                    </Link>
-                    <Link
-                      href="/faq"
-                      className="block px-3.5 py-2 text-xs font-medium text-zinc-600 dark:text-zinc-300 hover:text-black dark:hover:text-white hover:bg-gray-50 dark:hover:bg-zinc-800 rounded-xl transition-colors"
-                    >
-                      Frequently Asked Questions
-                    </Link>
-                  </div>
-                </div>
-              </div>
-
               {/* Location Salon */}
               <Link
                 href="/location"
                 className="text-xs font-semibold text-zinc-600 dark:text-zinc-300 hover:text-black dark:hover:text-white py-2 px-2 transition-colors inline-flex items-center gap-1"
               >
-                <span>Salon</span>
+                <span>{t('nav.salon')}</span>
+              </Link>
+
+              {/* FAQ */}
+              <Link
+                href="/faq"
+                className="text-xs font-semibold text-zinc-600 dark:text-zinc-300 hover:text-black dark:hover:text-white py-2 px-2 transition-colors inline-flex items-center gap-1"
+              >
+                <span>{t('nav.faq')}</span>
               </Link>
 
               {/* Contact Us */}
@@ -215,26 +189,32 @@ export default function Navbar() {
                 href="/contact"
                 className="text-xs font-semibold text-zinc-600 dark:text-zinc-300 hover:text-black dark:hover:text-white py-2 px-2 transition-colors inline-flex items-center gap-1"
               >
-                <span>Contact</span>
-              </Link>
-
-              {/* Admin Portal Link */}
-              <Link
-                href="/admin"
-                className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 hover:text-black dark:hover:text-white py-2 px-2 transition-colors"
-              >
-                Admin
+                <span>{t('nav.contact')}</span>
               </Link>
             </div>
 
-            {/* Right Action Controls: Dark Theme Toggle + Dedicated Auth / Profile + Cart + CTA */}
+            {/* Right Action Controls: Language Switcher + Dark Theme Toggle + Auth + Cart + CTA */}
             <div className="flex items-center gap-2 md:gap-2.5 shrink-0">
-              {/* Dark Theme Toggle Orb */}
+              {/* Language Switcher Capsule Orb (EN / UR) */}
               <button
                 type="button"
-                onClick={toggleTheme}
+                onClick={toggleLanguage}
+                aria-label={language === 'en' ? 'Switch to Urdu' : 'Switch to English'}
+                title={language === 'en' ? 'اردو زبان میں تبدیل کریں' : 'Switch to English'}
+                className="inline-flex items-center gap-1.5 h-9 px-3 rounded-full bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 transition-all text-xs font-semibold shadow-2xs active:scale-95"
+              >
+                <Globe className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-400" />
+                <span className={language === 'ur' ? 'font-urdu font-bold' : ''}>
+                  {language === 'en' ? 'UR' : 'EN'}
+                </span>
+              </button>
+
+              {/* Dark Theme Toggle Orb with Smooth Inkdrop Animation Origin */}
+              <button
+                type="button"
+                onClick={(e) => toggleTheme(e)}
                 aria-label={theme === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 transition-colors shadow-2xs active:scale-95"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 transition-colors shadow-2xs active:scale-95 cursor-pointer"
               >
                 {theme === 'dark' ? (
                   <Sun className="w-4 h-4 text-amber-400" />
@@ -320,7 +300,7 @@ export default function Navbar() {
                   aria-label="Login to Artixain"
                 >
                   <User className="w-3.5 h-3.5 text-zinc-700 dark:text-zinc-300" />
-                  <span>Login</span>
+                  <span>{t('nav.signIn')}</span>
                 </Link>
               )}
 
@@ -343,8 +323,8 @@ export default function Navbar() {
                 href="/designer"
                 className="hidden sm:inline-flex items-center gap-1.5 bg-[#1D1D1F] dark:bg-white text-white dark:text-zinc-950 text-xs font-semibold px-4 md:px-5 py-2 rounded-full hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-all hover:scale-105 active:scale-95 shadow-sm"
               >
-                <span>Start Designing</span>
-                <ArrowRight className="w-3 h-3" />
+                <span>{t('nav.startDesigning')}</span>
+                <ArrowRight className={`w-3 h-3 ${isRTL ? 'rotate-180' : ''}`} />
               </Link>
             </div>
           </nav>
@@ -358,7 +338,7 @@ export default function Navbar() {
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="col-span-2 flex items-center justify-center gap-2 p-3 rounded-full bg-zinc-900 text-white font-semibold text-center"
                 >
-                  <span>Start Designing</span>
+                  <span>{t('nav.startDesigning')}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
                 {profile ? (
@@ -391,7 +371,7 @@ export default function Navbar() {
                       className="flex items-center justify-center gap-1.5 p-2.5 rounded-full bg-zinc-900 text-white font-semibold text-center"
                     >
                       <User className="w-3.5 h-3.5" />
-                      <span>Sign In</span>
+                      <span>{t('nav.signIn')}</span>
                     </Link>
                     <Link
                       href="/register"
@@ -407,49 +387,49 @@ export default function Navbar() {
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="p-2.5 rounded-2xl bg-zinc-50 dark:bg-zinc-800 font-medium text-zinc-700 dark:text-zinc-200 text-center"
                 >
-                  Shopping Bag ({totalItemCount})
+                  {t('nav.cart')} ({totalItemCount})
                 </Link>
                 <Link
                   href="/shop"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="p-2.5 rounded-2xl bg-zinc-50 dark:bg-zinc-800 font-medium text-zinc-700 dark:text-zinc-200 text-center"
                 >
-                  Curated Sets
+                  {t('nav.collections')}
                 </Link>
                 <Link
                   href="/gallery"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="p-2.5 rounded-2xl bg-zinc-50 dark:bg-zinc-800 font-medium text-zinc-700 dark:text-zinc-200 text-center"
                 >
-                  Design Gallery
+                  {t('nav.gallery')}
                 </Link>
                 <Link
                   href="/encyclopedia"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="p-2.5 rounded-2xl bg-zinc-50 dark:bg-zinc-800 font-medium text-zinc-700 dark:text-zinc-200 text-center"
                 >
-                  32 Gemstones
+                  {t('nav.encyclopedia')}
                 </Link>
                 <Link
                   href="/location"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="p-2.5 rounded-2xl bg-zinc-50 dark:bg-zinc-800 font-medium text-zinc-700 dark:text-zinc-200 text-center"
                 >
-                  Atelier Salon
+                  {t('nav.salon')}
                 </Link>
                 <Link
                   href="/faq"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="p-2.5 rounded-2xl bg-zinc-50 dark:bg-zinc-800 font-medium text-zinc-700 dark:text-zinc-200 text-center"
                 >
-                  FAQ Guide
+                  {t('nav.faq')}
                 </Link>
                 <Link
                   href="/contact"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="col-span-2 p-2.5 rounded-2xl bg-zinc-50 dark:bg-zinc-800 font-medium text-zinc-700 dark:text-zinc-200 text-center"
                 >
-                  Concierge Support
+                  {t('nav.contact')}
                 </Link>
               </div>
             </div>

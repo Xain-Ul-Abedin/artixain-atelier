@@ -141,53 +141,32 @@ export default function LocationPage() {
           </div>
         </div>
 
-        {/* Right Column: Stylized Luxury Map Display (7 cols) */}
+        {/* Right Column: Real OpenStreetMap API Live Map Display (7 cols) */}
         <div className="lg:col-span-7">
-          <div className="relative aspect-[16/11] sm:aspect-[16/10] w-full rounded-3xl overflow-hidden border border-zinc-200/90 dark:border-white/10 bg-zinc-900 shadow-xl group">
-            {/* Stylized Architectural Map Canvas Visual */}
-            <div className="absolute inset-0 bg-[#0F141C] flex items-center justify-center overflow-hidden">
-              {/* Map grid lines */}
-              <div
-                className="absolute inset-0 opacity-20"
-                style={{
-                  backgroundImage: 'radial-gradient(circle at 1px 1px, #94A3B8 1px, transparent 0)',
-                  backgroundSize: '24px 24px'
-                }}
-              />
+          <div className="relative aspect-[16/11] sm:aspect-[16/10] w-full rounded-3xl overflow-hidden border border-zinc-200/90 dark:border-white/10 bg-zinc-100 dark:bg-zinc-900 shadow-xl group">
+            {/* Real Live OpenStreetMap API Embed */}
+            <iframe
+              title="Artixain Paris Salon Real Map API"
+              width="100%"
+              height="100%"
+              frameBorder="0"
+              scrolling="no"
+              marginHeight={0}
+              marginWidth={0}
+              src="https://www.openstreetmap.org/export/embed.html?bbox=2.3250%2C48.8650%2C2.3350%2C48.8700&layer=mapnik&marker=48.8675%2C2.3294"
+              className="w-full h-full rounded-3xl border-0 dark:invert-[0.9] dark:hue-rotate-180 dark:contrast-[1.2] transition-all"
+            />
 
-              {/* Decorative Street Vectors */}
-              <svg className="absolute inset-0 w-full h-full stroke-zinc-700/60 dark:stroke-zinc-600/50 fill-none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0,120 Q300,140 600,100 T1200,80" strokeWidth="6" />
-                <path d="M0,320 L1200,300" strokeWidth="8" />
-                <path d="M240,0 L260,800" strokeWidth="6" />
-                <path d="M640,0 L610,800" strokeWidth="10" />
-                <path d="M920,0 L890,800" strokeWidth="5" />
-                {/* Place Vendôme Octagon */}
-                <polygon points="610,250 670,270 700,330 670,390 610,410 550,390 520,330 550,270" strokeWidth="3" className="stroke-amber-400/70 fill-amber-500/10" />
-              </svg>
-
-              {/* Ambient Radial Vignette */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none" />
-
-              {/* Central Map Pin Marker with Pulse Ring */}
-              <div className="relative z-10 flex flex-col items-center">
-                <div className="relative flex items-center justify-center">
-                  <span className="absolute h-16 w-16 rounded-full bg-amber-400/20 animate-ping" />
-                  <div className="relative flex h-12 w-12 items-center justify-center rounded-full bg-zinc-900 border-2 border-amber-300 text-amber-300 shadow-2xl">
-                    <Gem className="w-5 h-5 fill-current" />
-                  </div>
-                </div>
-
-                {/* Pin Tooltip Capsule */}
-                <div className="mt-3 px-4 py-2 rounded-full bg-white/95 dark:bg-[#18181B]/95 backdrop-blur-md border border-zinc-200 dark:border-white/10 shadow-xl text-center">
-                  <p className="text-xs font-bold text-zinc-900 dark:text-white">Artixain Atelier</p>
-                  <p className="text-[10px] text-zinc-500 dark:text-zinc-400 font-mono">24 Place Vendôme, Paris</p>
-                </div>
-              </div>
+            {/* Top Left Salon Landmark Capsule */}
+            <div className="absolute top-4 left-4 z-20 pointer-events-none">
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/95 dark:bg-[#18181B]/95 backdrop-blur-md border border-zinc-200 dark:border-white/20 text-zinc-900 dark:text-white text-[11px] font-bold shadow-lg">
+                <Gem className="w-3.5 h-3.5 text-amber-500" />
+                <span>Artixain Atelier &bull; 24 Place Vendôme</span>
+              </span>
             </div>
 
             {/* Top Right Map Coordinates Badge */}
-            <div className="absolute top-4 right-4 z-20">
+            <div className="absolute top-4 right-4 z-20 pointer-events-none">
               <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white text-[10px] font-mono shadow-sm">
                 <Navigation className="w-3 h-3 text-amber-300" />
                 <span>48.8675° N, 2.3294° E</span>
@@ -206,7 +185,7 @@ export default function LocationPage() {
                 rel="noreferrer"
                 className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white text-zinc-950 text-xs font-semibold shadow hover:bg-zinc-100 transition-colors"
               >
-                <span>Google Maps</span>
+                <span>Directions</span>
                 <ArrowRight className="w-3 h-3" />
               </a>
             </div>
