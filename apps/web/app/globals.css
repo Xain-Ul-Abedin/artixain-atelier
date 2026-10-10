@@ -162,3 +162,54 @@
   animation: pulse-glow 3s ease-in-out infinite;
 }
 
+/* Subtle Pearlescent Rainbow Shimmer for Announcement Pill */
+@keyframes rainbow-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.rainbow-shimmer-bg {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(254, 226, 226, 0.4) 20%,
+    rgba(254, 243, 199, 0.4) 40%,
+    rgba(209, 250, 229, 0.4) 60%,
+    rgba(224, 231, 255, 0.4) 80%,
+    rgba(255, 255, 255, 0.95) 100%
+  );
+  background-size: 250% 250%;
+  animation: rainbow-shift 8s ease infinite;
+}
+
+.dark .rainbow-shimmer-bg {
+  background: linear-gradient(
+    135deg,
+    rgba(24, 24, 27, 0.95) 0%,
+    rgba(159, 18, 57, 0.25) 20%,
+    rgba(180, 83, 9, 0.25) 40%,
+    rgba(6, 95, 70, 0.25) 60%,
+    rgba(30, 58, 138, 0.25) 80%,
+    rgba(24, 24, 27, 0.95) 100%
+  );
+  background-size: 250% 250%;
+  animation: rainbow-shift 8s ease infinite;
+}
+
+/* Page Transition Wrapper */
+.page-transition-wrapper {
+  animation: pageFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
