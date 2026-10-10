@@ -27,7 +27,7 @@ jobs:
         run: npm --workspace=@artixain/shared run build
 
       - name: Execute Domain Invariant Mathematical Test Runner
-        run: node --experimental-strip-types scratch/verify_pure.mjs
+        run: node test/verify_pure.mjs
 
       - name: Build Next.js 15 Web Application (@artixain/web)
         run: npm --workspace=@artixain/web run build
