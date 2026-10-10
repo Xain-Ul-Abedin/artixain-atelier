@@ -1,6 +1,7 @@
 import { connectToDatabase } from '../db/mongoose';
 import { Order, IOrder, OrderStatus, IOrderItem } from '../db/models/Order';
-import { calculateVolumePricing } from '@artixain/shared';
+import { calculateVolumePricing, decodeDesignToken } from '@artixain/shared';
+import { GemService } from './gemService';
 import { NotificationService } from './notificationService';
 
 export interface CreateOrderDTO {
@@ -33,7 +34,7 @@ export class OrderService {
   }
 
   /**
-   * Creates a new bespoke order with validated pricing and cord cut calculation.
+   * Creates a new bespoke order with validated pricing, cord cut calculation, and atomic inventory reservation.
    */
   static async createOrder(data: CreateOrderDTO): Promise<any> {
     const orderNumber = this.generateOrderNumber();
@@ -50,6 +51,33 @@ export class OrderService {
     const primaryWrist = data.items[0]?.wristSizeCm || 16.5;
     const cordCutLengthCm = Number((primaryWrist + 4.5).toFixed(1));
 
+    // Decrement inventory for all beads across items & check for backordered gems
+    let hasMadeToOrderBeads = false;
+    for (const item of data.items) {
+      if (item.beads && Array.isArray(item.beads)) {
+        for (const bead of item.beads) {
+          if (bead.code) {
+            const stockResult = await GemService.adjustStock(bead.code, -1);
+            if (stockResult.newStock === 0) {
+              hasMadeToOrderBeads = true;
+            }
+          }
+        }
+      } else if (item.designToken) {
+        const decoded = decodeDesignToken(item.designToken);
+        if (decoded && decoded.beads) {
+          for (const bead of decoded.beads) {
+            if (bead.code) {
+              const stockResult = await GemService.adjustStock(bead.code, -1);
+              if (stockResult.newStock === 0) {
+                hasMadeToOrderBeads = true;
+              }
+            }
+          }
+        }
+      }
+    }
+
     const orderPayload = {
       orderNumber,
       customer: {
@@ -65,6 +93,8 @@ export class OrderService {
       },
       status: 'Placed' as OrderStatus,
       cordCutLengthCm,
+      isMadeToOrder: hasMadeToOrderBeads,
+      estimatedCraftingDays: hasMadeToOrderBeads ? 5 : 2,
     };
 
     try {
