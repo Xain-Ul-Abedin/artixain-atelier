@@ -174,16 +174,16 @@ class BraceletCustomPainter extends CustomPainter {
 
         // Bright optical chatoyant slit
         final slitPaint = Paint()
-          ..shader = LinearGradient(
+          ..shader = const LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
               Colors.transparent,
-              const Color(0xB0FFE18C),
-              const Color(0xB0FFE18C),
+              Color(0xB0FFE18C),
+              Color(0xB0FFE18C),
               Colors.transparent,
             ],
-            stops: const [0.0, 0.45, 0.55, 1.0],
+            stops: [0.0, 0.45, 0.55, 1.0],
           ).createShader(Rect.fromCircle(center: center, radius: radius));
         canvas.drawCircle(center, radius, slitPaint);
       } else if (bead.textureType == 'iridescent') {
@@ -201,11 +201,11 @@ class BraceletCustomPainter extends CustomPainter {
 
         // Peacock Iridescent Sheen
         final flashPaint = Paint()
-          ..shader = RadialGradient(
-            center: const Alignment(0.2, -0.2),
+          ..shader = const RadialGradient(
+            center: Alignment(0.2, -0.2),
             colors: [
-              const Color(0x904ADE80),
-              const Color(0x6038BDF8),
+              Color(0x904ADE80),
+              Color(0x6038BDF8),
               Colors.transparent,
             ],
           ).createShader(Rect.fromCircle(center: center, radius: radius));
