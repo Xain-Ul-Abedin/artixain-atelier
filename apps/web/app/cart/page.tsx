@@ -69,7 +69,7 @@ export default function CartPage() {
                     className="w-14 h-14 rounded-full border border-black/10 dark:border-white/20 shadow-md shrink-0 flex items-center justify-center"
                     style={{
                       background: gem
-                        ? `radial-gradient(circle at 35% 35%, rgba(255,255,255,0.75) 0%, ${gem.colorHex} 50%, ${gem.secondaryColorHex || '#18181B'} 100%)`
+                        ? `radial-gradient(circle at 35% 35%, rgba(255,255,255,0.75) 0%, ${gem.colorHex || gem.baseColorHex || '#C5A059'} 50%, ${gem.secondaryColorHex || gem.accentColorHex || '#18181B'} 100%)`
                         : '#C5A059'
                     }}
                   />

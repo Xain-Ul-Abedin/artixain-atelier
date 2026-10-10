@@ -142,14 +142,14 @@ export default function HomePage() {
               <div
                 className="w-16 h-16 rounded-full border border-black/10 dark:border-white/20 shadow-md group-hover:scale-110 transition-transform duration-300 mb-3"
                 style={{
-                  background: `radial-gradient(circle at 35% 35%, rgba(255,255,255,0.8) 0%, ${gem.colorHex} 50%, ${gem.secondaryColorHex || '#18181B'} 100%)`
+                  background: `radial-gradient(circle at 35% 35%, rgba(255,255,255,0.8) 0%, ${gem.colorHex || gem.baseColorHex || '#C5A059'} 50%, ${gem.secondaryColorHex || gem.accentColorHex || '#18181B'} 100%)`
                 }}
               />
               <span className="text-sm font-bold text-obsidian-900 dark:text-white">
                 {gem.name}
               </span>
               <span className="text-[10px] text-zinc-500 mt-0.5">
-                {gem.chakra} Chakra
+                {gem.chakra || gem.primaryChakra} Chakra
               </span>
               <span className="text-xs font-semibold text-champagne-600 dark:text-champagne-400 mt-2">
                 From ${gem.pricesByDiameter[8].toFixed(2)}/bead

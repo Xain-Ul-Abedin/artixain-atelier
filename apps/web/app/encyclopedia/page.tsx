@@ -17,10 +17,11 @@ export default function EncyclopediaPage() {
     const matchesSearch =
       gem.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       gem.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      gem.meaning.toLowerCase().includes(searchQuery.toLowerCase());
+      (gem.meaning || gem.healingLore || '').toLowerCase().includes(searchQuery.toLowerCase());
 
     if (!matchesSearch) return false;
-    if (selectedChakra !== 'all' && !gem.chakra.toLowerCase().includes(selectedChakra.toLowerCase())) {
+    const gemChakra = gem.chakra || gem.primaryChakra || '';
+    if (selectedChakra !== 'all' && !gemChakra.toLowerCase().includes(selectedChakra.toLowerCase())) {
       return false;
     }
     return true;
@@ -94,10 +95,10 @@ export default function EncyclopediaPage() {
 
                 <div className="text-right">
                   <span className="text-xs font-bold text-champagne-600 dark:text-champagne-400 block">
-                    Mohs Hardness: {gem.hardness}
+                    Mohs Hardness: {gem.hardnessMohs || 7}
                   </span>
                   <span className="text-[11px] text-zinc-400">
-                    {gem.chakra} Chakra
+                    {gem.chakra || gem.primaryChakra} Chakra
                   </span>
                 </div>
               </div>
@@ -107,7 +108,7 @@ export default function EncyclopediaPage() {
                 {gem.name}
               </h3>
               <p className="text-xs font-semibold text-champagne-700 dark:text-champagne-300 mt-1">
-                &ldquo;{gem.meaning}&rdquo;
+                &ldquo;{gem.meaning || gem.healingLore}&rdquo;
               </p>
               <p className="text-xs text-zinc-500 line-clamp-3 mt-2 leading-relaxed">
                 {gem.description}

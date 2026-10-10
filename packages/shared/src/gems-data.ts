@@ -23,6 +23,8 @@ export interface Gemstone {
   accentColorHex: string;
   colorHex?: string;
   secondaryColorHex?: string;
+  chakra?: string;
+  meaning?: string;
   textureType: TextureType;
   isSpacer: boolean;
   pricesByDiameter: Record<BeadDiameter, number>;
@@ -805,6 +807,8 @@ export const MASTER_GEMSTONES: Gemstone[] = [
 MASTER_GEMSTONES.forEach((g) => {
   g.colorHex = g.baseColorHex;
   g.secondaryColorHex = g.accentColorHex;
+  g.chakra = g.primaryChakra;
+  g.meaning = g.healingLore;
 });
 
 export function getGemstoneById(id: string): Gemstone | undefined {

@@ -33,10 +33,11 @@ export default function BeadPalette() {
 
   const filteredGems = MASTER_GEMSTONES.filter((gem) => {
     // Search query
+    const gemChakra = gem.chakra || gem.primaryChakra || '';
     const matchesSearch =
       gem.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       gem.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      gem.chakra.toLowerCase().includes(searchQuery.toLowerCase());
+      gemChakra.toLowerCase().includes(searchQuery.toLowerCase());
 
     if (!matchesSearch) return false;
 
@@ -51,7 +52,7 @@ export default function BeadPalette() {
       return ['LAP', 'SDR', 'FLR', 'CLQ', 'HOW', 'AZU', 'APO'].includes(gem.code);
     }
     if (selectedCategory === 'chakra' && selectedChakra !== 'all') {
-      return gem.chakra.toLowerCase().includes(selectedChakra.toLowerCase());
+      return gemChakra.toLowerCase().includes(selectedChakra.toLowerCase());
     }
 
     return true;
@@ -170,7 +171,7 @@ export default function BeadPalette() {
               <div
                 className="w-10 h-10 rounded-full shadow-inner border border-black/10 dark:border-white/20 mb-2 transition-transform duration-200 group-hover:scale-110 flex items-center justify-center relative overflow-hidden"
                 style={{
-                  background: `radial-gradient(circle at 35% 35%, rgba(255,255,255,0.7) 0%, ${gem.colorHex} 45%, ${gem.secondaryColorHex || '#18181B'} 100%)`
+                  background: `radial-gradient(circle at 35% 35%, rgba(255,255,255,0.7) 0%, ${gem.colorHex || gem.baseColorHex || '#C5A059'} 45%, ${gem.secondaryColorHex || gem.accentColorHex || '#18181B'} 100%)`
                 }}
               >
                 {gem.isSpacer && (
@@ -185,7 +186,7 @@ export default function BeadPalette() {
                 {gem.name}
               </span>
               <span className="text-[10px] text-zinc-500 line-clamp-1 text-center">
-                {gem.isSpacer ? 'Metallic Accent' : `${gem.chakra} Chakra`}
+                {gem.isSpacer ? 'Metallic Accent' : `${gem.chakra || gem.primaryChakra} Chakra`}
               </span>
 
               {/* Price & Action Badge */}
