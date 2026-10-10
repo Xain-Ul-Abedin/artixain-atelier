@@ -39,7 +39,7 @@ interface DesignerContextType {
   setSelectedDiameter: (d: 6 | 8 | 10 | 12) => void;
   setCordType: (t: 'silicone_stretch' | 'braided_silk' | 'gold_wire') => void;
   setSelectedIndex: (idx: number | null) => void;
-  setRotationAngle: (angle: number) => void;
+  setRotationAngle: React.Dispatch<React.SetStateAction<number>>;
   addBead: (gem: Gemstone, customDiameter?: 6 | 8 | 10 | 12) => void;
   insertBeadAt: (index: number, gem: Gemstone, customDiameter?: 6 | 8 | 10 | 12) => void;
   removeBeadAt: (index: number) => void;
