@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/cart_item_model.dart';
+import '../services/hive_storage_service.dart';
 
 class CartState {
   final List<CartItemModel> items;
@@ -34,7 +35,28 @@ class CartState {
 }
 
 class CartNotifier extends StateNotifier<CartState> {
-  CartNotifier() : super(CartState.empty());
+  CartNotifier() : super(CartState.empty()) {
+    _loadFromHive();
+  }
+
+  void _loadFromHive() {
+    try {
+      final cached = HiveStorageService.getCartItems();
+      if (cached.isNotEmpty) {
+        final loaded = cached.map((m) => CartItemModel.fromMap(m)).toList();
+        state = state.copyWith(items: loaded);
+      }
+    } catch (_) {}
+  }
+
+  void _persistToHive() {
+    try {
+      HiveStorageService.clearCart();
+      for (var item in state.items) {
+        HiveStorageService.saveCartItem(item.toMap());
+      }
+    } catch (_) {}
+  }
 
   void addItem(CartItemModel newItem) {
     final existingIndex = state.items.indexWhere(
@@ -49,11 +71,13 @@ class CartNotifier extends StateNotifier<CartState> {
     } else {
       state = state.copyWith(items: [...state.items, newItem]);
     }
+    _persistToHive();
   }
 
   void removeItem(String id) {
     final updated = state.items.where((it) => it.id != id).toList();
     state = state.copyWith(items: updated);
+    _persistToHive();
   }
 
   void updateQuantity(String id, int delta) {
@@ -69,10 +93,12 @@ class CartNotifier extends StateNotifier<CartState> {
       }
     }
     state = state.copyWith(items: updated);
+    _persistToHive();
   }
 
   void clearCart() {
     state = CartState.empty();
+    HiveStorageService.clearCart();
   }
 }
 

@@ -8,6 +8,7 @@ import '../models/cart_item_model.dart';
 import '../widgets/canvas/interactive_strand_canvas.dart';
 import '../widgets/common/pill_button.dart';
 import '../widgets/common/sizing_modal_sheet.dart';
+import '../services/hive_storage_service.dart';
 
 class StudioScreen extends ConsumerStatefulWidget {
   const StudioScreen({super.key});
@@ -82,6 +83,48 @@ class _StudioScreenState extends ConsumerState<StudioScreen> {
                                   ),
                                 ],
                               ),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+
+                          // Save Formula Bookmark Orb
+                          InkWell(
+                            onTap: strand.beads.isEmpty
+                                ? null
+                                : () async {
+                                    final messenger = ScaffoldMessenger.of(context);
+                                    final draftId = 'draft_${DateTime.now().millisecondsSinceEpoch}';
+                                    await HiveStorageService.saveDraft(
+                                      id: draftId,
+                                      name: 'Custom Strand (${strand.calculatedCircumferenceCm}cm)',
+                                      token: strand.designToken,
+                                      wristSizeCm: strand.targetWristSizeCm,
+                                      cordType: strand.cordType,
+                                      beadCount: strand.beads.length,
+                                      totalPrice: strand.totalPrice,
+                                      beads: strand.beads.map((b) => {
+                                        'code': b.code,
+                                        'name': b.name,
+                                        'diameterMm': b.diameterMm,
+                                        'price': b.price,
+                                      }).toList(),
+                                    );
+                                    messenger.showSnackBar(
+                                      SnackBar(
+                                        content: const Text('Formula saved locally in Hive (Cloud sync active)'),
+                                        behavior: SnackBarBehavior.floating,
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                      ),
+                                    );
+                                  },
+                            borderRadius: BorderRadius.circular(20),
+                            child: Container(
+                              padding: const EdgeInsets.all(9),
+                              decoration: BoxDecoration(
+                                color: isDark ? const Color(0xFF1F222A) : const Color(0xFFF0F0EC),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(LucideIcons.bookmark, size: 15, color: Color(0xFFC5A059)),
                             ),
                           ),
                           const SizedBox(width: 8),

@@ -52,6 +52,38 @@ class CartItemModel {
       primaryGemCode: primaryGemCode ?? this.primaryGemCode,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'type': type,
+      'token': token,
+      'wristSizeCm': wristSizeCm,
+      'cordType': cordType,
+      'beadCount': beadCount,
+      'beadSummary': beadSummary,
+      'unitPrice': unitPrice,
+      'quantity': quantity,
+      'primaryGemCode': primaryGemCode,
+    };
+  }
+
+  factory CartItemModel.fromMap(Map<String, dynamic> map) {
+    return CartItemModel(
+      id: map['id']?.toString() ?? '',
+      name: map['name']?.toString() ?? 'Artixain Strand',
+      type: map['type']?.toString() ?? 'custom',
+      token: map['token']?.toString(),
+      wristSizeCm: (map['wristSizeCm'] as num?)?.toDouble() ?? 16.5,
+      cordType: map['cordType']?.toString() ?? 'silicone_stretch',
+      beadCount: (map['beadCount'] as num?)?.toInt() ?? 20,
+      beadSummary: map['beadSummary']?.toString() ?? '',
+      unitPrice: (map['unitPrice'] as num?)?.toDouble() ?? 0.0,
+      quantity: (map['quantity'] as num?)?.toInt() ?? 1,
+      primaryGemCode: map['primaryGemCode']?.toString() ?? 'OBS',
+    );
+  }
 }
 
 class CartPricingModel {

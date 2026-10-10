@@ -9,7 +9,8 @@
   "scripts": {
     "dev": "npm --workspace=@artixain/web run dev",
     "build": "npm --workspace=@artixain/shared run build && npm --workspace=@artixain/web run build",
-    "lint": "npm --workspace=@artixain/web run lint"
+    "lint": "npm --workspace=@artixain/web run lint",
+    "test": "node test/verify_pure.mjs && node test/api_integration_test.mjs"
   },
   "devDependencies": {
     "typescript": "^5.6.0"

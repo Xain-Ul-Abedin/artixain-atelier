@@ -25,10 +25,18 @@ class _SizingModalSheetState extends ConsumerState<SizingModalSheet> {
   double _heightCm = 170.0;
   double _weightKg = 68.0;
   double _cardSliderWidth = 280.0;
+  double _wristWidthMm = 58.0;
 
   double get _estimatedWristSize {
     final raw = 12.5 + 0.035 * (_heightCm - 150.0) + 0.05 * (_weightKg - 50.0);
     return double.parse(raw.clamp(13.0, 25.0).toStringAsFixed(1));
+  }
+
+  double get _pxPerMm => _cardSliderWidth / 85.60;
+
+  double get _calibratedWristCm {
+    final rawCm = (_wristWidthMm * 2.663) / 10.0;
+    return double.parse(rawCm.clamp(13.0, 24.0).toStringAsFixed(1));
   }
 
   @override
@@ -290,13 +298,33 @@ class _SizingModalSheetState extends ConsumerState<SizingModalSheet> {
   }
 
   Widget _buildCaliperTab(StrandNotifier notifier) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final cordCutCm = (_calibratedWristCm + 4.5).toStringAsFixed(1);
+    final caliperWidthPx = (_wristWidthMm * _pxPerMm).clamp(120.0, 320.0);
+
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Hold a standard physical credit card (85.6mm) against your screen and adjust the slider until the outline matches precisely.',
-          style: TextStyle(fontSize: 12, color: Color(0xFF71717A)),
+        // Step 1: Card Calibration
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              'STEP 1: SCREEN DPI CALIBRATION',
+              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.2, color: Color(0xFFC5A059)),
+            ),
+            Text(
+              '${_pxPerMm.toStringAsFixed(2)} px/mm',
+              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Color(0xFF71717A)),
+            ),
+          ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 6),
+        const Text(
+          'Hold a standard physical card (85.6mm) against the glass and align the gold rectangle.',
+          style: TextStyle(fontSize: 11, color: Color(0xFF71717A)),
+        ),
+        const SizedBox(height: 12),
 
         // Card Outline Container
         Center(
@@ -306,22 +334,22 @@ class _SizingModalSheetState extends ConsumerState<SizingModalSheet> {
             decoration: BoxDecoration(
               color: const Color(0xFFC5A059).withOpacity(0.08),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: const Color(0xFFC5A059), width: 2, style: BorderStyle.solid),
+              border: Border.all(color: const Color(0xFFC5A059), width: 2),
             ),
             child: const Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(LucideIcons.creditCard, color: Color(0xFFC5A059), size: 32),
-                SizedBox(height: 6),
+                Icon(LucideIcons.creditCard, color: Color(0xFFC5A059), size: 28),
+                SizedBox(height: 4),
                 Text(
-                  'Standard Bank Card (85.6mm)',
+                  'ISO/IEC 7810 Card (85.60 mm)',
                   style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 8),
 
         Slider(
           value: _cardSliderWidth,
@@ -332,15 +360,105 @@ class _SizingModalSheetState extends ConsumerState<SizingModalSheet> {
         ),
         const SizedBox(height: 16),
 
-        PillButton(
-          label: 'Calibrate & Set 16.5cm',
-          icon: LucideIcons.check,
-          isFullWidth: true,
-          onPressed: () {
-            notifier.setTargetWristSize(16.5);
-            Navigator.pop(context);
-          },
+        // Step 2: Wrist Width Caliper
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              'STEP 2: ON-GLASS WRIST CALIPER',
+              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.2, color: Color(0xFFC5A059)),
+            ),
+            Text(
+              '${_wristWidthMm.toStringAsFixed(1)} mm breadth',
+              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Color(0xFF71717A)),
+            ),
+          ],
         ),
+        const SizedBox(height: 6),
+        const Text(
+          'Place your wrist flat between the brackets and adjust until both edges touch your skin.',
+          style: TextStyle(fontSize: 11, color: Color(0xFF71717A)),
+        ),
+        const SizedBox(height: 12),
+
+        // Wrist Caliper Brackets Container
+        Center(
+          child: Container(
+            width: caliperWidthPx,
+            height: 64,
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            decoration: BoxDecoration(
+              color: isDark ? const Color(0xFF1E212A) : const Color(0xFFF3F3EF),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.symmetric(
+                vertical: const BorderSide(color: Color(0xFFC5A059), width: 3),
+                horizontal: BorderSide(color: isDark ? Colors.white12 : Colors.black12, width: 1),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Icon(LucideIcons.chevronRight, size: 16, color: Color(0xFFC5A059)),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('REST WRIST FLAT HERE', style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold, letterSpacing: 1.0)),
+                    Text('${_wristWidthMm.toStringAsFixed(0)} mm', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
+                  ],
+                ),
+                const Icon(LucideIcons.chevronLeft, size: 16, color: Color(0xFFC5A059)),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+
+        Slider(
+          value: _wristWidthMm,
+          min: 40,
+          max: 80,
+          activeColor: const Color(0xFFC5A059),
+          onChanged: (val) => setState(() => _wristWidthMm = val),
+        ),
+        const SizedBox(height: 16),
+
+        // Telemetry Result Card
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: const Color(0xFFC5A059).withOpacity(0.1),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: const Color(0xFFC5A059).withOpacity(0.3)),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('CALIBRATED WRIST', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
+                  Text(
+                    '$_calibratedWristCm cm',
+                    style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, fontFamily: 'CormorantGaramond'),
+                  ),
+                  Text(
+                    'Atelier Cord Cut: $cordCutCm cm',
+                    style: const TextStyle(fontSize: 10, color: Color(0xFF71717A)),
+                  ),
+                ],
+              ),
+              PillButton(
+                label: 'Apply Size',
+                icon: LucideIcons.check,
+                onPressed: () {
+                  notifier.setTargetWristSize(_calibratedWristCm);
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
       ],
     );
   }

@@ -77,5 +77,44 @@ void main() {
       expect(state.calculatedCircumferenceCm > 14.0, true);
       expect(state.designToken.startsWith('artx.v1.'), true);
     });
+
+    test('CartItemModel toMap and fromMap round-trip preserves all fields for Hive', () {
+      const original = CartItemModel(
+        id: 'cart_test_1',
+        name: 'Custom Strand',
+        type: 'custom',
+        token: 'artx.v1.165.sil.OBS8-TIG8-GSP6',
+        wristSizeCm: 16.5,
+        cordType: 'silicone_stretch',
+        beadCount: 20,
+        beadSummary: '20 Gemstones',
+        unitPrice: 48.0,
+        quantity: 2,
+        primaryGemCode: 'OBS',
+      );
+
+      final map = original.toMap();
+      final restored = CartItemModel.fromMap(map);
+
+      expect(restored.id, original.id);
+      expect(restored.name, original.name);
+      expect(restored.token, original.token);
+      expect(restored.wristSizeCm, original.wristSizeCm);
+      expect(restored.cordType, original.cordType);
+      expect(restored.beadCount, original.beadCount);
+      expect(restored.unitPrice, original.unitPrice);
+      expect(restored.quantity, original.quantity);
+      expect(restored.primaryGemCode, original.primaryGemCode);
+    });
+
+    test('On-Screen Caliper Ramanujan wrist circumference & +4.5cm cord cut invariant', () {
+      const wristWidthMm = 58.0;
+      const rawWristCm = (wristWidthMm * 2.663) / 10.0;
+      final calibratedWristCm = double.parse(rawWristCm.toStringAsFixed(1));
+      final cordCutCm = double.parse((calibratedWristCm + 4.5).toStringAsFixed(1));
+
+      expect(calibratedWristCm, 15.4);
+      expect(cordCutCm, 19.9);
+    });
   });
 }

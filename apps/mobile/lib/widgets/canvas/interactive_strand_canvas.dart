@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../providers/strand_provider.dart';
@@ -14,6 +15,8 @@ class InteractiveStrandCanvas extends ConsumerStatefulWidget {
 
 class _InteractiveStrandCanvasState extends ConsumerState<InteractiveStrandCanvas> {
   double _zoomScale = 1.0;
+  double _baseZoom = 1.0;
+  double _baseRotation = 0.0;
   Offset? _lightOffset;
   double _lastTouchAngle = 0.0;
   int? _draggedIndex;
@@ -50,60 +53,77 @@ class _InteractiveStrandCanvasState extends ConsumerState<InteractiveStrandCanva
           child: Stack(
             alignment: Alignment.center,
             children: [
-              // Interactive 120 FPS Canvas & Touch Recognizer
+              // Interactive 120 FPS Canvas & Tactile Multi-Touch Recognizer
               GestureDetector(
-                onPanStart: (details) {
-                  final local = details.localPosition;
+                onScaleStart: (details) {
+                  _baseZoom = _zoomScale;
+                  _baseRotation = strand.rotationAngle;
+                  final local = details.localFocalPoint;
                   _lightOffset = local;
                   final center = Offset(constraints.maxWidth / 2, constraints.maxHeight / 2);
                   _lastTouchAngle = math.atan2(local.dy - center.dy, local.dx - center.dx);
 
-                  // Hit detection for bead selection
-                  final positions = painter.calculateBeadPositions(Size(constraints.maxWidth, constraints.maxHeight));
-                  int? hitIndex;
-                  for (var p in positions) {
-                    final dist = (p.center - local).distance;
-                    if (dist <= p.radius + 8.0) {
-                      hitIndex = p.index;
-                      break;
-                    }
-                  }
-
-                  if (hitIndex != null) {
-                    strandNotifier.setSelectedIndex(hitIndex);
-                    _draggedIndex = hitIndex;
-                  } else {
-                    strandNotifier.setSelectedIndex(null);
-                  }
-                },
-                onPanUpdate: (details) {
-                  final local = details.localPosition;
-                  _lightOffset = local;
-                  final center = Offset(constraints.maxWidth / 2, constraints.maxHeight / 2);
-                  final currentAngle = math.atan2(local.dy - center.dy, local.dx - center.dx);
-                  final deltaAngle = (currentAngle - _lastTouchAngle) * 180.0 / math.pi;
-
-                  if (_draggedIndex != null) {
-                    // Check if dragged onto another bead for reordering
+                  if (details.pointerCount == 1) {
                     final positions = painter.calculateBeadPositions(Size(constraints.maxWidth, constraints.maxHeight));
+                    int? hitIndex;
                     for (var p in positions) {
-                      if (p.index != _draggedIndex) {
-                        final dist = (p.center - local).distance;
-                        if (dist <= p.radius + 6.0) {
-                          strandNotifier.reorderBeads(_draggedIndex!, p.index);
-                          _draggedIndex = p.index;
-                          break;
-                        }
+                      final dist = (p.center - local).distance;
+                      if (dist <= p.radius + 10.0) {
+                        hitIndex = p.index;
+                        break;
                       }
                     }
-                  } else {
-                    // Rotate strand
-                    strandNotifier.setRotationAngle(strand.rotationAngle + deltaAngle);
-                  }
 
-                  _lastTouchAngle = currentAngle;
+                    if (hitIndex != null) {
+                      strandNotifier.setSelectedIndex(hitIndex);
+                      _draggedIndex = hitIndex;
+                      HapticFeedback.selectionClick();
+                    } else {
+                      strandNotifier.setSelectedIndex(null);
+                      _draggedIndex = null;
+                    }
+                  }
                 },
-                onPanEnd: (_) {
+                onScaleUpdate: (details) {
+                  final local = details.localFocalPoint;
+                  _lightOffset = local;
+                  final center = Offset(constraints.maxWidth / 2, constraints.maxHeight / 2);
+
+                  if (details.pointerCount >= 2) {
+                    setState(() {
+                      _zoomScale = (_baseZoom * details.scale).clamp(0.7, 2.2);
+                    });
+                    final rotationDelta = details.rotation * 180.0 / math.pi;
+                    strandNotifier.setRotationAngle((_baseRotation + rotationDelta) % 360);
+                  } else {
+                    final currentAngle = math.atan2(local.dy - center.dy, local.dx - center.dx);
+                    final deltaAngle = (currentAngle - _lastTouchAngle) * 180.0 / math.pi;
+
+                    if (_draggedIndex != null) {
+                      final positions = painter.calculateBeadPositions(Size(constraints.maxWidth, constraints.maxHeight));
+                      int? targetIndex;
+                      double minDistance = double.infinity;
+                      for (var p in positions) {
+                        final dist = (p.center - local).distance;
+                        if (dist < minDistance) {
+                          minDistance = dist;
+                          targetIndex = p.index;
+                        }
+                      }
+
+                      if (targetIndex != null && targetIndex != _draggedIndex && minDistance < 36.0) {
+                        strandNotifier.reorderBeads(_draggedIndex!, targetIndex);
+                        _draggedIndex = targetIndex;
+                        HapticFeedback.selectionClick();
+                      }
+                    } else {
+                      strandNotifier.setRotationAngle((strand.rotationAngle + deltaAngle) % 360);
+                    }
+
+                    _lastTouchAngle = currentAngle;
+                  }
+                },
+                onScaleEnd: (_) {
                   _draggedIndex = null;
                 },
                 child: CustomPaint(
