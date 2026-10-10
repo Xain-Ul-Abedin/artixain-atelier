@@ -37,7 +37,7 @@ export class GemService {
     }
 
     if (chakra && chakra !== 'all') {
-      results = results.filter((g) => g.chakra.toLowerCase().includes(chakra.toLowerCase()));
+      results = results.filter((g) => (g.chakra || g.primaryChakra || '').toLowerCase().includes(chakra.toLowerCase()));
     }
 
     return results;
