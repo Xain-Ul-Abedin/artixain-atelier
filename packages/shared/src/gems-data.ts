@@ -21,6 +21,8 @@ export interface Gemstone {
   cleansingMethod: string;
   baseColorHex: string;
   accentColorHex: string;
+  colorHex?: string;
+  secondaryColorHex?: string;
   textureType: TextureType;
   isSpacer: boolean;
   pricesByDiameter: Record<BeadDiameter, number>;
@@ -799,6 +801,11 @@ export const MASTER_GEMSTONES: Gemstone[] = [
     isAvailable: true
   }
 ];
+
+MASTER_GEMSTONES.forEach((g) => {
+  g.colorHex = g.baseColorHex;
+  g.secondaryColorHex = g.accentColorHex;
+});
 
 export function getGemstoneById(id: string): Gemstone | undefined {
   return MASTER_GEMSTONES.find((g) => g.id === id);
