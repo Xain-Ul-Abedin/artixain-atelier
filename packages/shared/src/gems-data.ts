@@ -25,6 +25,7 @@ export interface Gemstone {
   secondaryColorHex?: string;
   chakra?: string;
   meaning?: string;
+  zodiac?: string[];
   textureType: TextureType;
   isSpacer: boolean;
   pricesByDiameter: Record<BeadDiameter, number>;

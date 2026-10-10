@@ -119,7 +119,7 @@ export default function EncyclopediaPage() {
                 <div>
                   <span className="text-zinc-400 block">Zodiac Link:</span>
                   <span className="font-medium text-obsidian-900 dark:text-zinc-200">
-                    {gem.zodiac.join(', ') || 'Universal'}
+                    {(gem.zodiacSigns || gem.zodiac || []).join(', ') || 'Universal'}
                   </span>
                 </div>
                 <div>
