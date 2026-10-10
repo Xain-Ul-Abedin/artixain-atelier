@@ -149,7 +149,7 @@ export class OrderService {
     const validTransitions: Record<OrderStatus, OrderStatus[]> = {
       Placed: ['Assembling'],
       Assembling: ['QC Passed'],
-      QC Passed: ['Shipped'],
+      'QC Passed': ['Shipped'],
       Shipped: ['Delivered'],
       Delivered: [],
     };
