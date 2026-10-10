@@ -10,7 +10,7 @@ export interface PremadeBracelet {
   zodiacSigns: string[];
   primaryChakra: string;
   defaultWristSizeCm: number;
-  cordType?: string;
+  cordType?: 'silicone_stretch' | 'braided_silk' | 'gold_wire';
   basePrice: number;
   featuredImageUrl: string;
   galleryImageUrls: string[];

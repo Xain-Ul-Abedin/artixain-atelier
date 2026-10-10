@@ -41,7 +41,7 @@ export default function ShopPage() {
       type: 'premade',
       token: item.designToken || item.slug,
       wristSizeCm: item.defaultWristSizeCm,
-      cordType: item.cordType || 'silicone_stretch',
+      cordType: (item.cordType || 'silicone_stretch') as 'silicone_stretch' | 'braided_silk' | 'gold_wire',
       beadCount: beadsList.length,
       beadSummary: beadsList.map((b) => b.name).join(', '),
       unitPrice: item.basePrice,
