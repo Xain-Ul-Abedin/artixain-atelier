@@ -7,7 +7,7 @@ import { Sparkles, ArrowRight, CheckCircle2, Award } from 'lucide-react';
 
 export default function CraftsmanshipPage() {
   return (
-    <div className="container mx-auto px-4 py-12 max-w-5xl pt-28">
+    <div className="container mx-auto px-4 py-12 max-w-[1720px] pt-28 md:pt-32">
       <div className="text-center max-w-2xl mx-auto mb-16">
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-[11px] font-bold uppercase tracking-widest mb-3">
           <Sparkles className="w-3.5 h-3.5" />

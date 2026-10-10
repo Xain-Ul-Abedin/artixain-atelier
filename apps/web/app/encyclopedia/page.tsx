@@ -28,7 +28,7 @@ export default function EncyclopediaPage() {
   });
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl">
+    <div className="container mx-auto px-4 py-8 max-w-[1720px] pt-28 md:pt-32">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-zinc-200/80 dark:border-white/10">
         <div>

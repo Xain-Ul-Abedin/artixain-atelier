@@ -1,11 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
-import AuthModal from './auth/AuthModal';
 import {
   Truck,
   ShieldCheck,
@@ -28,24 +27,39 @@ import {
 export default function Navbar() {
   const pathname = usePathname();
   const { items, openDrawer } = useCart();
-  const { profile, openAuthModal, signOut } = useAuth();
+  const { profile, signOut } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [showShippingModal, setShowShippingModal] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 25);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const totalItemCount = items.reduce((acc, it) => acc + it.quantity, 0);
 
   return (
     <>
-      <header className="fixed top-2 left-0 right-0 z-50 px-4 md:px-6 pointer-events-none">
-        <div className="max-w-[1400px] md:max-w-[1300px] mx-auto pointer-events-auto">
-          {/* Top Announcement Capsule Banner */}
-          <div className="mb-1 overflow-hidden transition-all duration-300">
+      <header className="fixed top-2 left-0 right-0 z-50 px-4 md:px-8 pointer-events-none transition-all duration-300">
+        <div className="w-full max-w-[1720px] mx-auto pointer-events-auto">
+          {/* Top Announcement Capsule Banner (Auto-collapses on scroll to eliminate overlap) */}
+          <div
+            className={`overflow-hidden transition-all duration-300 ${
+              isScrolled
+                ? 'max-h-0 opacity-0 mb-0 pointer-events-none'
+                : 'max-h-12 opacity-100 mb-1.5'
+            }`}
+          >
             <button
               type="button"
               onClick={() => setShowShippingModal(true)}
               aria-label="Free Worldwide Shipping on Every Order"
-              className="group relative flex w-full cursor-pointer appearance-none items-center justify-center overflow-hidden border backdrop-blur-md transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 border-zinc-200/80 bg-white/90 text-zinc-800 hover:border-zinc-300 rounded-full px-3 py-1.5 shadow-sm"
+              className="group relative flex w-full cursor-pointer appearance-none items-center justify-center overflow-hidden border backdrop-blur-md transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 border-zinc-200/80 bg-white/95 text-zinc-800 hover:border-zinc-300 rounded-full px-3 py-1.5 shadow-sm"
             >
               <span className="relative flex items-center justify-center gap-2 text-xs">
                 <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-zinc-700 ring-1 ring-zinc-200/80 shadow-xs">
@@ -63,7 +77,7 @@ export default function Navbar() {
           </div>
 
           {/* Floating Capsule Main Navigation */}
-          <nav className="px-4 md:px-7 py-2 md:py-2.5 flex items-center justify-between rounded-full bg-white/95 backdrop-blur-md transition-all duration-300 shadow-lg border border-gray-100/80">
+          <nav className="px-4 md:px-8 py-2 md:py-2.5 flex items-center justify-between rounded-full bg-white/95 backdrop-blur-md transition-all duration-300 shadow-lg border border-gray-100/90">
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -73,13 +87,14 @@ export default function Navbar() {
               {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
 
-            {/* Logo / Brand Name: Artixain */}
+            {/* Official Artixain Logo & Brand Title */}
             <div className="flex items-center">
               <Link href="/" className="flex items-center gap-2.5 group cursor-pointer" aria-label="Artixain Home">
-                {/* Mineral emblem orb - ready for custom logo asset integration */}
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-zinc-900 text-white shadow-xs group-hover:scale-105 transition-transform">
-                  <Gem className="w-3.5 h-3.5 text-zinc-100" />
-                </span>
+                <img
+                  src="/logo.jpeg"
+                  alt="Artixain Logo"
+                  className="h-8 w-8 rounded-full object-cover shadow-xs ring-1 ring-zinc-200 group-hover:scale-105 transition-transform"
+                />
                 <span className="font-sans font-bold text-[#1D1D1F] uppercase tracking-[0.35em] text-base leading-tight transition-transform group-hover:scale-105">
                   ARTIXAIN
                 </span>
@@ -87,7 +102,7 @@ export default function Navbar() {
             </div>
 
             {/* Desktop Navigation Links with Dropdowns */}
-            <div className="hidden md:flex min-w-0 flex-1 flex-wrap items-center justify-center gap-x-4 gap-y-1 text-sm font-medium text-zinc-700">
+            <div className="hidden md:flex min-w-0 flex-1 flex-wrap items-center justify-center gap-x-5 gap-y-1 text-sm font-medium text-zinc-700">
               {/* Inspiration Dropdown */}
               <div className="relative group">
                 <button className="flex items-center gap-1 hover:text-black transition-colors py-2 px-2.5 text-xs font-semibold cursor-pointer">
@@ -175,7 +190,7 @@ export default function Navbar() {
               </Link>
             </div>
 
-            {/* Right Action Controls: Profile / Login + Cart + CTA */}
+            {/* Right Action Controls: Dedicated Auth / Profile + Cart + CTA */}
             <div className="flex items-center gap-2 md:gap-3 shrink-0">
               {/* Language Switcher Pill */}
               <button
@@ -186,7 +201,7 @@ export default function Navbar() {
                 <span>EN</span>
               </button>
 
-              {/* Profile Management / Login Option */}
+              {/* Profile Management or Dedicated Sign In Link */}
               {profile ? (
                 <div className="relative">
                   <button
@@ -227,7 +242,7 @@ export default function Navbar() {
                         <span>My Profile</span>
                       </Link>
                       <Link
-                        href="/profile"
+                        href="/profile#orders"
                         onClick={() => setIsProfileMenuOpen(false)}
                         className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-zinc-700 hover:bg-zinc-50 hover:text-zinc-950 font-medium transition-colors"
                       >
@@ -235,7 +250,7 @@ export default function Navbar() {
                         <span>Order History</span>
                       </Link>
                       <Link
-                        href="/profile"
+                        href="/profile#saved"
                         onClick={() => setIsProfileMenuOpen(false)}
                         className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-zinc-700 hover:bg-zinc-50 hover:text-zinc-950 font-medium transition-colors"
                       >
@@ -265,15 +280,14 @@ export default function Navbar() {
                   )}
                 </div>
               ) : (
-                <button
-                  type="button"
-                  onClick={openAuthModal}
-                  className="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-full bg-zinc-100 hover:bg-zinc-200 text-zinc-800 transition-all text-xs font-semibold active:scale-95 shadow-xs"
-                  aria-label="Login or Register"
+                <Link
+                  href="/login"
+                  className="inline-flex items-center gap-1.5 h-9 px-4 rounded-full bg-zinc-100 hover:bg-zinc-200 text-zinc-800 transition-all text-xs font-semibold active:scale-95 shadow-xs"
+                  aria-label="Login to Artixain"
                 >
                   <User className="w-3.5 h-3.5 text-zinc-700" />
                   <span>Login</span>
-                </button>
+                </Link>
               )}
 
               {/* Cart Trigger Button */}
@@ -336,17 +350,23 @@ export default function Navbar() {
                     </button>
                   </>
                 ) : (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setIsMobileMenuOpen(false);
-                      openAuthModal();
-                    }}
-                    className="col-span-2 flex items-center justify-center gap-2 p-2.5 rounded-full bg-zinc-100 font-semibold text-zinc-900 text-center"
-                  >
-                    <User className="w-3.5 h-3.5" />
-                    <span>Login / Patron Access</span>
-                  </button>
+                  <div className="col-span-2 grid grid-cols-2 gap-2">
+                    <Link
+                      href="/login"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center justify-center gap-1.5 p-2.5 rounded-full bg-zinc-900 text-white font-semibold text-center"
+                    >
+                      <User className="w-3.5 h-3.5" />
+                      <span>Sign In</span>
+                    </Link>
+                    <Link
+                      href="/register"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center justify-center gap-1.5 p-2.5 rounded-full bg-zinc-100 text-zinc-900 font-semibold text-center"
+                    >
+                      <span>Register</span>
+                    </Link>
+                  </div>
                 )}
                 <Link
                   href="/gallery"
@@ -414,9 +434,6 @@ export default function Navbar() {
           </div>
         </div>
       )}
-
-      {/* Auth Modal for Sign In & Profile Management */}
-      <AuthModal />
     </>
   );
 }

@@ -273,7 +273,7 @@ export default function AdminOverviewPage() {
 
   if (!isUnlocked) {
     return (
-      <div className="min-h-[80vh] flex items-center justify-center px-4">
+      <div className="min-h-[80vh] flex items-center justify-center px-4 pt-28 md:pt-32">
         <div className="max-w-md w-full p-8 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 shadow-xl text-center">
           <div className="w-12 h-12 rounded-full bg-champagne-500/10 text-champagne-600 dark:text-champagne-400 mx-auto flex items-center justify-center mb-4">
             <Lock className="w-6 h-6" />
@@ -329,7 +329,7 @@ export default function AdminOverviewPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl">
+    <div className="container mx-auto px-4 py-8 max-w-[1720px] pt-28 md:pt-32">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-zinc-200/80 dark:border-white/10">
         <div>

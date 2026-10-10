@@ -19,7 +19,12 @@ export const metadata: Metadata = {
     'Tiger Eye',
     'Obsidian',
     'Labradorite'
-  ]
+  ],
+  icons: {
+    icon: '/favicon.jpeg',
+    shortcut: '/favicon.jpeg',
+    apple: '/favicon.jpeg'
+  }
 };
 
 export default function RootLayout({

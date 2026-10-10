@@ -118,7 +118,7 @@ export default function GalleryPage() {
   });
 
   return (
-    <div className="container mx-auto px-4 py-10 max-w-7xl pt-28">
+    <div className="container mx-auto px-4 py-10 max-w-[1720px] pt-28 md:pt-32">
       {/* Page Header */}
       <div className="text-center max-w-2xl mx-auto mb-10">
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 border border-amber-200/80 text-amber-800 text-[11px] font-bold uppercase tracking-widest mb-3">

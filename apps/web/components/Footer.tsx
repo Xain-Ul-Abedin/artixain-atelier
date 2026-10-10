@@ -7,12 +7,17 @@ import { ShieldCheck, Truck, RefreshCw, Heart, Gem } from 'lucide-react';
 export default function Footer() {
   return (
     <footer className="w-full bg-white border-t border-gray-100 pt-16 pb-12 text-zinc-600">
-      <div className="max-w-[1400px] md:max-w-[1300px] mx-auto px-6 md:px-10">
+      <div className="w-full max-w-[1720px] mx-auto px-6 md:px-12">
         {/* Main Footer Links & Brand Section */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 pb-12 border-b border-gray-100">
           {/* Brand Info (Span 2 on Desktop) */}
           <div className="col-span-2 space-y-3">
-            <Link href="/" className="inline-block">
+            <Link href="/" className="inline-flex items-center gap-2.5">
+              <img
+                src="/logo.jpeg"
+                alt="Artixain Logo"
+                className="h-8 w-8 rounded-full object-cover shadow-sm ring-1 ring-zinc-200"
+              />
               <span className="font-sans font-bold text-[#1D1D1F] uppercase tracking-[0.35em] text-lg leading-tight">
                 ARTIXAIN
               </span>

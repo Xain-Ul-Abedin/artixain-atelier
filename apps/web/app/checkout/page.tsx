@@ -122,7 +122,7 @@ export default function CheckoutPage() {
 
   if (items.length === 0) {
     return (
-      <div className="container mx-auto px-4 py-20 text-center max-w-lg">
+      <div className="container mx-auto px-4 py-20 pt-32 text-center max-w-lg">
         <h2 className="text-2xl font-serif font-bold text-obsidian-900 dark:text-white mb-2">
           Your bag is empty
         </h2>
@@ -140,7 +140,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-10 max-w-6xl">
+    <div className="container mx-auto px-4 py-10 max-w-[1720px] pt-28 md:pt-32">
       <div className="pb-6 border-b border-zinc-200/80 dark:border-white/10 mb-8">
         <h1 className="text-3xl font-serif font-bold text-obsidian-900 dark:text-white">
           Atelier Bespoke Checkout

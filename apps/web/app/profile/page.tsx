@@ -82,20 +82,19 @@ export default function ProfilePage() {
         <p className="text-xs sm:text-sm text-zinc-500 mb-8 font-light leading-relaxed">
           Sign in to view your orders, calibrated wrist dimensions, and saved custom gemstone formulations.
         </p>
-        <button
-          type="button"
-          onClick={openAuthModal}
+        <Link
+          href="/login"
           className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-zinc-900 py-3.5 text-xs font-semibold text-white shadow-md hover:bg-zinc-800 transition-all active:scale-[0.97]"
         >
           <span>Sign In to Artixain</span>
           <ArrowRight className="w-3.5 h-3.5" />
-        </button>
+        </Link>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-5xl pt-28">
+    <div className="container mx-auto px-4 py-12 max-w-[1720px] pt-28 md:pt-32">
       {/* Profile Header Container */}
       <div className="rounded-[2rem] bg-[#FAFAFA] border border-zinc-200/80 p-6 md:p-8 mb-8 shadow-sm">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">

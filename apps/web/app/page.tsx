@@ -18,7 +18,9 @@ import {
   Ruler,
   Gem,
   Award,
-  Layers
+  Layers,
+  Clock,
+  Eye
 } from 'lucide-react';
 
 interface CuratedDesign {
@@ -160,6 +162,16 @@ const REVIEWS = [
   }
 ];
 
+// Clean Patron Video Testimonials without any external watermarks
+const PATRON_STORIES = [
+  { img: '/images/atelier/gem_04.jpg', label: 'Custom Strand Unboxing', user: '@sarah_gem', minerals: 'Rose Quartz & Moonstone' },
+  { img: '/images/atelier/gem_08.jpg', label: 'Wrist Calibration Review', user: '@david_wrist', minerals: 'Obsidian & Tiger Eye' },
+  { img: '/images/atelier/gem_14.jpg', label: 'Celestial Crystal Balance', user: '@chloe_luxe', minerals: 'Amethyst & Clear Quartz' },
+  { img: '/images/atelier/gem_17.jpg', label: 'Studio Bench Assembly', user: '@artisan_leo', minerals: 'Lapis Lazuli & Silver' },
+  { img: '/images/atelier/gem_21.jpg', label: 'Natural Light Reflections', user: '@gem_elena', minerals: 'Citrine & Pyrite' },
+  { img: '/images/atelier/gem_24.jpg', label: 'Finished Patron Formulation', user: '@alex_strands', minerals: 'Aquamarine & Selenite' }
+];
+
 export default function HomePage() {
   const [activeVideoModal, setActiveVideoModal] = useState<string | null>(null);
   const [selectedFilter, setSelectedFilter] = useState<string>('All');
@@ -177,152 +189,169 @@ export default function HomePage() {
     : CURATED_DESIGNS.filter((d) => d.category === selectedFilter);
 
   return (
-    <div className="flex flex-col w-full bg-white text-[#1D1D1F] overflow-x-hidden pt-16">
-      {/* 1. Hero Section: Scrollable & Time-Advancing Hero Visuals with Authentic Photography */}
-      <section className="relative w-full h-screen min-h-[640px] flex flex-col md:flex-row items-center overflow-hidden bg-[#FAFAFA]">
-        {/* Right 55-60% Container: Interactive Time-Based Image Slider */}
-        <div className="absolute inset-0 md:left-auto md:right-0 md:w-[60%] h-full z-0">
-          <HeroSlider />
-        </div>
+    <div className="flex flex-col w-full bg-white text-[#1D1D1F] overflow-x-hidden pt-24 md:pt-28">
+      {/* 1. Hero Section: Simplified UX, 2-Column Responsive Layout without Navbar Collisions */}
+      <section className="relative w-full bg-[#FAFAFA] border-b border-zinc-100 py-10 sm:py-14 lg:py-20">
+        <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 md:px-10 lg:px-14 xl:px-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+            {/* Left Column: Brand Story & Call to Actions (lg: 6 cols) */}
+            <div className="lg:col-span-6 flex flex-col items-center lg:items-start text-center lg:text-left">
+              {/* Luxury Atelier Eyebrow Pill */}
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-zinc-200 text-xs font-semibold text-zinc-800 mb-5 shadow-2xs">
+                <Sparkles className="w-3.5 h-3.5 text-zinc-950" />
+                <span>Artixain Atelier &bull; 100% Certified Natural Minerals</span>
+              </div>
 
-        {/* Left 40-45% Typography & Action Container */}
-        <div className="relative z-20 w-full md:w-[45%] h-full flex flex-col justify-end md:justify-center items-center md:items-start pointer-events-none pb-16 md:pb-0 md:pt-20 px-8 sm:px-12 md:pl-20 lg:pl-24">
-          <div className="w-full pointer-events-auto flex flex-col items-center md:items-start text-center md:text-left">
-            {/* Clean Static Luxury Badge (No Green Blinking AI Slop) */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 border border-zinc-200 text-[11px] font-semibold text-zinc-700 mb-4 shadow-sm">
-              <Sparkles className="w-3.5 h-3.5 text-zinc-900" />
-              <span>Artixain Atelier &bull; 100% Certified Natural Minerals</span>
+              {/* Editorial Luxury Title */}
+              <h1 className="font-serif text-[clamp(2.4rem,5.5vw,4.25rem)] leading-[1.12] tracking-tight text-[#1D1D1F] mb-5">
+                <span className="block font-medium">Designed by You</span>
+                <span className="block italic text-zinc-400 font-light">Crafted by Artixain</span>
+              </h1>
+
+              {/* Subtitle */}
+              <p className="text-zinc-500 text-sm sm:text-base font-light leading-relaxed mb-8 max-w-lg">
+                Craft your bespoke gemstone bracelet. Interactive 120 FPS strand designer with millimeter wrist calibration and master bench fulfillment.
+              </p>
+
+              {/* Action Buttons (Material You 50% Radius Pill Law) */}
+              <div className="flex flex-col sm:flex-row items-center gap-3.5 w-full sm:w-auto mb-8">
+                <Link
+                  href="/designer"
+                  className="group inline-flex items-center justify-center gap-2.5 rounded-full px-8 py-4 bg-[#18181B] text-white font-semibold text-xs uppercase tracking-wider shadow-lg hover:bg-zinc-800 hover:-translate-y-0.5 active:scale-[0.98] transition-all w-full sm:w-auto"
+                >
+                  <span>Start Designing</span>
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/15 ring-1 ring-white/30 group-hover:translate-x-0.5 transition-transform">
+                    <ArrowRight className="w-3 h-3 text-white" />
+                  </span>
+                </Link>
+
+                <Link
+                  href="/gallery"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-zinc-200 bg-white hover:bg-zinc-50 text-zinc-800 px-7 py-4 text-xs font-semibold uppercase tracking-wider transition-all w-full sm:w-auto shadow-2xs active:scale-[0.98]"
+                >
+                  <Gem className="w-3.5 h-3.5 text-zinc-700" />
+                  <span>View Gallery</span>
+                </Link>
+              </div>
+
+              {/* Value Proposition Pills */}
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 text-[11px] text-zinc-500 font-medium">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100/90 text-zinc-700">
+                  <ShieldCheck className="w-3 h-3 text-emerald-600" />
+                  Grade-A Natural Minerals
+                </span>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100/90 text-zinc-700">
+                  <Ruler className="w-3 h-3 text-zinc-600" />
+                  Millimeter Wrist Fit
+                </span>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100/90 text-zinc-700">
+                  <Clock className="w-3 h-3 text-zinc-600" />
+                  Lifetime Cord Warranty
+                </span>
+              </div>
             </div>
 
-            <h1 className="font-serif text-[clamp(2.1rem,6vw,2.75rem)] sm:text-[2.75rem] md:text-[3.25rem] lg:text-[4rem] md:leading-[1.1] tracking-tight text-[#1D1D1F] mb-4 md:mb-6 leading-[1.15]">
-              <span className="block font-medium">Designed by You</span>
-              <span className="block italic text-zinc-400 font-light">Crafted by Artixain</span>
-            </h1>
-
-            <p className="text-zinc-500 text-[15px] md:text-base font-light leading-relaxed mb-8 md:mb-10 max-w-sm md:max-w-md">
-              Craft your bespoke gemstone bracelet. Interactive 120 FPS strand designer with millimeter wrist calibration and master bench fulfillment.
-            </p>
-
-            {/* CTA Button Actions (Clean & Free of Blinking Dots) */}
-            <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-              <Link
-                href="/designer"
-                className="group relative inline-flex items-center justify-center gap-2.5 rounded-full px-8 md:px-9 py-3.5 md:py-4 bg-[#18181B] text-white font-semibold text-sm shadow-[0_18px_38px_-16px_rgba(24,24,27,0.75)] hover:bg-zinc-800 hover:-translate-y-0.5 active:scale-[0.97] transition-all w-full sm:w-auto"
-              >
-                <span>Start Designing</span>
-                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/15 ring-1 ring-white/30 group-hover:translate-x-0.5 transition-transform">
-                  <ArrowRight className="w-3 h-3 text-white" />
-                </span>
-              </Link>
-
-              <Link
-                href="/gallery"
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-zinc-200 bg-white/90 hover:bg-white text-zinc-800 px-8 py-3.5 text-xs font-semibold uppercase tracking-wider transition-all w-full sm:w-auto shadow-sm active:scale-[0.97]"
-              >
-                <Gem className="w-3.5 h-3.5 text-zinc-700" />
-                <span>View Gallery</span>
-              </Link>
+            {/* Right Column: Simplified, Framed Authentic Visual Showcase (lg: 6 cols) */}
+            <div className="lg:col-span-6 w-full flex justify-center">
+              <HeroSlider />
             </div>
           </div>
         </div>
       </section>
 
-      {/* 2. Trust, Patron Counters & Walkthrough Video Section */}
-      <section className="overflow-hidden bg-[#FAFAFA] px-4 py-12 md:py-20 border-t border-zinc-100">
-        <div className="mx-auto max-w-[1400px] md:max-w-[1300px]">
+      {/* 2. Trust, Patron Counters & Master Atelier Walkthrough (Fluid Wide Container) */}
+      <section id="walkthrough" className="scroll-mt-32 overflow-hidden bg-white px-4 sm:px-6 md:px-10 lg:px-14 xl:px-16 py-14 md:py-20 border-b border-zinc-100">
+        <div className="w-full max-w-[1720px] mx-auto">
           {/* Header Row with Patron Counters */}
-          <div className="mx-auto flex max-w-3xl flex-col items-center text-center md:max-w-none md:flex-row md:items-end md:justify-between md:gap-10 md:text-left">
-            <div className="flex flex-col items-center md:items-start">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-white px-3.5 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-600 shadow-sm">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+            <div>
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-zinc-50 px-3.5 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-600 shadow-2xs mb-3">
                 <Award className="w-3 h-3 text-zinc-800" />
                 <span>Trusted by Artixain Patrons</span>
               </span>
-              <h2 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-serif font-medium leading-[1.12] tracking-tight text-zinc-950">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-medium leading-[1.12] tracking-tight text-zinc-950">
                 Helped patrons complete{' '}
                 <span className="whitespace-nowrap font-semibold text-zinc-900 underline decoration-zinc-300 decoration-2 underline-offset-4">
                   60,000+ custom designs
                 </span>
               </h2>
-              <p className="mt-2.5 text-sm sm:text-base text-zinc-500 font-light">
-                10,000+ patrons have completed master atelier orders
+              <p className="mt-2 text-sm text-zinc-500 font-light">
+                Over 10,000 patrons have received bespoke handcrafted atelier bracelets.
               </p>
             </div>
 
             {/* Stat Badges */}
-            <div className="mt-6 flex w-full max-w-[22rem] items-center justify-center gap-3 md:mt-0 md:max-w-none md:justify-end">
-              <div className="flex items-center gap-2 rounded-full border border-zinc-200/80 bg-white px-4 py-2 shadow-sm">
-                <span className="text-base font-black text-zinc-900">60,000+</span>
+            <div className="flex items-center gap-3 shrink-0">
+              <div className="flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 shadow-2xs">
+                <span className="text-base font-bold text-zinc-900">60,000+</span>
                 <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">Designs</span>
               </div>
-              <div className="flex items-center gap-2 rounded-full border border-zinc-200/80 bg-white px-4 py-2 shadow-sm">
-                <span className="text-base font-black text-zinc-900">10,000+</span>
+              <div className="flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 shadow-2xs">
+                <span className="text-base font-bold text-zinc-900">10,000+</span>
                 <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">Purchases</span>
               </div>
             </div>
           </div>
 
-          {/* Featured Video Walkthrough Card with Shimmer Skeletal Loader */}
-          <article className="mx-auto mt-10 grid max-w-4xl overflow-hidden rounded-[1.75rem] border border-zinc-200 bg-white shadow-xl md:grid-cols-[minmax(0,1fr)_minmax(260px,340px)]">
-            <div className="flex flex-col justify-center p-6 md:p-10 text-center md:text-left">
-              <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-zinc-600">
-                Design guide
+          {/* Featured Walkthrough Card: Watermark-Free Authentic Workbench Visual */}
+          <article className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center overflow-hidden rounded-[2rem] border border-zinc-200/90 bg-[#FAFAFA] p-6 sm:p-8 md:p-12 shadow-sm mb-12">
+            <div className="md:col-span-7 flex flex-col justify-center">
+              <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-2">
+                Master Bench Guide
               </span>
-              <h3 className="mt-2 text-2xl md:text-3xl font-serif font-semibold text-zinc-950">
-                Step-by-step design
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif font-semibold text-zinc-950 mb-3">
+                Step-by-Step Strand Creation
               </h3>
-              <p className="mt-2 text-xs md:text-sm text-zinc-500 leading-relaxed font-light">
-                Watch the complete walkthrough before opening the studio. Learn wrist measurement, gemstone energy balance, and custom bead stringing.
+              <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed font-light mb-6 max-w-xl">
+                Explore how each Artixain bracelet is designed and assembled. Learn wrist caliper measurement, chakra gemstone balance, and our double surgeon knot silk-cord finishing.
               </p>
-              <div className="mt-6">
+              <div>
                 <Link
                   href="/guide/how-to-design"
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-zinc-900 hover:text-amber-800 transition-colors"
+                  className="inline-flex items-center gap-2 rounded-full bg-zinc-900 text-white px-6 py-3 text-xs font-semibold hover:bg-zinc-800 transition-all shadow-sm active:scale-95"
                 >
-                  <span>Read Complete Guide</span>
+                  <span>Read Complete Design Guide</span>
                   <ChevronRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
             </div>
 
-            <div className="flex justify-center bg-zinc-100 p-4">
+            <div className="md:col-span-5 flex justify-center">
               <div
-                className="relative aspect-[9/16] w-full max-w-[280px] overflow-hidden rounded-2xl bg-zinc-900 shadow-md group cursor-pointer"
-                onClick={() => setActiveVideoModal('Design Walkthrough')}
+                className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-zinc-900 shadow-md group cursor-pointer border border-zinc-300"
+                onClick={() => setActiveVideoModal('Artixain Master Atelier Walkthrough')}
               >
                 <ShimmerImage
-                  src="/images/video/guide.png"
-                  alt="Step-by-step design walkthrough"
+                  src="/images/atelier/gem_10.jpg"
+                  alt="Artixain Master Atelier Workbench"
                   className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
                   containerClassName="h-full w-full"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
                 <button
                   type="button"
-                  aria-label="Play design guide"
+                  aria-label="Play design walkthrough"
                   className="absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-zinc-900 shadow-xl backdrop-blur transition-all hover:scale-110 active:scale-95"
                 >
                   <Play className="ml-0.5 w-5 h-5 fill-current" />
                 </button>
+                <div className="absolute bottom-3 left-4 text-white text-[11px] font-semibold">
+                  Artixain Atelier Master Bench
+                </div>
               </div>
             </div>
           </article>
 
-          {/* Marquee Video Reviews Track with Shimmer Skeletons */}
-          <div className="relative mt-12 overflow-hidden pb-4">
+          {/* Marquee Video Reviews Track: Pure Watermark-Free Atelier Images */}
+          <div className="relative overflow-hidden pb-2">
             <div className="flex gap-4 animate-marquee hover:[animation-play-state:paused] w-max">
-              {[
-                { img: '/images/video/comment_1.png', label: 'Real patron feedback', user: '@sarah_gem' },
-                { img: '/images/video/comment_2.png', label: 'Designed and purchased', user: '@david_wrist' },
-                { img: '/images/video/comment_3.png', label: 'Unboxing ceremony', user: '@chloe_luxe' },
-                { img: '/images/video/comment_1.png', label: 'Real patron feedback', user: '@sarah_gem' },
-                { img: '/images/video/comment_2.png', label: 'Designed and purchased', user: '@david_wrist' },
-                { img: '/images/video/comment_3.png', label: 'Unboxing ceremony', user: '@chloe_luxe' }
-              ].map((vid, idx) => (
+              {[...PATRON_STORIES, ...PATRON_STORIES].map((vid, idx) => (
                 <div
                   key={idx}
-                  onClick={() => setActiveVideoModal(vid.user)}
-                  className="group relative w-[180px] md:w-[220px] shrink-0 overflow-hidden rounded-[1.5rem] border border-zinc-200 bg-white p-2 shadow-md hover:-translate-y-1 transition-all cursor-pointer"
+                  onClick={() => setActiveVideoModal(vid.label)}
+                  className="group relative w-[220px] md:w-[260px] shrink-0 overflow-hidden rounded-2xl border border-zinc-200 bg-white p-2.5 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all cursor-pointer"
                 >
-                  <div className="relative aspect-[9/16] overflow-hidden rounded-xl bg-zinc-100">
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-zinc-100">
                     <ShimmerImage
                       src={vid.img}
                       alt={vid.label}
@@ -332,14 +361,18 @@ export default function HomePage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
                     <button
                       type="button"
-                      aria-label="Play customer review"
+                      aria-label="Play patron review"
                       className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-zinc-900 shadow-lg group-hover:scale-110 transition-transform"
                     >
                       <Play className="ml-0.5 w-4 h-4 fill-current" />
                     </button>
-                    <div className="absolute bottom-3 left-3 text-white text-[11px] font-semibold">
+                    <div className="absolute bottom-2.5 left-3 text-white text-[11px] font-semibold drop-shadow-xs">
                       {vid.user}
                     </div>
+                  </div>
+                  <div className="mt-2 px-1">
+                    <p className="text-xs font-semibold text-zinc-900 truncate">{vid.label}</p>
+                    <p className="text-[10px] text-zinc-400 font-mono truncate">{vid.minerals}</p>
                   </div>
                 </div>
               ))}
@@ -348,335 +381,436 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. "Crafted by You, Refined by Us" Feature Bento Grid using User's Authentic Photography */}
-      <section className="px-4 py-16 md:py-24 bg-white">
-        <div className="mx-auto max-w-[1400px] md:max-w-[1300px]">
+      {/* 3. Atelier Principles Bento Grid (Fluid Wide Layout without Empty Side Gutters) */}
+      <section id="principles" className="scroll-mt-32 px-4 sm:px-6 md:px-10 lg:px-14 xl:px-16 py-16 md:py-24 bg-[#FAFAFA] border-b border-zinc-100">
+        <div className="w-full max-w-[1720px] mx-auto">
           {/* Section Header */}
-          <div className="text-center mb-10 md:mb-16">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100 text-zinc-600 text-[11px] font-bold uppercase tracking-wider mb-2">
+          <div className="text-center mb-12 md:mb-16">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-zinc-200 text-zinc-700 text-[11px] font-bold uppercase tracking-wider mb-2 shadow-2xs">
               <Gem className="w-3.5 h-3.5 text-zinc-900" />
               <span>Atelier Principles</span>
             </span>
             <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-[#1D1D1F] leading-tight">
               <span className="block font-medium tracking-tight">Crafted by You</span>
-              <span className="block italic text-zinc-400 font-light mt-1">Refined by Us</span>
+              <span className="block italic text-zinc-400 font-light mt-1">Refined by Artixain</span>
             </h2>
           </div>
 
-          {/* 12-Column Bento Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 h-auto md:h-[650px]">
-            {/* Left Column (4 cols): Tall Crystal Encyclopedia Card */}
+          {/* 12-Column Expansive Bento Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+            {/* Card 1 (4 cols): Crystal Encyclopedia with Authentic Raw Amethyst */}
             <Link
               href="/encyclopedia"
-              className="md:col-span-4 bg-[#FAFAFA] rounded-[2rem] overflow-hidden relative group flex flex-col h-[400px] md:h-full transition-all duration-300 hover:bg-white hover:-translate-y-1 hover:shadow-xl border border-zinc-100"
+              className="md:col-span-4 bg-white rounded-3xl overflow-hidden relative group flex flex-col min-h-[440px] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border border-zinc-200/80 shadow-xs"
             >
-              <div className="relative h-[65%] w-full bg-[#FAFAFA] overflow-hidden">
+              <div className="relative h-[65%] w-full bg-zinc-100 overflow-hidden">
                 <ShimmerImage
-                  src="/images/features/1.webp"
-                  alt="Natural Mineral Encyclopedia"
+                  src="/images/atelier/gem_01.jpg"
+                  alt="Natural Amethyst Geode Encyclopedia"
                   className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
                   containerClassName="w-full h-full"
                 />
-                <div className="hidden md:block absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#FAFAFA] to-transparent pointer-events-none" />
               </div>
-              <div className="h-[35%] p-6 md:p-8 flex flex-col justify-center text-center md:text-left bg-[#FAFAFA] group-hover:bg-white transition-colors">
-                <h3 className="text-xl md:text-2xl font-serif font-medium text-zinc-900 mb-2">
+              <div className="h-[35%] p-6 flex flex-col justify-center text-center md:text-left bg-white">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1">
+                  Geological Archives
+                </span>
+                <h3 className="text-xl font-serif font-medium text-zinc-900 mb-1">
                   Crystal Encyclopedia
                 </h3>
-                <p className="text-xs md:text-sm text-zinc-500 font-light leading-relaxed">
-                  Explore natural gemstones, geological properties, chakra alignments, and care rituals for all 32 mineral varieties.
+                <p className="text-xs text-zinc-500 font-light leading-relaxed">
+                  Explore geological hardness, chakra alignments, and care rituals for all 32 natural mineral varieties.
                 </p>
               </div>
             </Link>
 
-            {/* Right Column (8 cols): Two Horizontal Split Cards with Authentic User Media */}
-            <div className="md:col-span-8 flex flex-col gap-6 h-full">
-              {/* Top Horizontal Card: Nature's Finest (User Himalayan Salt & Rose Quartz) */}
-              <Link
-                href="/features/materials"
-                className="bg-[#FAFAFA] rounded-[2rem] overflow-hidden relative group flex flex-col md:flex-row flex-1 transition-all duration-300 hover:bg-white hover:-translate-y-1 hover:shadow-xl border border-zinc-100"
-              >
-                <div className="h-[55%] md:h-full md:w-[60%] relative overflow-hidden">
-                  <ShimmerImage
-                    src="/images/hero/himalayan-salt-crystals.jpeg"
-                    alt="Natural Himalayan Minerals and Salt Crystals"
-                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
-                    containerClassName="w-full h-full"
-                  />
-                  <div className="hidden md:block absolute inset-y-0 right-0 w-36 bg-gradient-to-l from-[#FAFAFA] to-transparent pointer-events-none" />
-                </div>
-                <div className="h-[45%] md:h-full md:w-[40%] p-6 md:p-8 flex flex-col justify-center text-center md:text-left bg-[#FAFAFA] group-hover:bg-white transition-colors">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 mb-1">
-                    Grade-A Certified
-                  </span>
-                  <h3 className="text-xl md:text-2xl font-serif font-medium text-zinc-900 mb-2">
-                    Nature's Finest
-                  </h3>
-                  <p className="text-xs md:text-sm text-zinc-500 font-light leading-relaxed">
-                    Ethically sourced raw crystalline minerals, hand-evaluated for geological saturation, optical iridescence, and mineral density.
-                  </p>
-                </div>
-              </Link>
-
-              {/* Bottom Horizontal Card: Handcrafted (User Gold Tassel & Agate Beads) */}
-              <Link
-                href="/features/craftsmanship"
-                className="bg-[#FAFAFA] rounded-[2rem] overflow-hidden relative group flex flex-col md:flex-row flex-1 transition-all duration-300 hover:bg-white hover:-translate-y-1 hover:shadow-xl border border-zinc-100"
-              >
-                <div className="h-[45%] md:h-full md:w-[40%] p-6 md:p-8 flex flex-col justify-center text-center md:text-left order-2 md:order-1 bg-[#FAFAFA] group-hover:bg-white transition-colors">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 mb-1">
-                    Artisan Assembly
-                  </span>
-                  <h3 className="text-xl md:text-2xl font-serif font-medium text-zinc-900 mb-2">
-                    Handcrafted
-                  </h3>
-                  <p className="text-xs md:text-sm text-zinc-500 font-light leading-relaxed">
-                    Meticulously assembled with multi-strand Japanese elastic, leaf charms, and reinforced double surgeon knots for lifetime durability.
-                  </p>
-                </div>
-                <div className="h-[55%] md:h-full md:w-[60%] relative order-1 md:order-2 overflow-hidden">
-                  <ShimmerImage
-                    src="/images/hero/triple-strand-pearl-bracelet.jpeg"
-                    alt="Hand-threaded triple strand pearl bracelet on wrist"
-                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
-                    containerClassName="w-full h-full"
-                  />
-                  <div className="hidden md:block absolute inset-y-0 left-0 w-36 bg-gradient-to-r from-[#FAFAFA] to-transparent pointer-events-none" />
-                </div>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. "Spark Your Imagination" Curated Designs Gallery */}
-      <section className="px-4 py-16 md:py-24 bg-[#FAFAFA]">
-        <div className="mx-auto max-w-[1400px] md:max-w-[1300px]">
-          <div className="relative overflow-hidden rounded-[2rem] border border-zinc-200 bg-white p-6 md:p-10 shadow-sm">
-            {/* Header & Filter Chips */}
-            <div className="relative mb-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-              <div>
-                <div className="mb-2 inline-flex items-center gap-1.5 rounded-full bg-zinc-100 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-zinc-700 shadow-xs">
-                  <Sparkles className="w-3.5 h-3.5 text-zinc-900" />
-                  <span>Design Inspiration</span>
-                </div>
-                <h2 className="font-serif text-3xl md:text-4xl font-medium tracking-tight text-zinc-950">
-                  <span className="block">Spark Your</span>
-                  <span className="block italic text-zinc-400 font-light">Imagination</span>
-                </h2>
-                <p className="mt-1 text-xs md:text-sm text-zinc-600 font-light">
-                  Curated formulations to inspire your bespoke creation. Tap any piece to remix in the 120 FPS studio.
+            {/* Card 2 (4 cols): Nature's Finest with Authentic Himalayan Salt Crystals */}
+            <Link
+              href="/features/materials"
+              className="md:col-span-4 bg-white rounded-3xl overflow-hidden relative group flex flex-col min-h-[440px] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border border-zinc-200/80 shadow-xs"
+            >
+              <div className="relative h-[65%] w-full bg-zinc-100 overflow-hidden">
+                <ShimmerImage
+                  src="/images/hero/himalayan-salt-crystals.jpeg"
+                  alt="Authentic Himalayan Salt Mineral Crystals"
+                  className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+                  containerClassName="w-full h-full"
+                />
+              </div>
+              <div className="h-[35%] p-6 flex flex-col justify-center text-center md:text-left bg-white">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1">
+                  Grade-A Certified
+                </span>
+                <h3 className="text-xl font-serif font-medium text-zinc-900 mb-1">
+                  Nature's Finest Minerals
+                </h3>
+                <p className="text-xs text-zinc-500 font-light leading-relaxed">
+                  Ethically sourced crystalline minerals, hand-evaluated for geological saturation, optical iridescence, and density.
                 </p>
               </div>
+            </Link>
 
-              {/* Category Filter Chips */}
-              <div className="flex flex-wrap items-center gap-2">
-                {['All', 'Protection', 'Love', 'Abundance', 'Intuition'].map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => setSelectedFilter(cat)}
-                    className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all ${
-                      selectedFilter === cat
-                        ? 'bg-zinc-900 text-white shadow-sm'
-                        : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200'
-                    }`}
-                  >
-                    {cat}
-                  </button>
-                ))}
+            {/* Card 3 (4 cols): Handcrafted Assembly with Triple-Strand Pearls */}
+            <Link
+              href="/features/craftsmanship"
+              className="md:col-span-4 bg-white rounded-3xl overflow-hidden relative group flex flex-col min-h-[440px] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border border-zinc-200/80 shadow-xs"
+            >
+              <div className="relative h-[65%] w-full bg-zinc-100 overflow-hidden">
+                <ShimmerImage
+                  src="/images/hero/triple-strand-pearl-bracelet.jpeg"
+                  alt="Triple Strand Pearl Handcrafted Assembly"
+                  className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+                  containerClassName="w-full h-full"
+                />
               </div>
-            </div>
-
-            {/* Curated Design Cards Grid with Shimmer Skeletal Loader */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-              {filteredDesigns.map((item) => {
-                const isLiked = !!likedDesigns[item.id];
-                const displayedLikes = isLiked ? item.likes + 1 : item.likes;
-
-                return (
-                  <div
-                    key={item.id}
-                    className="group relative rounded-2xl md:rounded-3xl bg-white border border-zinc-100 p-3 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between"
-                  >
-                    <div className="relative aspect-square w-full overflow-hidden rounded-xl md:rounded-2xl bg-zinc-50 mb-3">
-                      <ShimmerImage
-                        src={item.image}
-                        alt={item.title}
-                        className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        containerClassName="h-full w-full"
-                      />
-                      <div className="absolute top-2 left-2 inline-flex items-center rounded-full bg-zinc-900 px-2 py-0.5 text-[10px] font-bold text-white shadow-sm">
-                        {item.discount}
-                      </div>
-
-                      {/* Interactive Heart Button */}
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          toggleLike(item.id);
-                        }}
-                        className="absolute top-2 right-2 inline-flex items-center gap-1 rounded-full bg-white/90 backdrop-blur px-2 py-0.5 text-[10px] font-bold text-zinc-700 shadow-sm hover:scale-105 active:scale-95 transition-transform"
-                      >
-                        <Heart
-                          className={`w-2.5 h-2.5 transition-colors ${
-                            isLiked
-                              ? 'text-rose-500 fill-rose-500'
-                              : 'text-zinc-400'
-                          }`}
-                        />
-                        <span>{displayedLikes.toLocaleString()}</span>
-                      </button>
-                    </div>
-
-                    <div>
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider">
-                          {item.category}
-                        </span>
-                        <span className="text-[10px] font-mono text-zinc-400">
-                          {item.beads.length} minerals
-                        </span>
-                      </div>
-                      <h3 className="font-serif font-bold text-sm text-zinc-900 truncate mb-1">
-                        {item.title}
-                      </h3>
-                      <div className="flex items-baseline gap-2 mb-3">
-                        <span className="font-bold text-sm text-zinc-900">
-                          ${item.price.toFixed(2)}
-                        </span>
-                        <span className="text-[11px] text-zinc-400 line-through">
-                          ${item.originalPrice.toFixed(2)}
-                        </span>
-                      </div>
-                    </div>
-
-                    <Link
-                      href={`/designer?remix=${item.id}&token=${item.token}`}
-                      className="w-full py-2 rounded-full bg-zinc-100 group-hover:bg-zinc-900 group-hover:text-white text-zinc-800 text-[11px] font-bold text-center transition-all flex items-center justify-center gap-1.5 active:scale-[0.97]"
-                    >
-                      <span>Remix in Studio</span>
-                      <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
-                    </Link>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* View All Button */}
-            <div className="mt-8 flex justify-center">
-              <Link
-                href="/gallery"
-                className="inline-flex items-center gap-2 rounded-full bg-zinc-900 px-6 py-2.5 text-xs font-semibold text-white shadow-md hover:bg-zinc-800 transition-all hover:-translate-y-0.5 active:scale-[0.97]"
-              >
-                <span>Explore All Curated Formulations</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
+              <div className="h-[35%] p-6 flex flex-col justify-center text-center md:text-left bg-white">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1">
+                  Artisan Stringing
+                </span>
+                <h3 className="text-xl font-serif font-medium text-zinc-900 mb-1">
+                  Master Bench Assembly
+                </h3>
+                <p className="text-xs text-zinc-500 font-light leading-relaxed">
+                  Assembled on reinforced Japanese elastic with reinforced surgeon knots for comfortable lifetime durability.
+                </p>
+              </div>
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* 5. Authentic Lookbook Showcase: User Mineral Specimens & Finished Jewelry */}
-      <section className="px-4 py-16 md:py-24 bg-white border-t border-zinc-100">
-        <div className="mx-auto max-w-[1400px] md:max-w-[1300px]">
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100 text-zinc-700 text-[11px] font-bold uppercase tracking-widest mb-3">
+      {/* 4. "Spark Your Imagination" Curated Designs Gallery (Fluid Wide Layout) */}
+      <section id="gallery" className="scroll-mt-32 px-4 sm:px-6 md:px-10 lg:px-14 xl:px-16 py-16 md:py-24 bg-white border-b border-zinc-100">
+        <div className="w-full max-w-[1720px] mx-auto">
+          {/* Header & Filter Chips */}
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+            <div>
+              <div className="inline-flex items-center gap-1.5 rounded-full bg-zinc-100 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-zinc-700 shadow-2xs mb-2">
+                <Sparkles className="w-3.5 h-3.5 text-zinc-900" />
+                <span>Design Inspiration</span>
+              </div>
+              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight text-zinc-950">
+                <span>Spark Your </span>
+                <span className="italic text-zinc-400 font-light">Imagination</span>
+              </h2>
+              <p className="mt-1 text-xs md:text-sm text-zinc-600 font-light">
+                Curated formulations to inspire your bespoke creation. Tap any piece to remix in the 120 FPS studio.
+              </p>
+            </div>
+
+            {/* Category Filter Chips (Material You 50% Radius Pills) */}
+            <div className="flex flex-wrap items-center gap-2">
+              {['All', 'Protection', 'Love', 'Abundance', 'Intuition'].map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedFilter(cat)}
+                  className={`px-4 py-2 rounded-full text-xs font-semibold transition-all active:scale-95 ${
+                    selectedFilter === cat
+                      ? 'bg-zinc-900 text-white shadow-sm'
+                      : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200'
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Curated Design Cards Grid (Expansive 4-column fluid layout) */}
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            {filteredDesigns.map((item) => {
+              const isLiked = !!likedDesigns[item.id];
+              const displayedLikes = isLiked ? item.likes + 1 : item.likes;
+
+              return (
+                <div
+                  key={item.id}
+                  className="group relative rounded-3xl bg-white border border-zinc-200/80 p-3.5 shadow-xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between"
+                >
+                  <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-zinc-50 mb-3">
+                    <ShimmerImage
+                      src={item.image}
+                      alt={item.title}
+                      className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      containerClassName="h-full w-full"
+                    />
+                    <div className="absolute top-2.5 left-2.5 inline-flex items-center rounded-full bg-zinc-900 px-2.5 py-0.5 text-[10px] font-bold text-white shadow-sm">
+                      {item.discount}
+                    </div>
+
+                    {/* Interactive Heart Button */}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        toggleLike(item.id);
+                      }}
+                      className="absolute top-2.5 right-2.5 inline-flex items-center gap-1 rounded-full bg-white/90 backdrop-blur px-2.5 py-1 text-[10px] font-bold text-zinc-700 shadow-sm hover:scale-105 active:scale-95 transition-transform"
+                    >
+                      <Heart
+                        className={`w-3 h-3 transition-colors ${
+                          isLiked
+                            ? 'text-rose-500 fill-rose-500'
+                            : 'text-zinc-400'
+                        }`}
+                      />
+                      <span>{displayedLikes.toLocaleString()}</span>
+                    </button>
+                  </div>
+
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider">
+                        {item.category}
+                      </span>
+                      <span className="text-[10px] font-mono text-zinc-400">
+                        {item.beads.length} minerals
+                      </span>
+                    </div>
+                    <h3 className="font-serif font-bold text-sm text-zinc-900 truncate mb-1">
+                      {item.title}
+                    </h3>
+                    <div className="flex items-baseline gap-2 mb-3">
+                      <span className="font-bold text-sm text-zinc-900">
+                        ${item.price.toFixed(2)}
+                      </span>
+                      <span className="text-[11px] text-zinc-400 line-through">
+                        ${item.originalPrice.toFixed(2)}
+                      </span>
+                    </div>
+                  </div>
+
+                  <Link
+                    href={`/designer?remix=${item.id}&token=${item.token}`}
+                    className="w-full py-2.5 rounded-full bg-zinc-100 group-hover:bg-zinc-900 group-hover:text-white text-zinc-800 text-xs font-bold text-center transition-all flex items-center justify-center gap-1.5 active:scale-[0.98]"
+                  >
+                    <span>Remix in Studio</span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                  </Link>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* View All Button */}
+          <div className="mt-10 flex justify-center">
+            <Link
+              href="/gallery"
+              className="inline-flex items-center gap-2 rounded-full bg-zinc-900 px-8 py-3.5 text-xs font-semibold text-white shadow-md hover:bg-zinc-800 transition-all hover:-translate-y-0.5 active:scale-[0.98]"
+            >
+              <span>Explore All Curated Formulations</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. Authentic Lookbook Showcase: 8-Card Pure Mineral & Workshop Gallery */}
+      <section id="lookbook" className="scroll-mt-32 px-4 sm:px-6 md:px-10 lg:px-14 xl:px-16 py-16 md:py-24 bg-[#FAFAFA] border-b border-zinc-100">
+        <div className="w-full max-w-[1720px] mx-auto">
+          <div className="text-center max-w-2xl mx-auto mb-14">
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white border border-zinc-200 text-zinc-700 text-[11px] font-bold uppercase tracking-widest mb-3 shadow-2xs">
               <Ruler className="w-3.5 h-3.5" />
               <span>Natural Mineral Calibration</span>
             </span>
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-zinc-950 mb-3">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-zinc-950 mb-3">
               The Artixain Atelier Gallery
             </h2>
-            <p className="text-xs md:text-sm text-zinc-500 font-light leading-relaxed">
+            <p className="text-xs sm:text-sm text-zinc-500 font-light leading-relaxed">
               Every millimeter is calibrated. Every gemstone is authentic. Handcrafted with genuine crystalline minerals and multi-strand elasticity.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Card 1: Triple-Strand Pearl Bracelet on Wrist */}
-            <div className="group rounded-3xl overflow-hidden bg-[#FAFAFA] border border-zinc-200/80 p-4 hover:shadow-xl transition-all duration-300">
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-4 bg-zinc-100">
+          {/* 8-Card Fluid Grid Spanning Full Width */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Card 1: Authentic Triple-Strand Pearls */}
+            <div className="group rounded-3xl overflow-hidden bg-white border border-zinc-200/90 p-3.5 hover:shadow-xl transition-all duration-300">
+              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-3 bg-zinc-100">
                 <ShimmerImage
                   src="/images/hero/triple-strand-pearl-bracelet.jpeg"
                   alt="Triple strand pearl bracelet with celestial luster"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   containerClassName="w-full h-full"
                 />
-                <div className="absolute bottom-2 left-2 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur text-white text-[10px] font-mono">
-                  NATURAL PEARL STRAND &bull; ATELIER CRAFT
+                <div className="absolute bottom-2 left-2 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur text-white text-[9px] font-mono">
+                  NATURAL PEARL STRAND
                 </div>
               </div>
-              <h3 className="font-serif font-bold text-lg text-zinc-900 mb-1">
-                Triple-Strand Luminous Pearls
+              <h3 className="font-serif font-bold text-base text-zinc-900 mb-1">
+                Triple-Strand Pearls
               </h3>
               <p className="text-xs text-zinc-500 font-light leading-relaxed">
-                Hand-threaded on fine silk cord with celestial luster, millimeter-calibrated fit, and ergonomic wrist silhouette.
+                Hand-threaded on fine silk cord with celestial luster and ergonomic wrist contour.
               </p>
             </div>
 
-            {/* Card 2: Himalayan Salt Crystal Geological Formation */}
-            <div className="group rounded-3xl overflow-hidden bg-[#FAFAFA] border border-zinc-200/80 p-4 hover:shadow-xl transition-all duration-300">
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-4 bg-zinc-100">
+            {/* Card 2: Authentic Himalayan Salt Crystals */}
+            <div className="group rounded-3xl overflow-hidden bg-white border border-zinc-200/90 p-3.5 hover:shadow-xl transition-all duration-300">
+              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-3 bg-zinc-100">
                 <ShimmerImage
                   src="/images/hero/himalayan-salt-crystals.jpeg"
                   alt="Raw Himalayan salt crystal mineral facets"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   containerClassName="w-full h-full"
                 />
-                <div className="absolute bottom-2 left-2 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur text-white text-[10px] font-mono">
-                  RAW CRYSTALLINE SALT &bull; GEOLOGICAL GRADE
+                <div className="absolute bottom-2 left-2 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur text-white text-[9px] font-mono">
+                  RAW CRYSTALLINE SALT
                 </div>
               </div>
-              <h3 className="font-serif font-bold text-lg text-zinc-900 mb-1">
-                Himalayan Mineral Crystals
+              <h3 className="font-serif font-bold text-base text-zinc-900 mb-1">
+                Himalayan Minerals
               </h3>
               <p className="text-xs text-zinc-500 font-light leading-relaxed">
-                Ethically selected raw mineral specimens exhibiting natural geometric facets, authentic geological density, and purity.
+                Ethically selected raw mineral specimens exhibiting natural geometric facets.
               </p>
             </div>
 
-            {/* Card 3: Rose Gold Crystal Strand On-Wrist */}
-            <div className="group rounded-3xl overflow-hidden bg-[#FAFAFA] border border-zinc-200/80 p-4 hover:shadow-xl transition-all duration-300">
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-4 bg-zinc-100">
+            {/* Card 3: Raw Amethyst Geode Specimen */}
+            <div className="group rounded-3xl overflow-hidden bg-white border border-zinc-200/90 p-3.5 hover:shadow-xl transition-all duration-300">
+              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-3 bg-zinc-100">
+                <ShimmerImage
+                  src="/images/atelier/gem_01.jpg"
+                  alt="Raw Amethyst Geode Specimen"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  containerClassName="w-full h-full"
+                />
+                <div className="absolute bottom-2 left-2 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur text-white text-[9px] font-mono">
+                  GRADE-A AMETHYST
+                </div>
+              </div>
+              <h3 className="font-serif font-bold text-base text-zinc-900 mb-1">
+                Imperial Amethyst Geode
+              </h3>
+              <p className="text-xs text-zinc-500 font-light leading-relaxed">
+                Deep violet crystal clusters with natural optical clarity and high mineral vibration.
+              </p>
+            </div>
+
+            {/* Card 4: Gemologist Workbench Calibration */}
+            <div className="group rounded-3xl overflow-hidden bg-white border border-zinc-200/90 p-3.5 hover:shadow-xl transition-all duration-300">
+              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-3 bg-zinc-100">
+                <ShimmerImage
+                  src="/images/atelier/gem_10.jpg"
+                  alt="Master Atelier Gemologist Workbench"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  containerClassName="w-full h-full"
+                />
+                <div className="absolute bottom-2 left-2 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur text-white text-[9px] font-mono">
+                  BENCH CALIBRATION
+                </div>
+              </div>
+              <h3 className="font-serif font-bold text-base text-zinc-900 mb-1">
+                Artisan Benchfitting
+              </h3>
+              <p className="text-xs text-zinc-500 font-light leading-relaxed">
+                Precise caliper measurement ensuring exact millimeter diameter for every bead.
+              </p>
+            </div>
+
+            {/* Card 5: Lapis Lazuli Deep Blue Strands */}
+            <div className="group rounded-3xl overflow-hidden bg-white border border-zinc-200/90 p-3.5 hover:shadow-xl transition-all duration-300">
+              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-3 bg-zinc-100">
+                <ShimmerImage
+                  src="/images/atelier/gem_17.jpg"
+                  alt="Lapis Lazuli Deep Blue Strands"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  containerClassName="w-full h-full"
+                />
+                <div className="absolute bottom-2 left-2 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur text-white text-[9px] font-mono">
+                  LAPIS LAZULI
+                </div>
+              </div>
+              <h3 className="font-serif font-bold text-base text-zinc-900 mb-1">
+                Deep Lapis Azure
+              </h3>
+              <p className="text-xs text-zinc-500 font-light leading-relaxed">
+                Royal ultramarine mineral with golden pyrite flecks and throat chakra resonance.
+              </p>
+            </div>
+
+            {/* Card 6: Handcrafted Mineral Strands */}
+            <div className="group rounded-3xl overflow-hidden bg-white border border-zinc-200/90 p-3.5 hover:shadow-xl transition-all duration-300">
+              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-3 bg-zinc-100">
+                <ShimmerImage
+                  src="/images/atelier/gem_04.jpg"
+                  alt="Handcrafted Mineral Strands"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  containerClassName="w-full h-full"
+                />
+                <div className="absolute bottom-2 left-2 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur text-white text-[9px] font-mono">
+                  BESPOKE STRAND
+                </div>
+              </div>
+              <h3 className="font-serif font-bold text-base text-zinc-900 mb-1">
+                Multi-Mineral Harmony
+              </h3>
+              <p className="text-xs text-zinc-500 font-light leading-relaxed">
+                Harmoniously balanced bead sequencing creating serene tactile presence on wrist.
+              </p>
+            </div>
+
+            {/* Card 7: Natural Rose Quartz Tumbled Minerals */}
+            <div className="group rounded-3xl overflow-hidden bg-white border border-zinc-200/90 p-3.5 hover:shadow-xl transition-all duration-300">
+              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-3 bg-zinc-100">
+                <ShimmerImage
+                  src="/images/atelier/gem_11.jpg"
+                  alt="Natural Rose Quartz Tumbled Minerals"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  containerClassName="w-full h-full"
+                />
+                <div className="absolute bottom-2 left-2 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur text-white text-[9px] font-mono">
+                  ROSE QUARTZ
+                </div>
+              </div>
+              <h3 className="font-serif font-bold text-base text-zinc-900 mb-1">
+                Tumbled Rose Quartz
+              </h3>
+              <p className="text-xs text-zinc-500 font-light leading-relaxed">
+                Translucent pink crystalline softness representing unconditional compassion.
+              </p>
+            </div>
+
+            {/* Card 8: Second-Skin Wrist Ergonomics */}
+            <div className="group rounded-3xl overflow-hidden bg-white border border-zinc-200/90 p-3.5 hover:shadow-xl transition-all duration-300">
+              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-3 bg-zinc-100">
                 <ShimmerImage
                   src="/images/hero/wrist-crystal-strand.jpg"
                   alt="Rose gold crystal strand on client wrist with silk sleeve"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   containerClassName="w-full h-full"
                 />
-                <div className="absolute bottom-2 left-2 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur text-white text-[10px] font-mono">
-                  ROSE GOLD &bull; ANTHROPOMETRIC FIT
+                <div className="absolute bottom-2 left-2 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur text-white text-[9px] font-mono">
+                  SECOND-SKIN FIT
                 </div>
               </div>
-              <h3 className="font-serif font-bold text-lg text-zinc-900 mb-1">
-                Second-Skin Ergonomics
+              <h3 className="font-serif font-bold text-base text-zinc-900 mb-1">
+                Anthropometric Fit
               </h3>
               <p className="text-xs text-zinc-500 font-light leading-relaxed">
-                Balanced circumference with zero pinch, comfortable all-day weight, and seamless wrist silhouette.
+                Balanced circumference with zero pinch, comfortable all-day weight, and seamless fit.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 6. Customer Testimonials & Reviews */}
-      <section className="px-4 py-16 md:py-24 bg-[#FAFAFA]">
-        <div className="mx-auto max-w-[1400px] md:max-w-[1300px]">
+      {/* 6. Customer Testimonials & Reviews (Fluid Wide Layout) */}
+      <section id="reviews" className="scroll-mt-32 px-4 sm:px-6 md:px-10 lg:px-14 xl:px-16 py-16 md:py-24 bg-white">
+        <div className="w-full max-w-[1720px] mx-auto">
           <div className="text-center mb-12">
-            <span className="inline-flex rounded-full border border-zinc-200 bg-white px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-zinc-600 mb-2 shadow-sm">
+            <span className="inline-flex rounded-full border border-zinc-200 bg-zinc-50 px-3.5 py-1 text-[11px] font-bold uppercase tracking-wider text-zinc-600 mb-2 shadow-2xs">
               Patron Experiences
             </span>
-            <h2 className="font-serif text-3xl md:text-4xl font-medium text-zinc-950">
+            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-medium text-zinc-950">
               Loved by Crystal Enthusiasts Worldwide
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             {REVIEWS.map((rev) => (
               <div
                 key={rev.id}
-                className="p-6 md:p-8 rounded-3xl bg-white border border-zinc-200/80 shadow-sm flex flex-col justify-between space-y-4 hover:shadow-md transition-shadow"
+                className="p-6 md:p-8 rounded-3xl bg-[#FAFAFA] border border-zinc-200/90 shadow-2xs flex flex-col justify-between space-y-4 hover:shadow-md transition-shadow"
               >
                 <div>
                   <div className="flex items-center gap-1 text-amber-500 mb-3">
@@ -689,14 +823,14 @@ export default function HomePage() {
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-zinc-100 flex items-center justify-between text-xs">
+                <div className="pt-4 border-t border-zinc-200/60 flex items-center justify-between text-xs">
                   <div>
                     <span className="font-bold text-zinc-900 block">{rev.author}</span>
                     <span className="text-[11px] text-zinc-400">{rev.bracelet}</span>
                   </div>
                   <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">
                     <CheckCircle2 className="w-3 h-3" />
-                    Verified
+                    Verified Patron
                   </span>
                 </div>
               </div>
@@ -706,7 +840,7 @@ export default function HomePage() {
           <div className="flex justify-center">
             <Link
               href="/reviews"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-zinc-900 px-6 py-3 text-xs font-semibold text-white shadow-md hover:bg-zinc-800 transition-all hover:-translate-y-0.5 active:scale-[0.97]"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-zinc-900 px-8 py-4 text-xs font-semibold text-white shadow-md hover:bg-zinc-800 transition-all hover:-translate-y-0.5 active:scale-[0.98]"
             >
               <span>View All 1,420+ Verified Patron Reviews</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -715,7 +849,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Interactive Video Modal Player (Clean without green blinking dots) */}
+      {/* Interactive Video Modal Player (Artixain Atelier Branded) */}
       {activeVideoModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
           <div className="relative max-w-sm w-full bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl p-4 text-center border border-zinc-700">

@@ -22,7 +22,7 @@ function DesignerInner() {
   }, [searchParams, loadFromToken]);
 
   return (
-    <div className="container mx-auto px-4 py-6 max-w-7xl pt-24">
+    <div className="container mx-auto px-4 py-6 max-w-[1720px] pt-28 md:pt-32">
       {/* Studio Header Row */}
       <StudioHeader onOpenSizingModal={() => setIsSizingModalOpen(true)} />
 

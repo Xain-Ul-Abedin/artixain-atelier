@@ -10,7 +10,7 @@ export default function CartPage() {
   const { items, pricing, updateQuantity, removeItem, clearCart } = useCart();
 
   return (
-    <div className="container mx-auto px-4 py-10 max-w-5xl">
+    <div className="container mx-auto px-4 py-10 max-w-[1720px] pt-28 md:pt-32">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-zinc-200/80 dark:border-white/10">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-champagne-500/10 text-champagne-700 dark:text-champagne-300 text-[10px] uppercase font-bold tracking-widest mb-2">
