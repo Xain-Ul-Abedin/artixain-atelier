@@ -177,7 +177,7 @@ class CartScreen extends ConsumerWidget {
                   child: Column(
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.between,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text('Subtotal', style: TextStyle(fontSize: 12, color: Color(0xFF71717A))),
                           Text('\$${cart.pricing.subtotal.toStringAsFixed(2)}', style: const TextStyle(fontSize: 12)),
@@ -186,7 +186,7 @@ class CartScreen extends ConsumerWidget {
                       if (cart.pricing.discountAmount > 0) ...[
                         const SizedBox(height: 4),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.between,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text('Volume Savings', style: TextStyle(fontSize: 12, color: Color(0xFF059669), fontWeight: FontWeight.bold)),
                             Text('-\$${cart.pricing.discountAmount.toStringAsFixed(2)}', style: const TextStyle(fontSize: 12, color: Color(0xFF059669), fontWeight: FontWeight.bold)),
@@ -195,7 +195,7 @@ class CartScreen extends ConsumerWidget {
                       ],
                       const SizedBox(height: 4),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.between,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text('Shipping', style: TextStyle(fontSize: 12, color: Color(0xFF71717A))),
                           Text(cart.pricing.isFreeShipping ? 'FREE' : '\$${cart.pricing.shippingFee.toStringAsFixed(2)}', style: const TextStyle(fontSize: 12)),
@@ -203,7 +203,7 @@ class CartScreen extends ConsumerWidget {
                       ),
                       const Divider(height: 16),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.between,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text('Total Due', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                           Text(

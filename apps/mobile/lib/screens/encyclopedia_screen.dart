@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import '../models/gemstone_model.dart';
 import '../providers/catalog_provider.dart';
 import '../providers/strand_provider.dart';
 import '../widgets/common/pill_button.dart';
@@ -91,7 +90,7 @@ class EncyclopediaScreen extends ConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.between,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   gem.name,

@@ -348,3 +348,5 @@ export function getPremadeById(id: string): PremadeBracelet | undefined {
 export function getPremadeBySlug(slug: string): PremadeBracelet | undefined {
   return MASTER_PREMADE_COLLECTION.find((p) => p.slug === slug);
 }
+
+export const CURATED_PREMADES = MASTER_PREMADE_COLLECTION;

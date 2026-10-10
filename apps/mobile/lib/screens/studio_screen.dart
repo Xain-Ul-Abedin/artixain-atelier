@@ -17,9 +17,6 @@ class StudioScreen extends ConsumerStatefulWidget {
 }
 
 class _StudioScreenState extends ConsumerState<StudioScreen> {
-  String _selectedCategory = 'all';
-  String _selectedChakra = 'all';
-
   @override
   Widget build(BuildContext context) {
     final strand = ref.watch(strandProvider);
@@ -36,7 +33,7 @@ class _StudioScreenState extends ConsumerState<StudioScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.between,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       // Studio Title
                       Column(
@@ -147,7 +144,7 @@ class _StudioScreenState extends ConsumerState<StudioScreen> {
                         strandNotifier.applyBilateralSymmetry();
                       }),
                       // 4-Quadrant
-                      _buildSymmetryChip('Quadrant', LucideIcons.grid2X2, () {
+                      _buildSymmetryChip('Quadrant', LucideIcons.layoutGrid, () {
                         strandNotifier.applyQuadrantSymmetry();
                       }),
                       // Gold Spacers
@@ -185,7 +182,7 @@ class _StudioScreenState extends ConsumerState<StudioScreen> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.between,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               const Text(
                                 'Gemstone & Spacer Palette',

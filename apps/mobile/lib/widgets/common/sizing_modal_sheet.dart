@@ -62,7 +62,7 @@ class _SizingModalSheetState extends ConsumerState<SizingModalSheet> {
 
           // Header
           Row(
-            mainAxisAlignment: MainAxisAlignment.between,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -221,7 +221,7 @@ class _SizingModalSheetState extends ConsumerState<SizingModalSheet> {
 
         // Height Slider
         Row(
-          mainAxisAlignment: MainAxisAlignment.between,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Text('Height', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
             Text('${_heightCm.toInt()} cm', style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFFC5A059))),
@@ -238,7 +238,7 @@ class _SizingModalSheetState extends ConsumerState<SizingModalSheet> {
 
         // Weight Slider
         Row(
-          mainAxisAlignment: MainAxisAlignment.between,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Text('Weight', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
             Text('${_weightKg.toInt()} kg', style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFFC5A059))),
@@ -262,7 +262,7 @@ class _SizingModalSheetState extends ConsumerState<SizingModalSheet> {
             border: Border.all(color: const Color(0xFFC5A059).withOpacity(0.3)),
           ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.between,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

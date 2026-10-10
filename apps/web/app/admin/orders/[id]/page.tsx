@@ -52,7 +52,7 @@ export default function OrderWorkbenchPage() {
         code: `${gem.code}${diam}`,
         name: gem.name,
         diameterMm: diam,
-        colorHex: gem.colorHex,
+        colorHex: gem.baseColorHex || '#111111',
         isSpacer: !!gem.isSpacer,
         isChecked: false
       };
