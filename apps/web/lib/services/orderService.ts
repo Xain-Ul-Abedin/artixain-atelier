@@ -54,6 +54,7 @@ export class OrderService {
     // Decrement inventory for all beads across items & check for backordered gems
     let hasMadeToOrderBeads = false;
     for (const item of data.items) {
+      const token = item.token || item.designToken;
       if (item.beads && Array.isArray(item.beads)) {
         for (const bead of item.beads) {
           if (bead.code) {
@@ -63,8 +64,8 @@ export class OrderService {
             }
           }
         }
-      } else if (item.designToken) {
-        const decoded = decodeDesignToken(item.designToken);
+      } else if (token) {
+        const decoded = decodeDesignToken(token);
         if (decoded && decoded.beads) {
           for (const bead of decoded.beads) {
             if (bead.code) {

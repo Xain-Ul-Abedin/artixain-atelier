@@ -6,6 +6,7 @@ export interface IOrderItem {
   name: string;
   type: 'custom' | 'premade';
   token?: string;
+  designToken?: string;
   wristSizeCm: number;
   cordType: string;
   beadCount: number;
@@ -13,6 +14,7 @@ export interface IOrderItem {
   unitPrice: number;
   quantity: number;
   primaryGemCode: string;
+  beads?: Array<{ code: string; name?: string; diameterMm?: number }>;
 }
 
 export interface IOrder extends Document {
