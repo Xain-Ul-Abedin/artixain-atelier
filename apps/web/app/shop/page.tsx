@@ -27,16 +27,25 @@ export default function ShopPage() {
   });
 
   const handleQuickAdd = (item: CuratedPremade) => {
+    const itemName = item.name || item.title;
+    const beadsList = item.beads || item.beadRecipe.map((b) => ({
+      code: 'OBS',
+      name: b.gemstoneName,
+      diameterMm: b.diameterMm,
+      colorHex: '#27272A',
+      isSpacer: b.gemstoneId.includes('spacer')
+    }));
+
     addItem({
-      name: item.name,
+      name: itemName,
       type: 'premade',
-      token: item.designToken,
+      token: item.designToken || item.slug,
       wristSizeCm: item.defaultWristSizeCm,
-      cordType: item.cordType,
-      beadCount: item.beads.length,
-      beadSummary: item.beads.map((b) => b.name).join(', '),
+      cordType: item.cordType || 'silicone_stretch',
+      beadCount: beadsList.length,
+      beadSummary: beadsList.map((b) => b.name).join(', '),
       unitPrice: item.basePrice,
-      primaryGemCode: item.beads[0]?.code || 'OBS'
+      primaryGemCode: beadsList[0]?.code || 'OBS'
     });
 
     setAddedId(item.id);
@@ -88,6 +97,14 @@ export default function ShopPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
         {filteredPremades.map((item) => {
           const isAdded = addedId === item.id;
+          const itemName = item.name || item.title;
+          const beadsList = item.beads || item.beadRecipe.map((b) => ({
+            code: 'OBS',
+            name: b.gemstoneName,
+            diameterMm: b.diameterMm,
+            colorHex: '#27272A',
+            isSpacer: b.gemstoneId.includes('spacer')
+          }));
 
           return (
             <div
@@ -101,12 +118,12 @@ export default function ShopPage() {
                     {item.category}
                   </span>
                   <span className="text-xs text-zinc-400">
-                    {item.beads.length} Beads • {item.defaultWristSizeCm}cm
+                    {item.totalBeads || beadsList.length} Beads • {item.defaultWristSizeCm}cm
                   </span>
                 </div>
 
                 <h3 className="text-xl font-serif font-bold text-obsidian-900 dark:text-white group-hover:text-champagne-600 dark:group-hover:text-champagne-400 transition-colors">
-                  {item.name}
+                  {itemName}
                 </h3>
                 <p className="text-xs text-zinc-500 line-clamp-2 mt-1.5 leading-relaxed">
                   {item.description}
@@ -117,7 +134,7 @@ export default function ShopPage() {
                   <span className="text-[10px] uppercase font-bold text-zinc-400 mr-1">
                     Minerals:
                   </span>
-                  {item.beads.slice(0, 6).map((bead, bIdx) => (
+                  {beadsList.slice(0, 6).map((bead, bIdx) => (
                     <div
                       key={bIdx}
                       title={`${bead.name} (${bead.diameterMm}mm)`}
@@ -129,9 +146,9 @@ export default function ShopPage() {
                       }}
                     />
                   ))}
-                  {item.beads.length > 6 && (
+                  {beadsList.length > 6 && (
                     <span className="text-[10px] text-zinc-400">
-                      +{item.beads.length - 6}
+                      +{beadsList.length - 6}
                     </span>
                   )}
                 </div>
@@ -148,7 +165,7 @@ export default function ShopPage() {
 
                 <div className="flex items-center gap-2">
                   <Link
-                    href={`/studio?design=${encodeURIComponent(item.designToken)}`}
+                    href={`/studio?remix=${encodeURIComponent(item.slug)}`}
                     className="btn-pill-secondary py-2 px-3.5 text-xs"
                     title="Remix this recipe in the 2D Studio"
                   >

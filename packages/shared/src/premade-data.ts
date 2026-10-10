@@ -10,6 +10,7 @@ export interface PremadeBracelet {
   zodiacSigns: string[];
   primaryChakra: string;
   defaultWristSizeCm: number;
+  cordType?: string;
   basePrice: number;
   featuredImageUrl: string;
   galleryImageUrls: string[];
@@ -19,6 +20,13 @@ export interface PremadeBracelet {
     diameterMm: 6 | 8 | 10 | 12;
     count: number;
   }>;
+  beads?: Array<{
+    code: string;
+    name: string;
+    diameterMm: number;
+    colorHex: string;
+    isSpacer: boolean;
+  }>;
   totalBeads: number;
   calculatedLengthCm: number;
   isBestseller: boolean;
@@ -26,6 +34,8 @@ export interface PremadeBracelet {
   remixCount: number;
   viewCount: number;
 }
+
+export type CuratedPremade = PremadeBracelet;
 
 export const MASTER_PREMADE_COLLECTION: PremadeBracelet[] = [
   {
